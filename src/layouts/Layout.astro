@@ -1,0 +1,68 @@
+---
+// src/layouts/Layout.astro
+---
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>BangsriGo - Pemesanan Makanan Warung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <!-- Background Luar Polos Putih -->
+  <body class="bg-white text-slate-800 flex items-center justify-center min-h-screen p-4 sm:p-10 antialiased">
+
+    <!-- MOCKUP FRAME HP -->
+    <div class="relative mx-auto my-auto w-full max-w-[430px]">
+      
+      <!-- Tombol Fisik Samping HP (Kiri & Kanan) -->
+      <div class="absolute -left-[10px] top-28 w-[3px] h-10 bg-zinc-800 rounded-l-sm hidden sm:block"></div>
+      <div class="absolute -left-[10px] top-42 w-[3px] h-10 bg-zinc-800 rounded-l-sm hidden sm:block"></div>
+      <div class="absolute -right-[10px] top-32 w-[3px] h-16 bg-zinc-800 rounded-r-sm hidden sm:block"></div>
+
+      <!-- Bezel Bodi HP (Frame Presisi & Soft Shadow Mewah di BG Putih) -->
+       <div class="relative w-full bg-white sm:bg-zinc-950 sm:rounded-[52px] p-0 sm:p-3 sm:shadow-[0_20px_50px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.08)]">
+      <!-- <div class="relative w-full bg-zinc-950 sm:rounded-[52px] p-0 sm:p-3 sm:shadow-[0_20px_50px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.08)]"> -->
+        
+        <!-- Layar Utama HP -->
+        <div class="relative w-full h-screen sm:h-[844px] bg-[#F8F8F8] sm:rounded-[40px] overflow-hidden overflow-y-auto no-scrollbar border-0 sm:border border-slate-200/80">
+          
+          <!-- Dynamic Island / Notch Kamera -->
+          <div class="sticky top-0 z-50 flex justify-center pointer-events-none pt-2.5 bg-white/80 backdrop-blur-md pb-1">
+            <div class="w-28 h-5 bg-black rounded-full flex items-center justify-end px-2.5 gap-1.5 shadow-xs">
+              <div class="w-2 h-2 rounded-full bg-zinc-900 border border-zinc-800"></div>
+              <div class="w-1.5 h-1.5 rounded-full bg-blue-950/80"></div>
+            </div>
+          </div>
+
+          <!-- KONTEN HALAMAN (SLOT) -->
+          <slot />
+
+          <!-- Home Indicator (Garis Navigasi Bawah HP) -->
+          <div class="sticky bottom-1 left-1/2 -translate-x-1/2 w-32 h-1 bg-slate-300 rounded-full z-50 pointer-events-none opacity-60 my-1"></div>
+
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
+
+<style is:global>
+  @import "tailwindcss";
+
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

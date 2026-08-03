@@ -1,0 +1,341 @@
+---
+// src/pages/keranjang.astro
+import Layout from '../layouts/Layout.astro';
+import { Icon } from "astro-icon/components";
+---
+
+<Layout>
+  <main class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col min-h-screen pb-28">
+    
+    <!-- ================= HEADER SECTION ================= -->
+    <header class="sticky top-0 z-40 bg-white border-b border-[#E5E7EB] h-[60px] px-4 flex items-center justify-between shadow-sm">
+      <a href="/" aria-label="Kembali" class="p-2 -ml-2 text-[#111827] hover:bg-slate-100 rounded-full transition-colors">
+        <Icon name="lucide:arrow-left" class="w-6 h-6" />
+      </a>
+
+      <h1 class="text-xl font-bold text-[#111827]">Keranjang</h1>
+
+      <button id="btn-clear-cart" aria-label="Hapus Keranjang" class="p-2 -mr-2 text-[#6B7280] hover:text-red-500 hover:bg-slate-100 rounded-full transition-colors cursor-pointer">
+        <Icon name="lucide:trash-2" class="w-5 h-5" />
+      </button>
+    </header>
+
+    <!-- ================= MAIN CONTENT SECTION ================= -->
+    <div class="flex-1 p-4 space-y-4">
+      
+      <!-- DAFTAR MENU CONTAINER -->
+      <div id="cart-items-container" class="space-y-3">
+        <!-- Dinamis dirender via script dari localStorage -->
+      </div>
+
+      <!-- ================= RINGKASAN PEMBAYARAN ================= -->
+      <section id="summary-section" class="bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-sm space-y-3 hidden">
+        <h3 class="text-base font-semibold text-[#111827]">
+          Ringkasan Pembayaran
+        </h3>
+
+        <div class="space-y-2 text-sm text-[#6B7280]">
+          <div class="flex justify-between items-center">
+            <span>Subtotal</span>
+            <span id="summary-subtotal" class="font-medium text-[#111827]">Rp 0</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span>Ongkir</span>
+            <span class="font-medium text-[#111827]">Dikonfirmasi via WA (Rp 0 - 5rb)</span>
+          </div>
+        </div>
+
+        <div class="border-t border-[#E5E7EB] pt-3 flex justify-between items-center">
+          <span class="text-base font-bold text-[#111827]">Total Sementara</span>
+          <span id="summary-total" class="text-lg font-bold text-[#0E9F3E]">Rp 0</span>
+        </div>
+      </section>
+
+      <!-- ================= EMPTY STATE ================= -->
+      <div id="empty-state" class="bg-white rounded-2xl p-8 border border-[#E5E7EB] shadow-sm text-center py-12 my-8 space-y-4 hidden">
+        <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-[#0E9F3E]">
+          <Icon name="lucide:shopping-bag" class="w-8 h-8" />
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-[#111827]">
+            Keranjang masih kosong
+          </h2>
+          <p class="text-sm text-[#6B7280] mt-1">
+            Yuk pilih makanan favoritmu.
+          </p>
+        </div>
+        <a
+          href="/"
+          class="inline-flex items-center justify-center px-6 py-3 bg-[#0E9F3E] text-white font-semibold rounded-xl hover:bg-[#0c8a36] transition-colors"
+        >
+          Kembali ke Beranda
+        </a>
+      </div>
+
+    </div>
+
+    <!-- ================= BOTTOM CHECKOUT BAR ================= -->
+    <div id="checkout-bar" class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#E5E7EB] shadow-[0_-4px_12px_rgba(0,0,0,0.05)] hidden">
+      <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+        <div>
+          <span class="block text-xs text-[#6B7280]">Total Sementara</span>
+          <span id="footer-total" class="text-lg font-bold text-[#111827]">Rp 0</span>
+        </div>
+
+        <a
+          href="/konfirmasi"
+          id="btn-checkout"
+          class="w-[60%] h-[52px] bg-[#0E9F3E] hover:bg-[#0c8a36] active:scale-[0.98] text-white font-semibold rounded-2xl flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer no-underline"
+        >
+          <span>Lanjutkan</span>
+          <Icon name="lucide:arrow-right" class="w-5 h-5" />
+        </a>
+      </div>
+    </div>
+
+  </main>
+</Layout>
+
+<!-- SCRIPT LOGIKA KERANJANG LOCALSTORAGE -->
+<script>
+  interface AddonItem {
+    name: string;
+    price: number;
+  }
+
+  interface CartItem {
+    cartItemId: string;
+    id: string | number;
+    menuId?: string | number;
+    name: string;
+    price: number;
+    basePrice?: number;
+    image: string;
+    qty: number;
+    quantity?: number;
+    addons?: AddonItem[];
+    notes?: string;
+    spicyLevel?: string;
+  }
+
+  const STORAGE_KEY = 'bangsri_cart';
+
+  function formatRupiah(price: number): string {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      maximumFractionDigits: 0,
+    }).format(price).replace('Rp', 'Rp ');
+  }
+
+  function getCart(): CartItem[] {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function saveCart(cart: CartItem[]) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    window.dispatchEvent(new Event('cart-updated'));
+  }
+
+  function calculateItemTotal(item: CartItem): number {
+    const qty = item.qty || item.quantity || 1;
+    const base = item.price || item.basePrice || 0;
+    const addonsTotal = (item.addons || []).reduce((sum, addon) => sum + addon.price, 0);
+    return (base + addonsTotal) * qty;
+  }
+
+  function renderCart() {
+    const cart = getCart();
+    const container = document.getElementById('cart-items-container');
+    const summarySection = document.getElementById('summary-section');
+    const emptyState = document.getElementById('empty-state');
+    const checkoutBar = document.getElementById('checkout-bar');
+
+    if (!container || !summarySection || !emptyState || !checkoutBar) return;
+
+    if (cart.length === 0) {
+      container.innerHTML = '';
+      summarySection.classList.add('hidden');
+      emptyState.classList.remove('hidden');
+      checkoutBar.classList.add('hidden');
+      return;
+    }
+
+    emptyState.classList.add('hidden');
+    summarySection.classList.remove('hidden');
+    checkoutBar.classList.remove('hidden');
+
+    let subtotal = 0;
+
+    container.innerHTML = cart.map((item, index) => {
+      const qty = item.qty || item.quantity || 1;
+      const itemTotal = calculateItemTotal(item);
+      subtotal += itemTotal;
+
+      // Render Addons & Level Pedas
+      let detailsHtml = '';
+      if (item.spicyLevel) {
+        detailsHtml += `<p class="text-xs text-amber-600 font-medium">🌶️ Level ${item.spicyLevel}</p>`;
+      }
+      if (item.addons && item.addons.length > 0) {
+        item.addons.forEach(addon => {
+          detailsHtml += `<p class="text-xs text-slate-500">+ ${addon.name}</p>`;
+        });
+      }
+      if (!item.spicyLevel && (!item.addons || item.addons.length === 0)) {
+        detailsHtml += `<p class="text-xs text-slate-400">Tanpa Add-on</p>`;
+      }
+
+      const cartItemId = item.cartItemId || `${item.id || item.menuId || index}`;
+      const productId = item.id || item.menuId || '';
+
+      return `
+        <div class="bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-sm flex flex-col gap-3 relative" data-cart-item-id="${cartItemId}">
+          
+          <!-- Tombol Hapus Satuan / Per Item -->
+          <button
+            type="button"
+            class="btn-delete-item absolute top-3 right-3 text-slate-400 hover:text-red-500 p-1.5 rounded-lg transition-colors cursor-pointer"
+            data-cart-item-id="${cartItemId}"
+            aria-label="Hapus produk ini"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+          </button>
+
+          <!-- Area Produk yang Bisa Diklik untuk Lihat Detail Produk -->
+          <a href="/menu/${productId}" class="flex gap-3 pr-6 group no-underline">
+            <img
+              src="${item.image || 'https://placehold.co/120x120'}"
+              alt="${item.name}"
+              class="w-[72px] h-[72px] object-cover rounded-xl flex-shrink-0 bg-slate-100 group-hover:opacity-90 transition-opacity"
+            />
+            <div class="flex-1 min-w-0">
+              <h2 class="text-base font-semibold text-[#111827] truncate group-hover:text-[#0E9F3E] transition-colors">
+                ${item.name}
+              </h2>
+              <div class="text-sm text-[#6B7280] mt-0.5 space-y-0.5">
+                ${detailsHtml}
+              </div>
+            </div>
+          </a>
+
+          <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+            <div class="flex items-center gap-3">
+              <button
+                type="button"
+                class="btn-decrease w-8 h-8 rounded-lg border border-[#E5E7EB] flex items-center justify-center text-[#111827] hover:bg-slate-50 active:bg-slate-100 font-medium transition-colors cursor-pointer"
+                data-cart-item-id="${cartItemId}"
+                aria-label="Kurangi jumlah"
+              >
+                -
+              </button>
+              <span class="text-sm font-semibold text-[#111827] min-w-[16px] text-center">
+                ${qty}
+              </span>
+              <button
+                type="button"
+                class="btn-increase w-8 h-8 rounded-lg border border-[#E5E7EB] flex items-center justify-center text-[#111827] hover:bg-slate-50 active:bg-slate-100 font-medium transition-colors cursor-pointer"
+                data-cart-item-id="${cartItemId}"
+                aria-label="Tambah jumlah"
+              >
+                +
+              </button>
+            </div>
+
+            <span class="font-bold text-[#111827]">
+              ${formatRupiah(itemTotal)}
+            </span>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    const subtotalEl = document.getElementById('summary-subtotal');
+    const totalEl = document.getElementById('summary-total');
+    const footerTotalEl = document.getElementById('footer-total');
+
+    if (subtotalEl) subtotalEl.textContent = formatRupiah(subtotal);
+    if (totalEl) totalEl.textContent = formatRupiah(subtotal);
+    if (footerTotalEl) footerTotalEl.textContent = formatRupiah(subtotal);
+  }
+
+  function handleQuantityChange(cartItemId: string, change: number) {
+    const cart = getCart();
+    const itemIndex = cart.findIndex(i => String(i.cartItemId || i.id || i.menuId) === String(cartItemId));
+
+    if (itemIndex > -1) {
+      const currentQty = cart[itemIndex].qty || cart[itemIndex].quantity || 1;
+      const newQty = currentQty + change;
+
+      if (newQty > 0) {
+        cart[itemIndex].qty = newQty;
+        cart[itemIndex].quantity = newQty;
+      } else {
+        cart.splice(itemIndex, 1);
+      }
+
+      saveCart(cart);
+      renderCart();
+    }
+  }
+
+  function handleRemoveItem(cartItemId: string) {
+    let cart = getCart();
+    cart = cart.filter(i => String(i.cartItemId || i.id || i.menuId) !== String(cartItemId));
+    saveCart(cart);
+    renderCart();
+  }
+
+  function clearCart() {
+    if (confirm('Apakah Anda yakin ingin mengosongkan keranjang?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      renderCart();
+      window.dispatchEvent(new Event('cart-updated'));
+    }
+  }
+
+  function init() {
+    renderCart();
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+
+      const incBtn = target.closest('.btn-increase') as HTMLButtonElement;
+      if (incBtn) {
+        const id = incBtn.dataset.cartItemId;
+        if (id) handleQuantityChange(id, 1);
+      }
+
+      const decBtn = target.closest('.btn-decrease') as HTMLButtonElement;
+      if (decBtn) {
+        const id = decBtn.dataset.cartItemId;
+        if (id) handleQuantityChange(id, -1);
+      }
+
+      const delBtn = target.closest('.btn-delete-item') as HTMLButtonElement;
+      if (delBtn) {
+        const id = delBtn.dataset.cartItemId;
+        if (id) handleRemoveItem(id);
+      }
+    });
+
+    const clearBtn = document.getElementById('btn-clear-cart');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', clearCart);
+    }
+
+    window.addEventListener('storage', renderCart);
+    window.addEventListener('cart-updated', renderCart);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
