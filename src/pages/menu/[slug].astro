@@ -1,6 +1,7 @@
 ---
 export const prerender = false;
 
+import Layout from '../../layouts/Layout.astro';
 import { supabase } from '../../lib/supabase';
 
 interface Addon {
@@ -58,201 +59,160 @@ const formatRupiah = (price: number) => {
 };
 ---
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{menu.name} - BangsriGo</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body class="bg-[#F8F8F8] text-slate-800 flex items-center justify-center min-h-screen p-0 sm:p-6 antialiased">
-
-  <!-- MOCKUP FRAME HP MOBILE -->
-  <div class="relative mx-auto my-auto w-full max-w-[430px]">
+<Layout>
+  <main class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col h-full overflow-y-auto no-scrollbar">
     
-    <!-- Tombol Fisik Samping HP -->
-    <div class="absolute -left-[10px] top-28 w-[3px] h-10 bg-zinc-800 rounded-l-sm hidden sm:block"></div>
-    <div class="absolute -left-[10px] top-42 w-[3px] h-10 bg-zinc-800 rounded-l-sm hidden sm:block"></div>
-    <div class="absolute -right-[10px] top-32 w-[3px] h-16 bg-zinc-800 rounded-r-sm hidden sm:block"></div>
+    <!-- HEADER FOTO MENU -->
+    <div class="relative w-full h-[320px] shrink-0">
+      <img 
+        src={menu.image} 
+        alt={menu.name} 
+        class="w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
-    <!-- Bezel Bodi HP -->
-    <div class="relative w-full bg-zinc-950 sm:rounded-[52px] p-0 sm:p-3 sm:shadow-[0_20px_50px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.08)]">
-      
-      <!-- Layar Utama HP -->
-      <div class="relative w-full h-screen sm:h-[844px] bg-[#F8F8F8] sm:rounded-[40px] overflow-hidden overflow-y-auto no-scrollbar border-0 sm:border border-slate-200/80 flex flex-col">
-        
-        <!-- Status Bar -->
-        <div class="sticky top-0 z-50 flex items-center justify-between px-6 pt-3 pb-1 bg-transparent pointer-events-none">
-          <span class="text-[13px] font-bold text-white drop-shadow-md">9:41</span>
-          
-          <div class="w-28 h-5 bg-black rounded-full flex items-center justify-end px-2 gap-1.5 shadow-sm">
-            <div class="w-2 h-2 rounded-full bg-zinc-800 border border-zinc-700"></div>
-            <div class="w-1.5 h-1.5 rounded-full bg-blue-950"></div>
-          </div>
+      <!-- TOMBOL BACK & FAVORITE -->
+      <div class="absolute top-4 left-0 right-0 px-6 flex items-center justify-between z-20">
+        <a href="/" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-800 shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:bg-white active:scale-95 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+          </svg>
+        </a>
 
-          <div class="flex items-center gap-1.5 text-white drop-shadow-md">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 19.57 10.57 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
-          </div>
-        </div>
-
-        <!-- HEADER FOTO MENU -->
-        <div class="relative w-full h-[320px] -mt-10 shrink-0">
-          <img 
-            src={menu.image} 
-            alt={menu.name} 
-            class="w-full h-full object-cover"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-
-          <div class="absolute top-14 left-0 right-0 px-6 flex items-center justify-between z-20">
-            <a href="/" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-800 shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:bg-white active:scale-95 transition">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
-              </svg>
-            </a>
-
-            <button class="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-800 shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:bg-white active:scale-95 transition cursor-pointer">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- KONTEN UTAMA -->
-        <main class="relative z-10 flex-1 w-full bg-white -mt-12 rounded-t-[32px] px-6 pt-8 pb-10 shadow-[0_-8px_24px_rgba(0,0,0,0.06)] flex flex-col gap-8">
-          
-          <!-- Informasi Menu -->
-          <div>
-            <div class="flex items-start justify-between gap-4">
-              <h1 class="text-[26px] font-bold text-slate-900 leading-tight">{menu.name}</h1>
-              {menu.badge && (
-                <span class="shrink-0 inline-flex items-center gap-1 text-[10px] font-bold text-[#16A34A] bg-green-50 px-2 py-1 rounded-md uppercase tracking-wider">
-                  🔥 {menu.badge}
-                </span>
-              )}
-            </div>
-            
-            <p class="text-[14px] text-slate-500 font-medium mt-2 leading-relaxed">
-              {menu.description} 
-              {menu.subdescription && <span class="block mt-0.5 text-slate-600">{menu.subdescription}</span>}
-            </p>
-
-            <div class="text-2xl font-bold text-[#16A34A] mt-4">
-              {formatRupiah(menuPrice)}
-            </div>
-          </div>
-
-          <!-- LEVEL PEDAS (Hanya Tampil Jika Terdefinisi di DB) -->
-          {spicyLevels.length > 0 && (
-            <section>
-              <h2 class="text-[17px] font-bold text-slate-900 mb-4">Level Pedas</h2>
-              <div class="flex flex-wrap gap-3" id="spicy-container">
-                {spicyLevels.map((lvl) => (
-                  <button 
-                    type="button"
-                    data-level={lvl.label}
-                    class={`spicy-btn h-10 px-5 rounded-full text-[13px] font-bold transition-all active:scale-95 border cursor-pointer ${
-                      lvl.active 
-                        ? 'bg-[#16A34A] text-white border-[#16A34A] shadow-md shadow-green-600/20 active-spicy' 
-                        : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
-                    }`}
-                  >
-                    Level {lvl.label}
-                  </button>
-                ))}
-              </div>
-            </section>
-          )}
-
-          <!-- ADD-ON DARI JSON -->
-          {addons.length > 0 && (
-            <section>
-              <div class="flex items-center justify-between mb-4">
-                <h2 class="text-[17px] font-bold text-slate-900">Pilihan Tambahan</h2>
-                <span class="text-xs text-slate-400 font-medium bg-slate-50 px-2 py-1 rounded-md border border-slate-100">Opsional</span>
-              </div>
-              
-              <div class="space-y-3">
-                {addons.map((addon) => (
-                  <label class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl cursor-pointer hover:border-[#16A34A] transition-colors shadow-sm group">
-                    <div class="flex flex-col gap-1">
-                      <span class="text-[15px] font-bold text-slate-800">{addon.name}</span>
-                      <span class="text-[13px] text-slate-500 font-medium">Ekstra topping</span>
-                    </div>
-                    <div class="flex items-center gap-4">
-                      <span class="text-[14px] font-bold text-slate-900">+{formatRupiah(addon.price)}</span>
-                      <div class="relative flex items-center justify-center">
-                        <input 
-                          type="checkbox" 
-                          data-name={addon.name}
-                          data-price={addon.price}
-                          checked={addon.checked || false}
-                          class="addon-checkbox peer appearance-none w-6 h-6 border-2 border-slate-300 rounded-full checked:border-[#16A34A] checked:bg-[#16A34A] transition-colors cursor-pointer"
-                        />
-                        <svg class="absolute w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3.5">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    </div>
-                  </label>
-                ))}
-              </div>
-            </section>
-          )}
-
-          <!-- CATATAN -->
-          <section>
-            <h2 class="text-[17px] font-bold text-slate-900 mb-4">Catatan untuk Resto</h2>
-            <textarea 
-              id="notes-input"
-              class="w-full min-h-[90px] bg-white border border-slate-200 rounded-2xl p-4 text-[14px] font-medium text-slate-700 placeholder-slate-400 focus:outline-none focus:border-[#16A34A] focus:ring-1 focus:ring-[#16A34A] transition shadow-sm resize-none"
-              placeholder="Contoh: Sambal dipisah, tidak pakai timun..."
-            ></textarea>
-          </section>
-
-          <!-- JUMLAH -->
-          <section class="flex items-center justify-between pt-2">
-            <h2 class="text-[17px] font-bold text-slate-900">Jumlah</h2>
-            <div class="flex items-center gap-4">
-              <button id="btn-minus" type="button" class="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-400 flex items-center justify-center hover:bg-slate-50 transition active:scale-90 shadow-sm cursor-pointer">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
-              </button>
-              <span id="quantity-label" class="text-[17px] font-bold text-slate-900 min-w-[24px] text-center">1</span>
-              <button id="btn-plus" type="button" class="w-10 h-10 rounded-full bg-[#16A34A] text-white flex items-center justify-center hover:bg-green-700 transition active:scale-90 shadow-sm cursor-pointer shadow-green-600/30">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-              </button>
-            </div>
-          </section>
-          
-        </main>
-
-        <!-- STICKY BOTTOM BAR ACTION -->
-        <div class="sticky bottom-0 z-50 w-full bg-white border-t border-slate-100 px-6 py-4 pb-8 sm:pb-6 shadow-[0_-12px_24px_rgba(0,0,0,0.06)]">
-          <div class="flex items-center justify-between gap-6">
-            <div class="flex flex-col">
-              <span class="text-[12px] font-medium text-slate-500 mb-0.5">Total Harga</span>
-              <span id="total-price-label" class="text-[20px] font-bold text-slate-900 leading-none">{formatRupiah(menuPrice)}</span>
-            </div>
-            
-            <button id="add-to-cart-btn" class="flex-1 h-[52px] bg-[#16A34A] text-white rounded-xl font-bold text-[15px] hover:bg-green-700 transition active:scale-[0.98] flex items-center justify-center shadow-lg shadow-green-600/20 cursor-pointer">
-              Tambah ke Keranjang
-            </button>
-          </div>
-        </div>
-
-        <!-- Home Indicator -->
-        <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-slate-300/80 rounded-full z-50 pointer-events-none mb-1"></div>
-
+        <button type="button" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-800 shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:bg-white active:scale-95 transition cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        </button>
       </div>
     </div>
-  </div>
 
-  <!-- SCRIPT CLIENT INTERAKSI -->
+    <!-- KONTEN UTAMA DETAIL MENU -->
+    <div class="relative z-10 flex-1 w-full bg-white -mt-8 rounded-t-[32px] px-6 pt-8 pb-10 shadow-[0_-8px_24px_rgba(0,0,0,0.06)] flex flex-col gap-8">
+      
+      <!-- Informasi Menu -->
+      <div>
+        <div class="flex items-start justify-between gap-4">
+          <h1 class="text-[26px] font-bold text-slate-900 leading-tight">{menu.name}</h1>
+          {menu.badge && (
+            <span class="shrink-0 inline-flex items-center gap-1 text-[10px] font-bold text-[#16A34A] bg-green-50 px-2 py-1 rounded-md uppercase tracking-wider">
+              🔥 {menu.badge}
+            </span>
+          )}
+        </div>
+        
+        <p class="text-[14px] text-slate-500 font-medium mt-2 leading-relaxed">
+          {menu.description} 
+          {menu.subdescription && <span class="block mt-0.5 text-slate-600">{menu.subdescription}</span>}
+        </p>
+
+        <div class="text-2xl font-bold text-[#16A34A] mt-4">
+          {formatRupiah(menuPrice)}
+        </div>
+      </div>
+
+      <!-- LEVEL PEDAS -->
+      {spicyLevels.length > 0 && (
+        <section>
+          <h2 class="text-[17px] font-bold text-slate-900 mb-4">Level Pedas</h2>
+          <div class="flex flex-wrap gap-3" id="spicy-container">
+            {spicyLevels.map((lvl) => (
+              <button 
+                type="button"
+                data-level={lvl.label}
+                class={`spicy-btn h-10 px-5 rounded-full text-[13px] font-bold transition-all active:scale-95 border cursor-pointer ${
+                  lvl.active 
+                    ? 'bg-[#16A34A] text-white border-[#16A34A] shadow-md shadow-green-600/20 active-spicy' 
+                    : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                }`}
+              >
+                Level {lvl.label}
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- ADD-ON -->
+      {addons.length > 0 && (
+        <section>
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-[17px] font-bold text-slate-900">Pilihan Tambahan</h2>
+            <span class="text-xs text-slate-400 font-medium bg-slate-50 px-2 py-1 rounded-md border border-slate-100">Opsional</span>
+          </div>
+          
+          <div class="space-y-3">
+            {addons.map((addon) => (
+              <label class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl cursor-pointer hover:border-[#16A34A] transition-colors shadow-sm group">
+                <div class="flex flex-col gap-1">
+                  <span class="text-[15px] font-bold text-slate-800">{addon.name}</span>
+                  <span class="text-[13px] text-slate-500 font-medium">Ekstra topping</span>
+                </div>
+                <div class="flex items-center gap-4">
+                  <span class="text-[14px] font-bold text-slate-900">+{formatRupiah(addon.price)}</span>
+                  <div class="relative flex items-center justify-center">
+                    <input 
+                      type="checkbox" 
+                      data-name={addon.name}
+                      data-price={addon.price}
+                      checked={addon.checked || false}
+                      class="addon-checkbox peer appearance-none w-6 h-6 border-2 border-slate-300 rounded-full checked:border-[#16A34A] checked:bg-[#16A34A] transition-colors cursor-pointer"
+                    />
+                    <svg class="absolute w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+              </label>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- CATATAN -->
+      <section>
+        <h2 class="text-[17px] font-bold text-slate-900 mb-4">Catatan untuk Resto</h2>
+        <textarea 
+          id="notes-input"
+          class="w-full min-h-[90px] bg-white border border-slate-200 rounded-2xl p-4 text-[14px] font-medium text-slate-700 placeholder-slate-400 focus:outline-none focus:border-[#16A34A] focus:ring-1 focus:ring-[#16A34A] transition shadow-sm resize-none"
+          placeholder="Contoh: Sambal dipisah, tidak pakai timun..."
+        ></textarea>
+      </section>
+
+      <!-- JUMLAH -->
+      <section class="flex items-center justify-between pt-2">
+        <h2 class="text-[17px] font-bold text-slate-900">Jumlah</h2>
+        <div class="flex items-center gap-4">
+          <button id="btn-minus" type="button" class="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-400 flex items-center justify-center hover:bg-slate-50 transition active:scale-90 shadow-sm cursor-pointer">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
+          </button>
+          <span id="quantity-label" class="text-[17px] font-bold text-slate-900 min-w-[24px] text-center">1</span>
+          <button id="btn-plus" type="button" class="w-10 h-10 rounded-full bg-[#16A34A] text-white flex items-center justify-center hover:bg-green-700 transition active:scale-90 shadow-sm cursor-pointer shadow-green-600/30">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+          </button>
+        </div>
+      </section>
+      
+    </div>
+
+    <!-- STICKY BOTTOM BAR ACTION -->
+    <div class="sticky bottom-0 z-50 w-full bg-white border-t border-slate-100 px-6 py-4 pb-8 sm:pb-6 shadow-[0_-12px_24px_rgba(0,0,0,0.06)] shrink-0">
+      <div class="flex items-center justify-between gap-6">
+        <div class="flex flex-col">
+          <span class="text-[12px] font-medium text-slate-500 mb-0.5">Total Harga</span>
+          <span id="total-price-label" class="text-[20px] font-bold text-slate-900 leading-none">{formatRupiah(menuPrice)}</span>
+        </div>
+        
+        <button id="add-to-cart-btn" class="flex-1 h-[52px] bg-[#16A34A] text-white rounded-xl font-bold text-[15px] hover:bg-green-700 transition active:scale-[0.98] flex items-center justify-center shadow-lg shadow-green-600/20 cursor-pointer">
+          Tambah ke Keranjang
+        </button>
+      </div>
+    </div>
+
+  </main>
+</Layout>
+
+<!-- SCRIPT CLIENT INTERAKSI -->
 <script is:inline define:vars={{ menuId: menu.id, menuName: menu.name, basePrice: menuPrice, menuImage: menu.image, initialSpicy: spicyLevels[0]?.label || null }}>
   let quantity = 1;
   let selectedSpicyLevel = initialSpicy;
@@ -311,7 +271,7 @@ const formatRupiah = (price: number) => {
   spicyBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
       spicyBtns.forEach((b) => {
-        b.classList.remove('bg-[#16A34A]', 'text-white', 'border-[#16A34A]', 'shadow-md', 'shadow-green-600/20', 'active-spicy');
+        b.classList.remove('bg-[#16A34A]', 'text-[#ffffff]', 'border-[#16A34A]', 'shadow-md', 'shadow-green-600/20', 'active-spicy');
         b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
       });
 
@@ -322,7 +282,6 @@ const formatRupiah = (price: number) => {
     });
   });
 
-  // Fungsi pembantu mengecek kesamaan addon
   function isSameAddons(addonsA = [], addonsB = []) {
     if (addonsA.length !== addonsB.length) return false;
     const namesA = addonsA.map(a => a.name).sort();
@@ -342,10 +301,8 @@ const formatRupiah = (price: number) => {
     });
 
     const notes = notesInput ? notesInput.value.trim() : '';
-
     const existingCart = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 
-    // Cari item yang racikannya SAMA PERSIS (ID, Level Pedas, Addons, Catatan)
     const existingIndex = existingCart.findIndex((item) => {
       const itemId = item.id || item.menuId;
       const sameId = String(itemId) === String(menuId);
@@ -357,13 +314,11 @@ const formatRupiah = (price: number) => {
     });
 
     if (existingIndex > -1) {
-      // Jika racikannya sama persis, cukup tambahkan kuantitasnya
       const currentQty = existingCart[existingIndex].qty || existingCart[existingIndex].quantity || 1;
       const updatedQty = currentQty + quantity;
       existingCart[existingIndex].qty = updatedQty;
       existingCart[existingIndex].quantity = updatedQty;
     } else {
-      // Jika ada perbedaan (misal ada addon atau beda catatan/level), buat item baru di keranjang
       existingCart.push({
         cartItemId: `${menuId}_${Date.now()}`,
         id: menuId,
@@ -383,7 +338,6 @@ const formatRupiah = (price: number) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(existingCart));
     window.dispatchEvent(new Event('cart-updated'));
 
-    // Visual Feedback
     const originalText = addToCartBtn.textContent;
     addToCartBtn.textContent = '✓ Masuk Keranjang!';
     addToCartBtn.classList.remove('bg-[#16A34A]', 'hover:bg-green-700');
@@ -396,22 +350,3 @@ const formatRupiah = (price: number) => {
     }, 1500);
   });
 </script>
-
-</body>
-</html>
-
-<style is:global>
-  @import "tailwindcss";
-
-  body {
-    font-family: 'Inter', sans-serif;
-  }
-
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-</style>
