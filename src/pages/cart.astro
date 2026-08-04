@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import { Icon } from "astro-icon/components";
 ---
 
-<Layout>
+<Layout title="Keranjang Belanja">
   <!-- MAIN WRAPPER: Dibuat pas seukuran layar (h-screen) & matikan scroll luar (overflow-hidden) -->
   <main class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col h-screen overflow-hidden">
     
@@ -124,6 +124,7 @@ import { Icon } from "astro-icon/components";
     cartItemId: string;
     id: string | number;
     menuId?: string | number;
+    slug?: string;
     name: string;
     price: number;
     basePrice?: number;
@@ -211,7 +212,7 @@ import { Icon } from "astro-icon/components";
       }
 
       const cartItemId = item.cartItemId || `${item.id || item.menuId || index}`;
-      const productId = item.id || item.menuId || '';
+      const productPath = item.slug || item.id || item.menuId || '';
 
       return `
         <div class="bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-xs flex flex-col gap-3 relative" data-cart-item-id="${cartItemId}">
@@ -225,7 +226,7 @@ import { Icon } from "astro-icon/components";
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
           </button>
 
-          <a href="/menu/${productId}" class="flex gap-3 pr-6 group no-underline">
+          <a href="/menu/${productPath}" class="flex gap-3 pr-6 group no-underline">
             <img
               src="${item.image || 'https://placehold.co/120x120'}"
               alt="${item.name}"

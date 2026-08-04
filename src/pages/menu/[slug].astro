@@ -62,6 +62,27 @@ const formatRupiah = (price: number) => {
 <Layout>
   <main class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col h-full overflow-y-auto no-scrollbar">
     
+    <!-- TOAST NOTIFICATION FLOATING -->
+    <div 
+      id="cart-toast" 
+      class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm bg-slate-900/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center justify-between border border-white/10 opacity-0 pointer-events-none -translate-y-4 transition-all duration-300 ease-out"
+    >
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-[#16A34A] flex items-center justify-center shrink-0 shadow-md shadow-green-900/40">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-[13px] font-bold text-white leading-tight">Berhasil Ditambahkan!</span>
+          <span id="toast-message" class="text-[11px] text-slate-300 font-medium">1x {menu.name}</span>
+        </div>
+      </div>
+      <a href="/cart" class="text-[11px] font-bold text-[#16A34A] hover:underline px-2 py-1 bg-white/10 rounded-lg">
+        Lihat
+      </a>
+    </div>
+
     <!-- HEADER FOTO MENU -->
     <div class="relative w-full h-[320px] shrink-0">
       <img 
@@ -79,11 +100,15 @@ const formatRupiah = (price: number) => {
           </svg>
         </a>
 
-        <!-- TOMBOL KERANJANG (MENGARAH KE /cart) -->
-        <a href="/cart" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-800 shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:bg-white active:scale-95 transition">
+        <!-- TOMBOL KERANJANG DENGAN BADGE COUNT -->
+        <a href="/cart" class="relative w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-800 shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:bg-white active:scale-95 transition">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 2 0 11-4 0 2 2 0 014 0z" />
           </svg>
+          <!-- Badge Jumlah Item -->
+          <span id="cart-badge" class="hidden absolute -top-1 -right-1 min-w-[20px] h-5 px-1 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+            0
+          </span>
         </a>
       </div>
     </div>
@@ -204,8 +229,8 @@ const formatRupiah = (price: number) => {
           <span id="total-price-label" class="text-[20px] font-bold text-slate-900 leading-none">{formatRupiah(menuPrice)}</span>
         </div>
         
-        <button id="add-to-cart-btn" class="flex-1 h-[52px] bg-[#16A34A] text-white rounded-xl font-bold text-[15px] hover:bg-green-700 transition active:scale-[0.98] flex items-center justify-center shadow-lg shadow-green-600/20 cursor-pointer">
-          Tambah ke Keranjang
+        <button id="add-to-cart-btn" class="flex-1 h-[52px] bg-[#16A34A] text-white rounded-xl font-bold text-[15px] hover:bg-green-700 active:scale-95 transition-all duration-150 flex items-center justify-center shadow-lg shadow-green-600/20 cursor-pointer select-none">
+          Tambah Ke Keranjang
         </button>
       </div>
     </div>
@@ -217,6 +242,7 @@ const formatRupiah = (price: number) => {
 <script is:inline define:vars={{ menuId: menu.id, menuName: menu.name, basePrice: menuPrice, menuImage: menu.image, initialSpicy: spicyLevels[0]?.label || null }}>
   let quantity = 1;
   let selectedSpicyLevel = initialSpicy;
+  let toastTimeout = null;
   const STORAGE_KEY = 'bangsri_cart';
 
   const totalPriceLabel = document.getElementById('total-price-label');
@@ -227,6 +253,11 @@ const formatRupiah = (price: number) => {
   const addonCheckboxes = document.querySelectorAll('.addon-checkbox');
   const notesInput = document.getElementById('notes-input');
   const addToCartBtn = document.getElementById('add-to-cart-btn');
+  const cartBadge = document.getElementById('cart-badge');
+
+  // Elemen Toast Info
+  const cartToast = document.getElementById('cart-toast');
+  const toastMessage = document.getElementById('toast-message');
 
   const formatRupiahJS = (price) => {
     return new Intl.NumberFormat('id-ID', {
@@ -235,6 +266,22 @@ const formatRupiah = (price: number) => {
       maximumFractionDigits: 0,
     }).format(price).replace('Rp', 'Rp ');
   };
+
+  function updateCartBadge() {
+    if (!cartBadge) return;
+    const existingCart = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    const totalItems = existingCart.reduce((sum, item) => sum + (item.qty || item.quantity || 1), 0);
+
+    if (totalItems > 0) {
+      cartBadge.textContent = totalItems > 99 ? '99+' : totalItems;
+      cartBadge.classList.remove('hidden');
+    } else {
+      cartBadge.classList.add('hidden');
+    }
+  }
+
+  // Load awal badge
+  updateCartBadge();
 
   function calculateTotal() {
     let addonPriceSum = 0;
@@ -271,13 +318,11 @@ const formatRupiah = (price: number) => {
 
   spicyBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      // Reset semua tombol ke style default (tidak aktif)
       spicyBtns.forEach((b) => {
         b.classList.remove('bg-[#16A34A]', 'text-white', 'border-[#16A34A]', 'shadow-md', 'shadow-green-600/20', 'active-spicy');
         b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
       });
 
-      // Aktifkan tombol yang diklik
       btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
       btn.classList.add('bg-[#16A34A]', 'text-white', 'border-[#16A34A]', 'shadow-md', 'shadow-green-600/20', 'active-spicy');
       
@@ -290,6 +335,24 @@ const formatRupiah = (price: number) => {
     const namesA = addonsA.map(a => a.name).sort();
     const namesB = addonsB.map(b => b.name).sort();
     return namesA.every((val, index) => val === namesB[index]);
+  }
+
+  function showToastInfo(qty, name) {
+    if (!cartToast || !toastMessage) return;
+
+    toastMessage.textContent = `${qty}x ${name}`;
+    
+    // Tampilkan Toast
+    cartToast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-4');
+    cartToast.classList.add('opacity-100', 'translate-y-0');
+
+    if (toastTimeout) clearTimeout(toastTimeout);
+
+    // Sembunyikan otomatis setelah 2.2 detik
+    toastTimeout = setTimeout(() => {
+      cartToast.classList.remove('opacity-100', 'translate-y-0');
+      cartToast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-4');
+    }, 2200);
   }
 
   addToCartBtn?.addEventListener('click', () => {
@@ -341,15 +404,10 @@ const formatRupiah = (price: number) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(existingCart));
     window.dispatchEvent(new Event('cart-updated'));
 
-    const originalText = addToCartBtn.textContent;
-    addToCartBtn.textContent = '✓ Masuk Keranjang!';
-    addToCartBtn.classList.remove('bg-[#16A34A]', 'hover:bg-green-700');
-    addToCartBtn.classList.add('bg-slate-900', 'hover:bg-slate-800');
+    // Update Angka Keranjang
+    updateCartBadge();
 
-    setTimeout(() => {
-      addToCartBtn.textContent = originalText;
-      addToCartBtn.classList.remove('bg-slate-900', 'hover:bg-slate-800');
-      addToCartBtn.classList.add('bg-[#16A34A]', 'hover:bg-green-700');
-    }, 1500);
+    // Munculkan Info Toast
+    showToastInfo(quantity, menuName);
   });
 </script>

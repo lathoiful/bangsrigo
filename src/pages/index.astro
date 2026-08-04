@@ -70,18 +70,36 @@ const formatRupiah = (price: number) => {
 };
 ---
 
-<Layout>
-  <main class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col h-full overflow-y-auto no-scrollbar">
-    <div class="bg-white">
-      <!-- HEADER (Logo SVG) -->
-      <header class="px-4 py-2 flex items-center justify-between">
+<Layout title="BangsriGo - Pesan Makanan & Minuman">
+  <main class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col h-screen overflow-hidden">
+    <!-- TOP SECTION (HEADER, SEARCH, KATEGORI & TITLE - FIXED / TDK BISA DI-SCROLL) -->
+    <div class="bg-white shrink-0 border-b border-slate-100 shadow-2xs">
+      <!-- HEADER (Logo & Keranjang di Samping Kanan Logo) -->
+      <header class="px-4 py-3 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <img src={logo.src} alt="BangsriGo Logo" class="h-20 w-auto object-contain" />
+          <img src={logo.src} alt="BangsriGo Logo" class="h-12 w-auto object-contain" />
         </div>
+
+        <!-- Tombol Keranjang di Kanan Logo -->
+        <a 
+          href="/cart" 
+          aria-label="Lihat Keranjang"
+          class="relative p-2.5 rounded-xl bg-emerald-50 text-[#16A34A] hover:bg-emerald-100 transition active:scale-95"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+          </svg>
+          <span 
+            id="cart-badge-header" 
+            class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center border-2 border-white hidden"
+          >
+            0
+          </span>
+        </a>
       </header>
 
       <!-- SEARCH BAR -->
-      <section class="px-4 py-2">
+      <section class="px-4 py-1.5">
         <div class="relative flex items-center">
           <svg class="w-5 h-5 absolute left-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -90,19 +108,19 @@ const formatRupiah = (price: number) => {
             id="search-input"
             type="text" 
             placeholder="Cari makanan atau minuman..." 
-            class="w-full bg-[#F8F8F8] border border-slate-200/80 rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:border-[#16A34A] focus:bg-white transition"
+            class="w-full bg-[#F8F8F8] border border-slate-200/80 rounded-xl py-2 pl-10 pr-4 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:border-[#16A34A] focus:bg-white transition"
           />
         </div>
       </section>
 
       <!-- KATEGORI -->
-      <section class="mt-2 pb-3">
-        <div class="flex items-center gap-3 overflow-x-auto no-scrollbar px-4 py-1" id="category-container">
+      <section class="mt-1 pb-2">
+        <div class="flex items-center gap-2.5 overflow-x-auto no-scrollbar px-4 py-1" id="category-container">
           {categories.map((cat, index) => (
             <button 
               type="button"
               data-category={cat.id}
-              class={`category-btn px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap cursor-pointer transition-all ${
+              class={`category-btn px-4 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap cursor-pointer transition-all ${
                 index === 0 
                   ? 'bg-[#16A34A] text-white shadow-xs' 
                   : 'bg-[#F8F8F8] text-slate-600 border border-slate-200/60 hover:bg-slate-100'
@@ -113,21 +131,18 @@ const formatRupiah = (price: number) => {
           ))}
         </div>
       </section>
+
+      <!-- SECTION TITLE DAFTAR MENU -->
+      <div class="px-4 py-2 bg-slate-50 border-t border-slate-100">
+        <h2 class="font-bold text-slate-900 text-sm">Daftar Menu</h2>
+        <p class="text-[11px] text-slate-500">Pilih menu favoritmu di sini</p>
+      </div>
     </div>
 
-    <!-- MAIN LIST (pb-24 disesuaikan agar tinggi scroll pas di atas keranjang) -->
-    <div class="flex-1 px-4 py-4 space-y-4 pb-24">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="font-bold text-slate-900 text-base flex items-center gap-1.5">
-            Daftar Menu
-          </h2>
-          <p class="text-xs text-slate-500">Pilih menu favoritmu di sini</p>
-        </div>
-      </div>
-
+    <!-- AREA CARD MENU (HANYA BAGIAN INI YANG BISA DI-SCROLL) -->
+    <div class="flex-1 overflow-y-auto px-4 py-3 no-scrollbar pb-10">
       <!-- DAFTAR MENU (2 Kolom) -->
-      <div class="grid grid-cols-2 gap-3 mt-3" id="menu-grid">
+      <div class="grid grid-cols-2 gap-3" id="menu-grid">
         {menus.length === 0 ? (
           <p class="col-span-2 text-center text-sm text-slate-500 py-6">Belum ada menu yang tersedia.</p>
         ) : (
@@ -141,7 +156,7 @@ const formatRupiah = (price: number) => {
                 <!-- Foto Makanan -->
                 <div class="relative w-full h-28 shrink-0 overflow-hidden rounded-xl">
                   <img 
-                    src={item.image} 
+                    src={item.image || 'https://placehold.co/300x300'} 
                     alt={item.name} 
                     class="w-full h-full object-cover bg-slate-100 group-hover:scale-105 transition duration-300"
                   />
@@ -170,6 +185,7 @@ const formatRupiah = (price: number) => {
                   aria-label={`Tambah ${item.name} ke keranjang`}
                   class="btn-add-cart w-9 h-9 rounded-xl bg-gradient-to-br from-[#16A34A] to-emerald-600 text-white flex items-center justify-center hover:from-emerald-600 hover:to-emerald-700 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 active:scale-95 shadow-sm cursor-pointer z-10"
                   data-id={item.id}
+                  data-slug={item.slug || ''}
                   data-name={item.name}
                   data-price={item.priceNumber}
                   data-image={item.image}
@@ -186,34 +202,6 @@ const formatRupiah = (price: number) => {
       </div>
       <div id="no-result" class="hidden col-span-2 text-center text-sm text-slate-500 py-6">Menu tidak ditemukan.</div>
     </div>
-
-    <!-- FLOATING CART (Posisi fixed di atas safe area navigasi HP) -->
-    <div 
-      id="floating-cart" 
-      class="fixed bottom-4 left-1/2 -translate-x-1/2 w-full max-w-md px-4 z-40 pb-[env(safe-area-inset-bottom)] hidden pointer-events-auto"
-    >
-      <a href="/cart" class="bg-[#16A34A] text-white rounded-xl p-3.5 flex items-center justify-between shadow-xl shadow-emerald-900/20 cursor-pointer hover:bg-emerald-700 transition">
-        <div class="flex items-center gap-3">
-          <div class="relative">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
-            </svg>
-            <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white">
-              0
-            </span>
-          </div>
-
-          <div>
-            <div id="cart-summary" class="text-xs font-semibold leading-tight">0 Item • Rp 0</div>
-            <div class="text-[11px] text-emerald-100 font-normal">Lihat Keranjang</div>
-          </div>
-        </div>
-
-        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-      </a>
-    </div>
   </main>
 </Layout>
 
@@ -228,6 +216,7 @@ const formatRupiah = (price: number) => {
     cartItemId: string;
     id: string | number;
     menuId?: string | number;
+    slug?: string;
     name: string;
     price: number;
     basePrice?: number;
@@ -273,26 +262,23 @@ const formatRupiah = (price: number) => {
 
   function updateCartUI() {
     const cart = getCart();
-    const floatingCart = document.getElementById('floating-cart');
-    const cartBadge = document.getElementById('cart-badge');
-    const cartSummary = document.getElementById('cart-summary');
+    const cartBadgeHeader = document.getElementById('cart-badge-header');
 
-    if (!floatingCart || !cartBadge || !cartSummary) return;
+    if (!cartBadgeHeader) return;
 
     const totalQty = cart.reduce((sum, item) => sum + (item.qty || item.quantity || 0), 0);
-    const totalPrice = cart.reduce((sum, item) => sum + calculateItemTotal(item), 0);
 
     if (totalQty > 0) {
-      floatingCart.classList.remove('hidden');
-      cartBadge.textContent = totalQty.toString();
-      cartSummary.textContent = `${totalQty} Item • ${formatRupiah(totalPrice)}`;
+      cartBadgeHeader.classList.remove('hidden');
+      cartBadgeHeader.textContent = totalQty.toString();
     } else {
-      floatingCart.classList.add('hidden');
+      cartBadgeHeader.classList.add('hidden');
     }
   }
 
   function addToCart(btn: HTMLButtonElement) {
     const id = btn.dataset.id || '';
+    const slug = btn.dataset.slug || '';
     const name = btn.dataset.name || '';
     const price = Number(btn.dataset.price || 0);
     const image = btn.dataset.image || '';
@@ -321,6 +307,7 @@ const formatRupiah = (price: number) => {
         cartItemId: `${id}_basic_${Date.now()}`,
         id: id,
         menuId: id,
+        slug: slug,
         name,
         price,
         basePrice: price,
