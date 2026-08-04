@@ -1,5 +1,5 @@
 ---
-// src/pages/index.astro// src/pages/index.astro
+// src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
 import logo from '../assets/logo.svg';
 import { supabase } from '../lib/supabase';
@@ -115,8 +115,8 @@ const formatRupiah = (price: number) => {
       </section>
     </div>
 
-    <!-- MAIN LIST -->
-    <div class="flex-1 px-4 py-4 space-y-4 pb-32">
+    <!-- MAIN LIST (pb-24 disesuaikan agar tinggi scroll pas di atas keranjang) -->
+    <div class="flex-1 px-4 py-4 space-y-4 pb-24">
       <div class="flex items-center justify-between">
         <div>
           <h2 class="font-bold text-slate-900 text-base flex items-center gap-1.5">
@@ -187,9 +187,12 @@ const formatRupiah = (price: number) => {
       <div id="no-result" class="hidden col-span-2 text-center text-sm text-slate-500 py-6">Menu tidak ditemukan.</div>
     </div>
 
-    <!-- FLOATING CART -->
-    <div id="floating-cart" class="sticky bottom-6 w-full px-4 z-40 pb-2 hidden">
-      <a href="/cart" class="bg-[#16A34A] text-white rounded-xl p-3.5 flex items-center justify-between shadow-lg shadow-emerald-900/30 cursor-pointer hover:bg-emerald-700 transition">
+    <!-- FLOATING CART (Posisi fixed di atas safe area navigasi HP) -->
+    <div 
+      id="floating-cart" 
+      class="fixed bottom-4 left-1/2 -translate-x-1/2 w-full max-w-md px-4 z-40 pb-[env(safe-area-inset-bottom)] hidden pointer-events-auto"
+    >
+      <a href="/cart" class="bg-[#16A34A] text-white rounded-xl p-3.5 flex items-center justify-between shadow-xl shadow-emerald-900/20 cursor-pointer hover:bg-emerald-700 transition">
         <div class="flex items-center gap-3">
           <div class="relative">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
