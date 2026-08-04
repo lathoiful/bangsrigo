@@ -5,17 +5,20 @@
 <html lang="id">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Viewport disesuaikan agar fit di layar HP & mencegah auto-zoom berlebih saat ketik input -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>BangsriGo - Pemesanan Makanan Warung</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-slate-100 text-slate-800 flex items-center justify-center min-h-screen sm:p-6 antialiased">
+  <body class="bg-slate-100 sm:bg-slate-200 text-slate-800 flex items-center justify-center min-h-[100dvh] sm:p-4 antialiased">
 
-    <!-- CONTAINER CONTAINER MOCKUP SIMPEL -->
-    <div class="w-full max-w-[430px] h-screen sm:h-[844px] bg-[#F8F8F8] sm:rounded-3xl sm:shadow-xl sm:border border-slate-200 overflow-hidden overflow-y-auto no-scrollbar flex flex-col">
+    <!-- APP CONTAINER MOCKUP -->
+    <!-- 1. h-[100dvh] menyesuaikan tinggi HP modern tanpa terpotong address bar -->
+    <!-- 2. overflow-hidden di sini agar scroll dihandle langsung oleh masing-masing halaman -->
+    <div class="w-full max-w-md h-[100dvh] sm:h-[844px] bg-[#F8F8F8] sm:rounded-3xl sm:shadow-2xl sm:border border-slate-300/60 overflow-hidden flex flex-col relative">
       
       <!-- KONTEN HALAMAN (SLOT) -->
       <slot />
@@ -32,6 +35,7 @@
     font-family: 'Inter', sans-serif;
   }
 
+  /* Sembunyikan scrollbar bawaan agar serasa aplikasi native */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
