@@ -1,5 +1,11 @@
 ---
 // src/layouts/Layout.astro
+interface Props {
+  title?: string;
+  activeTab?: 'beranda' | 'jastip' | 'keranjang';
+}
+
+const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } = Astro.props;
 ---
 <!doctype html>
 <html lang="id">
@@ -8,7 +14,7 @@
     <!-- Viewport disesuaikan agar fit di layar HP & mencegah auto-zoom berlebih saat ketik input -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>BangsriGo - Pemesanan Makanan Warung</title>
+    <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -23,10 +29,99 @@
       <!-- KONTEN HALAMAN (SLOT) -->
       <slot />
 
+      <!-- FLOATING BOTTOM NAVIGATION BAR -->
+      <nav class="absolute bottom-5 left-1/2 -translate-x-1/2 w-[90%] max-w-[380px] bg-white/95 backdrop-blur-md rounded-[28px] shadow-lg border border-slate-100 px-6 py-2.5 z-50 flex items-center justify-between">
+        <!-- Beranda -->
+        <a 
+          href="/" 
+          class={`flex flex-col items-center gap-1 min-w-[64px] transition-colors ${
+            activeTab === 'beranda' ? 'text-[#16A34A]' : 'text-slate-400 hover:text-slate-600'
+          }`}
+        >
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+          </svg>
+          <span class="text-[11px] font-semibold tracking-wide">Beranda</span>
+        </a>
+
+        <!-- Jastip -->
+        <a 
+          href="/jastip" 
+          class={`flex flex-col items-center gap-1 min-w-[64px] transition-colors ${
+            activeTab === 'jastip' ? 'text-[#16A34A]' : 'text-slate-400 hover:text-slate-600'
+          }`}
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          <span class="text-[11px] font-semibold tracking-wide">Jastip</span>
+        </a>
+
+        <!-- Keranjang (Prominent Curved Floating Button) -->
+        <a 
+          href="/cart" 
+          class={`relative flex flex-col items-center min-w-[64px] transition-colors ${
+            activeTab === 'keranjang' ? 'text-[#16A34A]' : 'text-slate-600 hover:text-slate-800'
+          }`}
+        >
+          <div class="relative -mt-8 mb-1">
+            <div class="w-14 h-14 rounded-full bg-[#006E2E] flex items-center justify-center text-white shadow-md shadow-emerald-900/30 ring-4 ring-white active:scale-95 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+              </svg>
+
+              <!-- Badge Keranjang -->
+              <span 
+                id="layout-cart-badge" 
+                class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs hidden"
+              >
+                0
+              </span>
+            </div>
+          </div>
+          <span class="text-[11px] font-semibold tracking-wide">Keranjang</span>
+        </a>
+      </nav>
+
     </div>
 
   </body>
 </html>
+
+<!-- SCRIPT UNTUK CRON / SYNC BADGE KERANJANG NAU -->
+<script>
+  const STORAGE_KEY = 'bangsri_cart';
+
+  function updateLayoutCartBadge() {
+    const badge = document.getElementById('layout-cart-badge');
+    if (!badge) return;
+
+    try {
+      const data = localStorage.getItem(STORAGE_KEY);
+      const cart = data ? JSON.parse(data) : [];
+      const totalQty = cart.reduce((sum: number, item: any) => sum + (item.qty || item.quantity || 0), 0);
+
+      if (totalQty > 0) {
+        badge.classList.remove('hidden');
+        badge.textContent = totalQty > 99 ? '99+' : totalQty.toString();
+      } else {
+        badge.classList.add('hidden');
+      }
+    } catch {
+      badge.classList.add('hidden');
+    }
+  }
+
+  // Event listener untuk deteksi update cart
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateLayoutCartBadge);
+  } else {
+    updateLayoutCartBadge();
+  }
+
+  window.addEventListener('storage', updateLayoutCartBadge);
+  window.addEventListener('cart-updated', updateLayoutCartBadge);
+</script>
 
 <style is:global>
   @import "tailwindcss";

@@ -1,12 +1,23 @@
 ---
-// src/pages/keranjang.astro
 import Layout from '../layouts/Layout.astro';
 import { Icon } from "astro-icon/components";
+
+// =========================================================================
+// OPSI ATUR JARAK CARA A (via Tailwind Arbitrary Value / Pixel):
+// Anda bisa ganti angka '160px' di bawah dengan angka berapa saja (misal: '100px', '200px', '250px')
+// =========================================================================
+const JARA_BAWAH = "pb-[160px]"; 
 ---
 
-<Layout title="Keranjang Belanja">
-  <!-- MAIN WRAPPER: Dibuat pas seukuran layar (h-screen) & matikan scroll luar (overflow-hidden) -->
-  <main class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col h-screen overflow-hidden">
+<Layout title="Keranjang Belanja - BangsriGo">
+  <!-- 
+    OPSI ATUR JARAK CARA B (via Inline CSS Variable):
+    Ganti nilai `--jarak-bawah: 160px;` di bawah ini jika ingin atur langsung via CSS!
+  -->
+  <main 
+    style="--jarak-bawah: 20px;" 
+    class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col h-[calc(100vh-64px)] overflow-hidden"
+  >
     
     <!-- ================= HEADER SECTION (TETAP DIAM DI ATAS) ================= -->
     <header class="bg-white border-b border-slate-200/80 px-4 h-14 flex items-center justify-between shadow-xs w-full flex-shrink-0 z-50">
@@ -37,8 +48,15 @@ import { Icon } from "astro-icon/components";
       </button>
     </header>
 
-    <!-- ================= MAIN CONTENT SECTION (HANYA INI YANG DI-SCROLL) ================= -->
-    <div class="flex-1 w-full p-4 space-y-4 overflow-y-auto pb-10">
+    <!-- ================= MAIN CONTENT SECTION (DENGAN KONTROL JARAK BAWAH) ================= -->
+    <!-- 
+      Jarak bawah dikontrol oleh 'style="padding-bottom: var(--jarak-bawah)"' 
+      atau bisa diganti dengan variabel Astro '${JARA_BAWAH}' pada class.
+    -->
+    <div 
+      style="padding-bottom: var(--jarak-bawah);" 
+      class={`flex-1 w-full p-4 space-y-4 overflow-y-auto ${JARA_BAWAH}`}
+    >
       
       <!-- DAFTAR MENU CONTAINER -->
       <div id="cart-items-container" class="space-y-3">

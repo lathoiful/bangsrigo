@@ -1,10 +1,12 @@
---- 
-// src/pages/konfirmasi.astro
-import Layout from '../layouts/Layout.astro';
+---
+import PlainLayout from '../layouts/PlainLayout.astro';
 import { Icon } from "astro-icon/components";
+
+// Jarak bawah diset ke 0
+const TINGGI_JARAK_BAWAH = "0px";
 ---
 
-<Layout>
+<PlainLayout title="Konfirmasi Pesanan - BangsriGo">
   <!-- MAIN WRAPPER: Dibuat pas seukuran layar (h-screen) & matikan scroll luar (overflow-hidden) -->
   <main class="w-full max-w-md mx-auto bg-[#F8FAFC] relative flex flex-col h-screen overflow-hidden">
     
@@ -32,7 +34,7 @@ import { Icon } from "astro-icon/components";
     </header>
 
     <!-- ================= MAIN CONTENT SECTION (HANYA INI YANG DI-SCROLL) ================= -->
-    <div class="flex-1 w-full p-4 sm:p-5 space-y-4 overflow-y-auto pb-10">
+    <div class="flex-1 w-full p-4 sm:p-5 space-y-4 overflow-y-auto">
       
       <!-- FORM DATA PEMESAN -->
       <section class="w-full bg-white rounded-2xl p-4 sm:p-5 border border-[#E5E7EB] shadow-xs space-y-4">
@@ -185,10 +187,17 @@ import { Icon } from "astro-icon/components";
         </div>
       </section>
 
+      <!-- ================= ELEMEN SPACER (0px) ================= -->
+      <div 
+        id="bottom-spacer" 
+        style={`height: ${TINGGI_JARAK_BAWAH};`} 
+        class="w-full flex-shrink-0"
+      ></div>
+
     </div>
 
   </main>
-</Layout>
+</PlainLayout>
 
 <script>
   interface AddonItem {
