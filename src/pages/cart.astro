@@ -5,10 +5,11 @@ import { Icon } from "astro-icon/components";
 ---
 
 <Layout>
-  <main class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col min-h-screen">
+  <!-- MAIN WRAPPER: Dibuat pas seukuran layar (h-screen) & matikan scroll luar (overflow-hidden) -->
+  <main class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col h-screen overflow-hidden">
     
-    <!-- ================= HEADER SECTION ================= -->
-    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-slate-200/80 px-4 h-14 flex items-center justify-between shadow-xs w-full flex-shrink-0">
+    <!-- ================= HEADER SECTION (TETAP DIAM DI ATAS) ================= -->
+    <header class="bg-white border-b border-slate-200/80 px-4 h-14 flex items-center justify-between shadow-xs w-full flex-shrink-0 z-50">
       <a 
         href="/" 
         aria-label="Kembali" 
@@ -36,8 +37,8 @@ import { Icon } from "astro-icon/components";
       </button>
     </header>
 
-    <!-- ================= MAIN CONTENT SECTION ================= -->
-    <div class="flex-1 p-4 space-y-4 pb-10">
+    <!-- ================= MAIN CONTENT SECTION (HANYA INI YANG DI-SCROLL) ================= -->
+    <div class="flex-1 w-full p-4 space-y-4 overflow-y-auto pb-10">
       
       <!-- DAFTAR MENU CONTAINER -->
       <div id="cart-items-container" class="space-y-3">
@@ -113,7 +114,6 @@ import { Icon } from "astro-icon/components";
   </main>
 </Layout>
 
-<!-- SCRIPT LOGIKA KERANJANG LOCALSTORAGE -->
 <script>
   interface AddonItem {
     name: string;
@@ -175,7 +175,6 @@ import { Icon } from "astro-icon/components";
 
     if (!container || !summarySection || !emptyState) return;
 
-    // Update Header Item Count
     const totalQty = cart.reduce((sum, item) => sum + (item.qty || item.quantity || 1), 0);
     if (itemCountEl) {
       itemCountEl.textContent = `${totalQty} Item`;
@@ -217,7 +216,6 @@ import { Icon } from "astro-icon/components";
       return `
         <div class="bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-xs flex flex-col gap-3 relative" data-cart-item-id="${cartItemId}">
           
-          <!-- Tombol Hapus Satuan -->
           <button
             type="button"
             class="btn-delete-item absolute top-3 right-3 text-slate-400 hover:text-red-500 p-1.5 rounded-lg transition-colors cursor-pointer"
@@ -227,7 +225,6 @@ import { Icon } from "astro-icon/components";
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
           </button>
 
-          <!-- Detail Produk -->
           <a href="/menu/${productId}" class="flex gap-3 pr-6 group no-underline">
             <img
               src="${item.image || 'https://placehold.co/120x120'}"
