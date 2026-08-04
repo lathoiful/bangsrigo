@@ -50,22 +50,22 @@ import { Icon } from "astro-icon/components";
           <!-- Grid Dukuh & RT -->
           <div class="grid grid-cols-2 gap-3 w-full">
             <div>
-              <label for="dukuh" class="block text-[11px] font-semibold text-[#6B7280] mb-1">Dukuh / Kampung <span class="text-red-500">*</span></label>
+              <label for="dukuh" class="block text-[11px] font-semibold text-[#6B7280] mb-1">Dukuh <span class="text-red-500">*</span></label>
               <input
                 type="text"
                 id="dukuh"
                 required
-                placeholder="Contoh: Bangsri"
+                placeholder="Contoh: Banjarmelati"
                 class="w-full border border-[#E5E7EB] rounded-xl px-3.5 py-3 text-xs sm:text-sm text-[#111827] focus:outline-none focus:border-[#0E9F3E] focus:ring-1 focus:ring-[#0E9F3E] placeholder:text-[#6B7280]/50 transition-all bg-slate-50/40"
               />
             </div>
             <div>
-              <label for="rt" class="block text-[11px] font-semibold text-[#6B7280] mb-1">RT / RW <span class="text-red-500">*</span></label>
+              <label for="rt" class="block text-[11px] font-semibold text-[#6B7280] mb-1">RT <span class="text-red-500">*</span></label>
               <input
                 type="text"
                 id="rt"
                 required
-                placeholder="Contoh: RT 03 / RW 02"
+                placeholder="Contoh: RT 01"
                 class="w-full border border-[#E5E7EB] rounded-xl px-3.5 py-3 text-xs sm:text-sm text-[#111827] focus:outline-none focus:border-[#0E9F3E] focus:ring-1 focus:ring-[#0E9F3E] placeholder:text-[#6B7280]/50 transition-all bg-slate-50/40"
               />
             </div>
@@ -201,7 +201,7 @@ import { Icon } from "astro-icon/components";
 
   const STORAGE_KEY = 'bangsri_cart';
   const FORM_STORAGE_KEY = 'bangsri_checkout_form';
-  const ADMIN_PHONE = '6281234567890'; // Ganti dengan nomor WhatsApp Admin Anda (format 62...)
+  const ADMIN_PHONE = '6285185032089'; // Ganti dengan nomor WhatsApp Admin Anda (format 62...)
 
   function formatRupiah(price: number): string {
     return new Intl.NumberFormat('id-ID', {
@@ -344,29 +344,35 @@ import { Icon } from "astro-icon/components";
       const itemTotal = calculateItemTotal(item);
       subtotal += itemTotal;
 
-      let desc = `- *${item.name}* (${qty}x)`;
-      if (item.spicyLevel) desc += ` [Level ${item.spicyLevel}]`;
+      let desc = `${index + 1}. *${item.name}* (x${qty})\n`;
+      if (item.spicyLevel) desc += `   └ Level: ${item.spicyLevel}\n`;
       if (item.addons && item.addons.length > 0) {
-        desc += ` [+ ${item.addons.map(a => a.name).join(', ')}]`;
+        desc += `   └ Extra: ${item.addons.map(a => a.name).join(', ')}\n`;
       }
-      desc += ` : ${formatRupiah(itemTotal)}`;
+      desc += `   └ Harga: ${formatRupiah(itemTotal)}`;
       return desc;
-    }).join('\n');
+    }).join('\n\n');
 
-    const message = `Halo Admin, saya ingin memesan makanan:\n\n` +
-      `*DATA PENERIMA*\n` +
-      `• Nama: ${name}\n` +
-      `• Dukuh/Kampung: ${dukuh}\n` +
-      `• RT/RW: ${rt}\n` +
-      `• Alamat/Kos: ${address}\n` +
-      (landmark ? `• Patokan: ${landmark}\n` : '') +
-      (note ? `• Catatan: ${note}\n` : '') +
-      `\n*DETAIL PESANAN*\n` +
-      itemsText +
-      `\n\n*Subtotal:* ${formatRupiah(subtotal)}\n` +
-      `*Ongkir:* Dikonfirmasi via WA (Rp 0 - 5.000)\n` +
-      `*Total Sementara:* ${formatRupiah(subtotal)}\n\n` +
-      `Mohon segera diproses ya, terima kasih!`;
+    const message = 
+      `🛒 *PESANAN BARU*\n` +
+      `──────────────────\n\n` +
+      `👤 *DATA PENERIMA*\n` +
+      `• *Nama:* ${name}\n` +
+      `• *Dukuh:* ${dukuh}\n` +
+      `• *RT/RW:* ${rt}\n` +
+      `• *Alamat/Kos:* ${address}\n` +
+      (landmark ? `• *Patokan:* ${landmark}\n` : '') +
+      (note ? `• *Catatan:* ${note}\n` : '') +
+      `\n` +
+      `📦 *RINGKASAN PESANAN*\n\n` +
+      `${itemsText}\n\n` +
+      `──────────────────\n` +
+      `💰 *RINGKASAN BIAYA*\n` +
+      `• *Subtotal:* ${formatRupiah(subtotal)}\n` +
+      `• *Ongkir:* Info WA (Rp 0 - 5.000)\n` +
+      `• *Total Sementara:* *${formatRupiah(subtotal)}*\n` +
+      `──────────────────\n\n` +
+      `Mohon segera diproses ya kak, terima kasih! 🙏`;
 
     const encodedMessage = encodeURIComponent(message);
     const waUrl = `https://wa.me/${ADMIN_PHONE}?text=${encodedMessage}`;

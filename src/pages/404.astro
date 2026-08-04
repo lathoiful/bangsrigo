@@ -1,0 +1,176 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <main class="w-full max-w-md mx-auto h-screen overflow-hidden bg-slate-50 flex items-center justify-center px-5">
+
+    <section class="w-full scale-[0.9]">
+
+      <!-- Illustration -->
+      <div class="relative h-56 flex items-center justify-center">
+
+        <!-- Background -->
+        <div class="absolute w-72 h-72 rounded-full bg-green-100 blur-3xl opacity-70"></div>
+
+        <!-- Gear -->
+        <div class="absolute right-6 top-4 animate-spin-slow text-4xl">
+          ⚙️
+        </div>
+
+        <!-- Tool -->
+        <div class="absolute left-4 top-16 w-14 h-14 rounded-full bg-white shadow flex items-center justify-center text-2xl">
+          🔧
+        </div>
+
+        <!-- Cone -->
+        <div class="absolute left-2 bottom-3">
+          <div class="relative w-0 h-0 border-l-[24px] border-r-[24px] border-b-[65px] border-l-transparent border-r-transparent border-b-[#16A34A]">
+            <span class="absolute left-[-18px] top-7 block w-9 h-2 bg-white rotate-[-18deg]"></span>
+            <span class="absolute left-[-18px] top-14 block w-9 h-2 bg-white rotate-[-18deg]"></span>
+          </div>
+
+          <div class="w-14 h-2 bg-green-700 rounded-full -mt-1 -ml-1"></div>
+        </div>
+
+        <!-- Barrier -->
+        <div class="absolute right-2 bottom-2">
+
+          <div class="relative">
+
+            <span class="absolute left-3 top-9 w-2 h-9 bg-green-700 rounded"></span>
+            <span class="absolute right-3 top-9 w-2 h-9 bg-green-700 rounded"></span>
+
+            <div
+              class="w-24 h-10 rounded-xl shadow bg-[repeating-linear-gradient(-45deg,#16A34A_0,#16A34A_12px,#fff_12px,#fff_24px)]">
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Rope -->
+
+        <div class="absolute top-2 left-1/2 -translate-x-1/2">
+
+          <div class="w-3 h-3 rounded-full bg-green-700"></div>
+
+          <span class="absolute w-24 h-[2px] bg-green-700 rotate-[35deg] left-1 top-1"></span>
+          <span class="absolute w-24 h-[2px] bg-green-700 -rotate-[35deg] right-1 top-1"></span>
+
+        </div>
+
+        <!-- Card -->
+
+        <div class="relative bg-white rounded-[28px] border border-slate-100 shadow-xl px-8 py-6 text-center animate-float">
+
+          <h1 class="text-6xl font-black text-[#16A34A] leading-none">
+            404
+          </h1>
+
+          <h2 class="mt-3 text-2xl font-bold text-slate-900">
+            Halaman Tidak Ditemukan
+          </h2>
+
+          <p class="mt-2 text-sm text-slate-500">
+            atau sedang dalam tahap pembuatan
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="mt-5 text-center">
+
+        <p class="text-slate-600 leading-7">
+          Maaf, halaman yang kamu cari belum tersedia.
+          Kami sedang mengembangkan fitur ini agar menjadi lebih baik.
+        </p>
+
+      </div>
+
+      <div class="mt-5 space-y-3">
+
+        <a
+          href="/"
+          class="flex h-14 items-center justify-center rounded-2xl bg-[#16A34A] text-white font-semibold shadow-lg hover:bg-green-700 transition">
+
+          🏠&nbsp;&nbsp;Kembali ke Beranda
+
+        </a>
+
+      </div>
+            <!-- Info Card -->
+      <div class="mt-5 rounded-3xl border border-green-100 bg-white p-5 shadow-sm">
+
+        <div class="flex items-start gap-4">
+
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-xl">
+            💚
+          </div>
+
+          <div class="flex-1">
+
+            <h3 class="text-base font-bold text-[#16A34A]">
+              Terima kasih!
+            </h3>
+
+            <p class="mt-1 text-sm leading-6 text-slate-500">
+              Halaman ini sedang kami siapkan.
+              Silakan kembali beberapa saat lagi untuk melihat fitur terbaru dari BangsriGo.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="mt-5 text-center">
+
+        <p class="text-xs text-slate-400">
+          © 2026 BangsriGo
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+</Layout>
+
+<style>
+
+@keyframes float {
+  0%,100%{
+    transform:translateY(0);
+  }
+  50%{
+    transform:translateY(-8px);
+  }
+}
+
+.animate-float{
+  animation:float 3s ease-in-out infinite;
+}
+
+@keyframes spinSlow{
+  from{
+    transform:rotate(0deg);
+  }
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.animate-spin-slow{
+  animation:spinSlow 10s linear infinite;
+}
+
+body{
+  overflow:hidden;
+}
+
+</style>
