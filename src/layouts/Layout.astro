@@ -2,7 +2,7 @@
 // src/layouts/Layout.astro
 interface Props {
   title?: string;
-  activeTab?: 'beranda' | 'jastip' | 'keranjang';
+  activeTab?: 'beranda' | 'jastip' | 'titipan' | 'keranjang';
 }
 
 const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } = Astro.props;
@@ -11,7 +11,6 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
 <html lang="id">
   <head>
     <meta charset="utf-8" />
-    <!-- Viewport disesuaikan agar fit di layar HP & mencegah auto-zoom berlebih saat ketik input -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
@@ -22,65 +21,94 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
   <body class="bg-slate-100 sm:bg-slate-200 text-slate-800 flex items-center justify-center min-h-[100dvh] sm:p-4 antialiased">
 
     <!-- APP CONTAINER MOCKUP -->
-    <!-- 1. h-[100dvh] menyesuaikan tinggi HP modern tanpa terpotong address bar -->
-    <!-- 2. overflow-hidden di sini agar scroll dihandle langsung oleh masing-masing halaman -->
     <div class="w-full max-w-md h-[100dvh] sm:h-[844px] bg-[#F8F8F8] sm:rounded-3xl sm:shadow-2xl sm:border border-slate-300/60 overflow-hidden flex flex-col relative">
       
       <!-- KONTEN HALAMAN (SLOT) -->
       <slot />
 
-      <!-- FLOATING BOTTOM NAVIGATION BAR -->
-      <nav class="absolute bottom-5 left-1/2 -translate-x-1/2 w-[90%] max-w-[380px] bg-white/95 backdrop-blur-md rounded-[28px] shadow-lg border border-slate-100 px-6 py-2.5 z-50 flex items-center justify-between">
-        <!-- Beranda -->
+      <!-- FLOATING BOTTOM NAVIGATION BAR (4 NAV MENU) -->
+      <nav class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-[390px] bg-white/95 backdrop-blur-md rounded-[24px] shadow-lg border border-slate-100 px-3 py-2 z-50 flex items-center justify-between">
+        
+        <!-- 1. Beranda -->
         <a 
           href="/" 
-          class={`flex flex-col items-center gap-1 min-w-[64px] transition-colors ${
+          class={`flex flex-col items-center gap-0.5 flex-1 transition-colors ${
             activeTab === 'beranda' ? 'text-[#16A34A]' : 'text-slate-400 hover:text-slate-600'
           }`}
         >
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
           </svg>
-          <span class="text-[11px] font-semibold tracking-wide">Beranda</span>
+          <span class="text-[10px] font-semibold tracking-wide">Beranda</span>
         </a>
 
-        <!-- Jastip -->
+        <!-- 2. Jastip -->
         <a 
           href="/jastip" 
-          class={`flex flex-col items-center gap-1 min-w-[64px] transition-colors ${
+          class={`flex flex-col items-center gap-0.5 flex-1 transition-colors ${
             activeTab === 'jastip' ? 'text-[#16A34A]' : 'text-slate-400 hover:text-slate-600'
           }`}
         >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
           </svg>
-          <span class="text-[11px] font-semibold tracking-wide">Jastip</span>
+          <span class="text-[10px] font-semibold tracking-wide">Jastip</span>
         </a>
 
-        <!-- Keranjang (Prominent Curved Floating Button) -->
+        <!-- 3. Titipan (Dibuat Besar & Floating seperti Keranjang) -->
         <a 
-          href="/cart" 
-          class={`relative flex flex-col items-center min-w-[64px] transition-colors ${
-            activeTab === 'keranjang' ? 'text-[#16A34A]' : 'text-slate-600 hover:text-slate-800'
+          href="/jastip/titipan" 
+          class={`relative flex flex-col items-center flex-1 transition-colors ${
+            activeTab === 'titipan' ? 'text-[#16A34A]' : 'text-slate-600 hover:text-slate-800'
           }`}
         >
-          <div class="relative -mt-8 mb-1">
-            <div class="w-14 h-14 rounded-full bg-[#006E2E] flex items-center justify-center text-white shadow-md shadow-emerald-900/30 ring-4 ring-white active:scale-95 transition-transform">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+          <div class="relative -mt-7 mb-0.5">
+            <div class={`w-11 h-11 rounded-full flex items-center justify-center text-white shadow-md ring-4 ring-white active:scale-95 transition-transform ${
+              activeTab === 'titipan' ? 'bg-[#16A34A] shadow-emerald-900/30' : 'bg-slate-700 shadow-slate-900/20'
+            }`}>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
 
-              <!-- Badge Keranjang -->
+              <!-- Badge Titipan Jastip -->
               <span 
-                id="layout-cart-badge" 
-                class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs hidden"
+                id="layout-titipan-badge" 
+                class="absolute -top-1 -right-1 bg-amber-500 text-white text-[9px] font-bold min-w-[17px] h-[17px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs hidden"
               >
                 0
               </span>
             </div>
           </div>
-          <span class="text-[11px] font-semibold tracking-wide">Keranjang</span>
+          <span class="text-[10px] font-semibold tracking-wide">Titipan</span>
         </a>
+
+        <!-- 4. Keranjang (Floating Button Utama) -->
+        <a 
+          href="/cart" 
+          class={`relative flex flex-col items-center flex-1 transition-colors ${
+            activeTab === 'keranjang' ? 'text-[#16A34A]' : 'text-slate-600 hover:text-slate-800'
+          }`}
+        >
+          <div class="relative -mt-7 mb-0.5">
+            <div class={`w-11 h-11 rounded-full flex items-center justify-center text-white shadow-md ring-4 ring-white active:scale-95 transition-transform ${
+              activeTab === 'keranjang' ? 'bg-[#16A34A] shadow-emerald-900/30' : 'bg-[#006E2E] shadow-emerald-900/30'
+            }`}>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+              </svg>
+
+              <!-- Badge Keranjang Warung Utama -->
+              <span 
+                id="layout-cart-badge" 
+                class="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold min-w-[17px] h-[17px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs hidden"
+              >
+                0
+              </span>
+            </div>
+          </div>
+          <span class="text-[10px] font-semibold tracking-wide">Keranjang</span>
+        </a>
+
       </nav>
 
     </div>
@@ -88,39 +116,57 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
   </body>
 </html>
 
-<!-- SCRIPT UNTUK CRON / SYNC BADGE KERANJANG NAU -->
+<!-- SCRIPT UPDATE BADGE INDEPENDEN -->
 <script>
-  const STORAGE_KEY = 'bangsri_cart';
+  const CART_KEY = 'bangsri_cart';
+  const JASTIP_CART_KEY = 'bangsri_jastip_cart';
 
-  function updateLayoutCartBadge() {
-    const badge = document.getElementById('layout-cart-badge');
-    if (!badge) return;
+  function updateLayoutBadges() {
+    const mainBadge = document.getElementById('layout-cart-badge');
+    const titipanBadge = document.getElementById('layout-titipan-badge');
 
     try {
-      const data = localStorage.getItem(STORAGE_KEY);
-      const cart = data ? JSON.parse(data) : [];
-      const totalQty = cart.reduce((sum: number, item: any) => sum + (item.qty || item.quantity || 0), 0);
+      // 1. Badge Keranjang Warung
+      const cartData = localStorage.getItem(CART_KEY);
+      const cart = cartData ? JSON.parse(cartData) : [];
+      const totalCartQty = cart.reduce((sum: number, item: any) => sum + (item.qty || item.quantity || 1), 0);
 
-      if (totalQty > 0) {
-        badge.classList.remove('hidden');
-        badge.textContent = totalQty > 99 ? '99+' : totalQty.toString();
-      } else {
-        badge.classList.add('hidden');
+      if (mainBadge) {
+        if (totalCartQty > 0) {
+          mainBadge.classList.remove('hidden');
+          mainBadge.textContent = totalCartQty > 99 ? '99+' : totalCartQty.toString();
+        } else {
+          mainBadge.classList.add('hidden');
+        }
+      }
+
+      // 2. Badge Titipan Jastip
+      const jastipData = localStorage.getItem(JASTIP_CART_KEY);
+      const jastipCart = jastipData ? JSON.parse(jastipData) : [];
+      const totalJastipQty = jastipCart.reduce((sum: number, item: any) => sum + (item.jumlah || item.qty || 1), 0);
+
+      if (titipanBadge) {
+        if (totalJastipQty > 0) {
+          titipanBadge.classList.remove('hidden');
+          titipanBadge.textContent = totalJastipQty > 99 ? '99+' : totalJastipQty.toString();
+        } else {
+          titipanBadge.classList.add('hidden');
+        }
       }
     } catch {
-      badge.classList.add('hidden');
+      if (mainBadge) mainBadge.classList.add('hidden');
+      if (titipanBadge) titipanBadge.classList.add('hidden');
     }
   }
 
-  // Event listener untuk deteksi update cart
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', updateLayoutCartBadge);
+    document.addEventListener('DOMContentLoaded', updateLayoutBadges);
   } else {
-    updateLayoutCartBadge();
+    updateLayoutBadges();
   }
 
-  window.addEventListener('storage', updateLayoutCartBadge);
-  window.addEventListener('cart-updated', updateLayoutCartBadge);
+  window.addEventListener('storage', updateLayoutBadges);
+  window.addEventListener('cart-updated', updateLayoutBadges);
 </script>
 
 <style is:global>
@@ -130,7 +176,6 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
     font-family: 'Inter', sans-serif;
   }
 
-  /* Sembunyikan scrollbar bawaan agar serasa aplikasi native */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }

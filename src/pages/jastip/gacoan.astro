@@ -1,0 +1,770 @@
+---
+import PlainLayout from '../../layouts/PlainLayout.astro';
+
+// Data Menu Gacoan Sesuai Foto
+const menuGacoan = [
+  // --- MIE ---
+  { 
+    id: 'm1', 
+    category: 'mie',
+    name: 'Mie Suit', 
+    price: 15000, 
+    desc: 'Mie putih gurih (tidak pedas) dengan taburan ayam cincang & pangsit.',
+    image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80',
+    badge: 'Gurih'
+  },
+  { 
+    id: 'm2', 
+    category: 'mie',
+    name: 'Mie Gacoan lvl 0-4', 
+    price: 15000, 
+    desc: 'Mie manis pedas favorit banyak orang (Pilih Level 0 s.d 4).',
+    image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=300&q=80',
+    needLevel: true,
+    badge: 'Manis Pedas'
+  },
+  { 
+    id: 'm3', 
+    category: 'mie',
+    name: 'Mie Gacoan lvl 6-8', 
+    price: 16000, 
+    desc: 'Mie manis pedas level ekstrem untuk pecinta pedas.',
+    image: 'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=300&q=80',
+    needLevel: true,
+    badge: 'Pedas'
+  },
+  { 
+    id: 'm4', 
+    category: 'mie',
+    name: 'Mie Hompimpa lvl 1-4', 
+    price: 15000, 
+    desc: 'Mie asin gurih pedas spesial Gacoan (Pilih Level 1 s.d 4).',
+    image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=300&q=80',
+    needLevel: true,
+    badge: 'Asin Gurih'
+  },
+  { 
+    id: 'm5', 
+    category: 'mie',
+    name: 'Mie Hompimpa lvl 6-8', 
+    price: 16000, 
+    desc: 'Mie asin pedas level ekstrem super nagih.',
+    image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=300&q=80',
+    needLevel: true,
+    badge: 'Pedas'
+  },
+
+  // --- DIMSUM ---
+  { 
+    id: 'd1', 
+    category: 'dimsum',
+    name: 'Siomay', 
+    price: 13000, 
+    desc: 'Siomay ayam lembut isi 3 pcs dengan saus dimsum.',
+    image: 'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'd2', 
+    category: 'dimsum',
+    name: 'Udang Keju', 
+    price: 13000, 
+    desc: 'Gorengan udang balut keju meleleh di dalam.',
+    image: 'https://images.unsplash.com/photo-1541529086526-db283c563270?auto=format&fit=crop&w=300&q=80',
+    badge: 'Best Seller'
+  },
+  { 
+    id: 'd3', 
+    category: 'dimsum',
+    name: 'Udang Rambutan', 
+    price: 13000, 
+    desc: 'Olahan udang renyah berbentuk bulat dengan kulit krispi.',
+    image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'd4', 
+    category: 'dimsum',
+    name: 'Lumpia Udang', 
+    price: 13000, 
+    desc: 'Lumpia goreng renyah isi udang cincang gurih.',
+    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'd5', 
+    category: 'dimsum',
+    name: 'Pangsit Goreng', 
+    price: 14000, 
+    desc: 'Pangsit goreng renyah isi olahan ayam khas Gacoan.',
+    image: 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=300&q=80'
+  },
+
+  // --- MINUMAN ---
+  { 
+    id: 'b1', 
+    category: 'minuman',
+    name: 'Es Gobak Sodor', 
+    price: 13000, 
+    desc: 'Es segar kombinasi buah jelly, cincau, dan susu manis.',
+    image: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'b2', 
+    category: 'minuman',
+    name: 'Es Teklek', 
+    price: 10000, 
+    desc: 'Es perasan buah segar penetral pedas.',
+    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'b3', 
+    category: 'minuman',
+    name: 'Es Sluku Bathok', 
+    price: 10000, 
+    desc: 'Es susu bersantan aroma pandan dan mocca.',
+    image: 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'b4', 
+    category: 'minuman',
+    name: 'Es Petak Umpet', 
+    price: 13000, 
+    desc: 'Es perasan jeruk segar campur buah belimbing.',
+    image: 'https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'b5', 
+    category: 'minuman',
+    name: 'Lemon Tea', 
+    price: 10000, 
+    desc: 'Teh lemon dingin menyegarkan.',
+    image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'b6', 
+    category: 'minuman',
+    name: 'Milo', 
+    price: 12000, 
+    desc: 'Minuman cokelat Milo dingin pekat.',
+    image: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'b7', 
+    category: 'minuman',
+    name: 'Orange', 
+    price: 9000, 
+    desc: 'Es jeruk manis segar.',
+    image: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'b8', 
+    category: 'minuman',
+    name: 'Tea Tarik', 
+    price: 10000, 
+    desc: 'Teh tarik manis krimi dingin.',
+    image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'b9', 
+    category: 'minuman',
+    name: 'Vanilla Latte', 
+    price: 12000, 
+    desc: 'Kopi vanila lembut dengan es batu.',
+    image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'b10', 
+    category: 'minuman',
+    name: 'Thai Tea', 
+    price: 12000, 
+    desc: 'Teh Thailand dengan racikan susu gurih.',
+    image: 'https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'b11', 
+    category: 'minuman',
+    name: 'Thai Greentea', 
+    price: 12000, 
+    desc: 'Teh hijau Thailand manis beraroma melati.',
+    image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=300&q=80'
+  },
+  { 
+    id: 'b12', 
+    category: 'minuman',
+    name: 'Es Cokelat', 
+    price: 12000, 
+    desc: 'Es cokelat pekat pas untuk penutup.',
+    image: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?auto=format&fit=crop&w=300&q=80'
+  }
+];
+---
+
+<PlainLayout title="Mie Gacoan - BangsriGo">
+  <!-- Wrapper Container Utama -->
+  <div class="max-w-md mx-auto w-full min-h-screen bg-slate-50 flex flex-col relative pb-28 border-x border-slate-200/60 overflow-y-auto">
+    
+    <!-- TOAST NOTIFICATION (PEMBERITAHUAN) -->
+    <div 
+      id="toast-notification" 
+      class="fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-[90%] w-80 bg-slate-900/95 backdrop-blur-md text-white px-3.5 py-2.5 rounded-xl shadow-xl flex items-center justify-between gap-3 border border-slate-700/50 transition-all duration-300 transform -translate-y-16 opacity-0 pointer-events-none"
+    >
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <p id="toast-title" class="text-xs font-bold leading-tight truncate">Berhasil Ditambahkan</p>
+          <p id="toast-message" class="text-[10px] text-slate-300 leading-tight truncate">Menu masuk ke keranjang</p>
+        </div>
+      </div>
+      <button id="toast-close" type="button" class="text-slate-400 hover:text-white text-xs font-bold p-1 shrink-0">✕</button>
+    </div>
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-100 px-4 py-3">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2.5">
+          <a href="/jastip" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
+            <svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </a>
+          <div>
+            <h1 class="text-sm font-bold text-slate-900 leading-tight">Mie Gacoan</h1>
+            <p class="text-[10px] text-slate-400 font-medium">Bangsri & Sekitarnya</p>
+          </div>
+        </div>
+
+        <span class="text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-md">
+          Jastip Resmi
+        </span>
+      </div>
+
+      <!-- FILTER KATEGORI TAB -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+        <button type="button" class="filter-tab active px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-white transition-all shrink-0" data-category="all">
+          Semua
+        </button>
+        <button type="button" class="filter-tab px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all shrink-0" data-category="mie">
+          Mie
+        </button>
+        <button type="button" class="filter-tab px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all shrink-0" data-category="dimsum">
+          Dimsum
+        </button>
+        <button type="button" class="filter-tab px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all shrink-0" data-category="minuman">
+          Minuman
+        </button>
+      </div>
+    </header>
+
+    <!-- KONTEN UTAMA MENU -->
+    <main class="p-3.5 space-y-3 flex-1">
+      
+      <!-- MINI BANNER PROMO -->
+      <div class="p-3.5 rounded-xl bg-slate-900 text-white flex items-center justify-between gap-2 shadow-xs">
+        <div>
+          <p class="text-xs font-bold">Pesan Jastip Gacoan</p>
+          <p class="text-[10px] text-slate-400">Harga resmi outlet, diantar cepat & aman.</p>
+        </div>
+        <div class="w-8 h-8 rounded-lg bg-emerald-600/30 flex items-center justify-center shrink-0 border border-emerald-500/30">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- GRID CARDS MENU -->
+      <div id="menu-grid" class="grid grid-cols-2 gap-2.5">
+        {menuGacoan.map((item) => (
+          <div 
+            class="menu-card bg-white rounded-xl border border-slate-200/70 overflow-hidden flex flex-col justify-between"
+            data-category={item.category}
+          >
+            <div>
+              <!-- FOTO MENU -->
+              <div class="relative w-full aspect-4/3 bg-slate-100 overflow-hidden">
+                <img 
+                  src={item.image} 
+                  alt={item.name} 
+                  class="w-full h-full object-cover" 
+                  loading="lazy"
+                />
+                {item.badge && (
+                  <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-slate-900/80 backdrop-blur-xs text-white text-[8px] font-medium">
+                    {item.badge}
+                  </span>
+                )}
+              </div>
+
+              <!-- INFO MENU -->
+              <div class="p-2.5">
+                <h3 class="text-xs font-bold text-slate-900 leading-snug">{item.name}</h3>
+                <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-2 leading-relaxed">{item.desc}</p>
+              </div>
+            </div>
+
+            <!-- HARGA & TOMBOL AKSI -->
+            <div class="p-2.5 pt-0 flex items-center justify-between gap-1">
+              <span class="text-xs font-bold text-slate-900">
+                Rp {item.price.toLocaleString('id-ID')}
+              </span>
+
+              {item.needLevel ? (
+                <button 
+                  type="button"
+                  class="btn-open-level px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold rounded-lg transition-colors"
+                  data-id={item.id}
+                  data-name={item.name}
+                  data-price={item.price}
+                >
+                  Pilih
+                </button>
+              ) : (
+                <button 
+                  type="button"
+                  class="btn-add-simple w-6 h-6 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-lg flex items-center justify-center transition-colors"
+                  data-id={item.id}
+                  data-name={item.name}
+                  data-price={item.price}
+                >
+                  +
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </main>
+
+    <!-- MODAL SELEKSI LEVEL PEDAS -->
+    <div id="modal-level" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-2xs hidden flex items-end justify-center">
+      <div class="w-full max-w-md bg-white rounded-t-2xl p-4 space-y-3.5 shadow-2xl">
+        <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+          <div>
+            <h3 id="modal-item-title" class="text-xs font-bold text-slate-900">Mie Gacoan</h3>
+            <p class="text-[10px] text-slate-400">Pilih level pedas pesananmu</p>
+          </div>
+          <button id="btn-close-modal" class="text-slate-400 hover:text-slate-600 text-xs font-bold p-1">✕</button>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-[11px] font-semibold text-slate-700">Tingkat Pedas</label>
+          <div class="grid grid-cols-5 gap-1.5" id="level-options-container"></div>
+        </div>
+
+        <div class="space-y-1">
+          <label for="modal-catatan" class="block text-[11px] font-semibold text-slate-700">Catatan (Opsional)</label>
+          <input 
+            type="text" 
+            id="modal-catatan" 
+            placeholder="Misal: Bawang goreng pisah" 
+            class="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-xs text-slate-800 focus:border-slate-900 focus:outline-none"
+          />
+        </div>
+
+        <button 
+          type="button" 
+          id="btn-confirm-level"
+          class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition-colors"
+        >
+          Tambah ke Keranjang
+        </button>
+      </div>
+    </div>
+
+    <!-- DRAWER / SLIDE-UP MODAL KERANJANG JASTIP -->
+    <div id="drawer-cart" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-2xs hidden flex items-end justify-center">
+      <div class="w-full max-w-md bg-white rounded-t-3xl max-h-[80vh] flex flex-col shadow-2xl">
+        <!-- Header Cart Drawer -->
+        <div class="p-4 border-b border-slate-100 flex items-center justify-between shrink-0">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+            <h3 class="text-sm font-bold text-slate-900">Keranjang Jastip Gacoan</h3>
+          </div>
+          <button id="btn-close-cart" class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs hover:bg-slate-200">
+            ✕
+          </button>
+        </div>
+
+        <!-- List Item Keranjang -->
+        <div id="cart-items-container" class="p-4 overflow-y-auto space-y-3 flex-1 divide-y divide-slate-100">
+          <!-- Item diinjeksi via JavaScript -->
+        </div>
+
+        <!-- Footer Cart Drawer -->
+        <div class="p-4 border-t border-slate-100 bg-slate-50 rounded-b-3xl space-y-3 shrink-0">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-500 font-medium">Estimasi Subtotal</span>
+            <span id="cart-total-price" class="font-black text-slate-900 text-sm">Rp 0</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button 
+              id="btn-clear-cart" 
+              type="button" 
+              class="py-2.5 px-3 border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 font-bold text-xs rounded-xl transition-colors"
+            >
+              Kosongkan
+            </button>
+            <a 
+              href="/jastip/titipan" 
+              class="py-2.5 px-3 bg-[#006E2E] hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-1 text-center"
+            >
+              Lanjut Checkout
+              <svg class="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLOATING BOTTOM BAR -->
+    <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto p-3 bg-white/95 backdrop-blur-md border-t border-slate-100 z-40 flex items-center justify-between gap-3 shadow-lg">
+      <div>
+        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Total Pesanan</p>
+        <p class="text-xs font-black text-slate-900" id="cart-summary-text">0 Item Ditambah</p>
+      </div>
+
+      <button 
+        id="btn-open-cart-drawer"
+        type="button"
+        class="py-2.5 px-4 bg-[#006E2E] hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition-all flex items-center gap-2 shadow-xs"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        </svg>
+        <span>Lihat Keranjang</span>
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    const JASTIP_STORAGE_KEY = 'bangsri_jastip_cart';
+
+    // Elements
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const menuCards = document.querySelectorAll('.menu-card');
+
+    const modalLevel = document.getElementById('modal-level');
+    const modalTitle = document.getElementById('modal-item-title');
+    const modalCatatan = document.getElementById('modal-catatan') as HTMLInputElement;
+    const btnCloseModal = document.getElementById('btn-close-modal');
+    const btnConfirmLevel = document.getElementById('btn-confirm-level');
+    const levelContainer = document.getElementById('level-options-container');
+
+    const drawerCart = document.getElementById('drawer-cart');
+    const btnOpenCartDrawer = document.getElementById('btn-open-cart-drawer');
+    const btnCloseCart = document.getElementById('btn-close-cart');
+    const btnClearCart = document.getElementById('btn-clear-cart');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const cartTotalPrice = document.getElementById('cart-total-price');
+
+    // Toast Elements
+    const toastNotification = document.getElementById('toast-notification');
+    const toastTitle = document.getElementById('toast-title');
+    const toastMessage = document.getElementById('toast-message');
+    const toastClose = document.getElementById('toast-close');
+    let toastTimeout: any = null;
+
+    let currentSelectedItem: { id: string; name: string; price: number } | null = null;
+    let selectedLevel = '0';
+
+    // --- HELPER FUNCTION: TOAST NOTIFICATION ---
+    function showToast(title: string, message: string) {
+      if (!toastNotification || !toastTitle || !toastMessage) return;
+
+      toastTitle.textContent = title;
+      toastMessage.textContent = message;
+
+      // Reset timer sebelumnya jika ada
+      if (toastTimeout) clearTimeout(toastTimeout);
+
+      // Tampilkan Toast
+      toastNotification.classList.remove('-translate-y-16', 'opacity-0', 'pointer-events-none');
+      toastNotification.classList.add('translate-y-0', 'opacity-100');
+
+      // Sembunyikan otomatis dalam 2.5 detik
+      toastTimeout = setTimeout(() => {
+        hideToast();
+      }, 2500);
+    }
+
+    function hideToast() {
+      if (!toastNotification) return;
+      toastNotification.classList.remove('translate-y-0', 'opacity-100');
+      toastNotification.classList.add('-translate-y-16', 'opacity-0', 'pointer-events-none');
+    }
+
+    toastClose?.addEventListener('click', hideToast);
+
+    // 1. Filter Kategori Tab
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const category = tab.getAttribute('data-category');
+
+        filterTabs.forEach((t) => {
+          t.classList.remove('bg-slate-900', 'text-white');
+          t.classList.add('bg-slate-100', 'text-slate-600');
+        });
+        tab.classList.remove('bg-slate-100', 'text-slate-600');
+        tab.classList.add('bg-slate-900', 'text-white');
+
+        menuCards.forEach((card) => {
+          const cardCat = card.getAttribute('data-category');
+          if (category === 'all' || cardCat === category) {
+            (card as HTMLElement).classList.remove('hidden');
+            (card as HTMLElement).classList.add('flex');
+          } else {
+            (card as HTMLElement).classList.remove('flex');
+            (card as HTMLElement).classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // 2. Helper LocalStorage Cart Operations
+    function getCartItems(): any[] {
+      try {
+        const raw = localStorage.getItem(JASTIP_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveCartItems(items: any[]) {
+      localStorage.setItem(JASTIP_STORAGE_KEY, JSON.stringify(items));
+      window.dispatchEvent(new Event('jastip-cart-updated'));
+      updateCartUI();
+    }
+
+    // 3. Render & Sync UI Keranjang
+    function updateCartUI() {
+      const items = getCartItems();
+      const totalQty = items.reduce((sum, item) => sum + (item.jumlah || item.qty || 1), 0);
+      
+      // Update Summary Bar
+      const summaryText = document.getElementById('cart-summary-text');
+      if (summaryText) {
+        summaryText.textContent = `${totalQty} Item Ditambah`;
+      }
+
+      // Render items inside drawer
+      if (!cartItemsContainer) return;
+
+      if (items.length === 0) {
+        cartItemsContainer.innerHTML = `
+          <div class="py-10 text-center text-slate-400">
+            <svg class="w-10 h-10 mx-auto text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+            <p class="text-xs font-semibold">Keranjang Masih Kosong</p>
+            <p class="text-[10px] mt-0.5">Pilih menu Gacoan favoritmu di atas</p>
+          </div>
+        `;
+        if (cartTotalPrice) cartTotalPrice.textContent = 'Rp 0';
+        return;
+      }
+
+      let subtotal = 0;
+      cartItemsContainer.innerHTML = items.map((item, idx) => {
+        const numPrice = parseInt((item.harga || item.deskripsi || '0').toString().replace(/[^0-9]/g, '')) || 0;
+        const qty = item.jumlah || item.qty || 1;
+        subtotal += numPrice * qty;
+
+        return `
+          <div class="pt-2.5 first:pt-0 flex items-center justify-between gap-3">
+            <div class="flex-1 min-w-0">
+              <h4 class="text-xs font-bold text-slate-900 truncate">${item.nama || 'Menu Gacoan'}</h4>
+              <p class="text-[10px] text-emerald-700 font-semibold">${item.catatan || 'Tanpa catatan'}</p>
+              <p class="text-[11px] font-medium text-slate-500 mt-0.5">Rp ${numPrice.toLocaleString('id-ID')}</p>
+            </div>
+
+            <!-- Operational Buttons + - Delete -->
+            <div class="flex items-center gap-2 shrink-0">
+              <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-slate-50">
+                <button type="button" class="btn-qty-minus px-2 py-1 text-slate-600 hover:bg-slate-200 text-xs font-bold" data-index="${idx}">-</button>
+                <span class="px-2 text-xs font-bold text-slate-800">${qty}</span>
+                <button type="button" class="btn-qty-plus px-2 py-1 text-slate-600 hover:bg-slate-200 text-xs font-bold" data-index="${idx}">+</button>
+              </div>
+
+              <button type="button" class="btn-remove-item text-slate-400 hover:text-red-500 p-1 transition-colors" data-index="${idx}">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (cartTotalPrice) {
+        cartTotalPrice.textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+      }
+
+      // Attach Listener untuk tombol di dalam Drawer
+      document.querySelectorAll('.btn-qty-plus').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = Number((e.currentTarget as HTMLButtonElement).getAttribute('data-index'));
+          const currentItems = getCartItems();
+          currentItems[idx].jumlah = (currentItems[idx].jumlah || 1) + 1;
+          saveCartItems(currentItems);
+        });
+      });
+
+      document.querySelectorAll('.btn-qty-minus').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = Number((e.currentTarget as HTMLButtonElement).getAttribute('data-index'));
+          const currentItems = getCartItems();
+          if ((currentItems[idx].jumlah || 1) > 1) {
+            currentItems[idx].jumlah -= 1;
+          } else {
+            currentItems.splice(idx, 1);
+          }
+          saveCartItems(currentItems);
+        });
+      });
+
+      document.querySelectorAll('.btn-remove-item').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = Number((e.currentTarget as HTMLButtonElement).getAttribute('data-index'));
+          const currentItems = getCartItems();
+          currentItems.splice(idx, 1);
+          saveCartItems(currentItems);
+        });
+      });
+    }
+
+    // 4. Tambah Menu Tanpa Level (+ NOTIFIKASI TOAST)
+    document.querySelectorAll('.btn-add-simple').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const button = e.currentTarget as HTMLButtonElement;
+        const id = button.getAttribute('data-id');
+        const name = button.getAttribute('data-name') || 'Menu';
+        const price = Number(button.getAttribute('data-price') || 0);
+
+        const items = getCartItems();
+        items.push({
+          id: `${id}-${Date.now()}`,
+          jenis: 'Jastip Gacoan',
+          nama: name,
+          harga: price,
+          deskripsi: `Rp ${price.toLocaleString('id-ID')}`,
+          jumlah: 1,
+          catatan: 'Original'
+        });
+
+        saveCartItems(items);
+
+        // Pemicu Notifikasi Info
+        showToast('Berhasil Ditambahkan!', `${name} masuk keranjang.`);
+
+        // Feedback visual pada tombol
+        const origText = button.textContent;
+        button.textContent = '✓';
+        button.classList.add('bg-emerald-600', 'text-white');
+        setTimeout(() => {
+          button.textContent = origText;
+          button.classList.remove('bg-emerald-600', 'text-white');
+        }, 700);
+      });
+    });
+
+    // 5. Modal Level Pedas
+    document.querySelectorAll('.btn-open-level').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const button = e.currentTarget as HTMLButtonElement;
+        const id = button.getAttribute('data-id') || '';
+        const name = button.getAttribute('data-name') || '';
+        const price = Number(button.getAttribute('data-price') || 0);
+
+        currentSelectedItem = { id, name, price };
+        if (modalTitle) modalTitle.textContent = name;
+
+        if (levelContainer) {
+          const isExtreme = name.includes('6-8');
+          const levels = isExtreme ? ['6', '7', '8'] : ['0', '1', '2', '3', '4'];
+          selectedLevel = levels[0];
+
+          levelContainer.innerHTML = levels.map((lvl) => `
+            <button 
+              type="button" 
+              class="lvl-opt-btn py-1.5 rounded-lg border text-xs font-bold transition-all ${lvl === selectedLevel ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-700 border-slate-200'}"
+              data-lvl="${lvl}"
+            >
+              Lvl ${lvl}
+            </button>
+          `).join('');
+
+          document.querySelectorAll('.lvl-opt-btn').forEach((lvlBtn) => {
+            lvlBtn.addEventListener('click', (evt) => {
+              document.querySelectorAll('.lvl-opt-btn').forEach((b) => {
+                b.classList.remove('bg-slate-900', 'text-white', 'border-slate-900');
+                b.classList.add('bg-slate-50', 'text-slate-700', 'border-slate-200');
+              });
+              const target = evt.currentTarget as HTMLButtonElement;
+              selectedLevel = target.getAttribute('data-lvl') || '0';
+              target.classList.remove('bg-slate-50', 'text-slate-700', 'border-slate-200');
+              target.classList.add('bg-slate-900', 'text-white', 'border-slate-900');
+            });
+          });
+        }
+
+        modalLevel?.classList.remove('hidden');
+      });
+    });
+
+    btnCloseModal?.addEventListener('click', () => modalLevel?.classList.add('hidden'));
+
+    // Konfirmasi Level Pedas (+ NOTIFIKASI TOAST)
+    btnConfirmLevel?.addEventListener('click', () => {
+      if (!currentSelectedItem) return;
+
+      const catatanVal = modalCatatan?.value?.trim();
+      const finalCatatan = `Level ${selectedLevel}${catatanVal ? ` (${catatanVal})` : ''}`;
+
+      const items = getCartItems();
+      items.push({
+        id: `${currentSelectedItem.id}-${Date.now()}`,
+        jenis: 'Jastip Gacoan',
+        nama: currentSelectedItem.name,
+        harga: currentSelectedItem.price,
+        deskripsi: `Rp ${currentSelectedItem.price.toLocaleString('id-ID')}`,
+        jumlah: 1,
+        catatan: finalCatatan
+      });
+
+      saveCartItems(items);
+
+      // Pemicu Notifikasi Info
+      showToast('Berhasil Ditambahkan!', `${currentSelectedItem.name} (${finalCatatan}) masuk keranjang.`);
+
+      modalLevel?.classList.add('hidden');
+      if (modalCatatan) modalCatatan.value = '';
+    });
+
+    // 6. Controller Drawer Keranjang
+    btnOpenCartDrawer?.addEventListener('click', () => {
+      updateCartUI();
+      drawerCart?.classList.remove('hidden');
+    });
+
+    btnCloseCart?.addEventListener('click', () => {
+      drawerCart?.classList.add('hidden');
+    });
+
+    btnClearCart?.addEventListener('click', () => {
+      saveCartItems([]);
+      showToast('Keranjang Dikosongkan', 'Semua item pesanan telah dihapus.');
+    });
+
+    // Inisialisasi awal UI
+    updateCartUI();
+  </script>
+</PlainLayout>

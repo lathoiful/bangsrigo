@@ -1,0 +1,194 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import logo from '../../assets/logo.svg';
+---
+
+<Layout title="Jastip Mie Gacoan - BangsriGo" activeTab="jastip">
+  <!-- WRAPPER UTAMA -->
+  <div class="w-full h-full flex flex-col justify-start gap-4 p-4 pb-24 box-border overflow-y-auto no-scrollbar">
+    
+    <!-- 1. HEADER (UKURAN LEBIH BESAR & TEGAS) -->
+    <header class="flex items-center justify-between shrink-0 pt-2 pb-3 border-b border-slate-100/80">
+      <div class="flex items-center gap-3">
+        <img src={logo.src} alt="BangsriGo Logo" class="h-9.5 w-auto object-contain" />
+      </div>
+
+      <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200/90 px-3.5 py-1.5 rounded-full text-xs font-bold text-[#006E2E] shadow-2xs">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#16A34A] animate-pulse"></span>
+        <span>Jastip Aktif</span>
+      </div>
+    </header>
+
+    <!-- 2. JUDUL UTAMA -->
+    <div class="space-y-1.5 shrink-0 pt-1">
+      <span class="inline-block text-[10px] font-extrabold uppercase tracking-widest text-[#006E2E] bg-emerald-100/70 px-2.5 py-1 rounded-md">
+        Layanan Antar
+      </span>
+      <h1 class="text-2xl font-black text-slate-900 leading-tight">
+        Mau Jastip Apa Hari Ini?
+      </h1>
+      <p class="text-xs text-slate-500 font-medium">
+        Titip belikan makanan favoritmu tanpa antre.
+      </p>
+    </div>
+
+    <!-- 3. HIGHLIGHT HERO CARD: MIE GACOAN -->
+    <a 
+      href="/jastip/gacoan" 
+      class="group relative shrink-0 min-h-[190px] rounded-3xl bg-slate-900 border border-pink-500/30 p-5 flex flex-col justify-between shadow-xl overflow-hidden active:scale-[0.98] transition-all my-1"
+    >
+      <!-- Background Glow Subtle -->
+      <div class="absolute -top-10 -right-10 w-36 h-36 bg-pink-600/30 rounded-full blur-2xl pointer-events-none"></div>
+
+      <!-- Top Section Info & Logo Gacoan SVG -->
+      <div class="relative z-10 flex items-start justify-between">
+        <div class="flex items-center gap-3">
+          <!-- LOGO MIE GACOAN SVG -->
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-pink-600 to-rose-500 flex items-center justify-center p-2 shadow-md shrink-0 border border-pink-300/20">
+            <svg viewBox="0 0 24 24" class="w-full h-full text-white fill-current" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12H2Z" opacity="0.4"/>
+              <path d="M4 11C4 15.42 7.58 19 12 19C16.42 19 20 15.42 20 11H4Z"/>
+              <path d="M6 8C7 5 9 6 10 4M11 8C12 5 14 6 15 4M16 8C17 5 19 6 20 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+          <div>
+            <span class="text-[9px] font-bold text-pink-400 tracking-wider uppercase block">Paling Populer</span>
+            <h2 class="text-lg font-black text-white leading-tight">Mie Gacoan</h2>
+          </div>
+        </div>
+
+        <span class="bg-pink-500/20 text-pink-300 border border-pink-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-xs flex items-center gap-1">
+          <svg class="w-3 h-3 text-pink-400 fill-current" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.381z" clip-rule="evenodd"/>
+          </svg>
+          Bebas Antre
+        </span>
+      </div>
+
+      <!-- Content Text -->
+      <p class="relative z-10 text-xs text-slate-300 leading-relaxed my-3">
+        Pesan Mie Suit, Hompimpa, Dimsum & Es Genderuwo. Bebas pilih level pedas!
+      </p>
+
+      <!-- Bottom Action Line -->
+      <div class="relative z-10 flex items-center justify-between pt-3 border-t border-white/10">
+        <span class="text-xs font-bold text-pink-400 group-hover:text-pink-300 transition-colors">
+          Pesan Gacoan Sekarang
+        </span>
+        <div class="w-8 h-8 rounded-xl bg-pink-600 text-white flex items-center justify-center shadow-md shrink-0">
+          <svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </div>
+    </a>
+
+    <!-- 4. SECONDARY BUTTON: TITIP WARUNG LAIN -->
+    <a 
+      href="/jastip/buat" 
+      class="flex items-center justify-between p-4 rounded-2xl border border-slate-200 bg-white active:bg-slate-50 transition-colors shrink-0 shadow-xs"
+    >
+      <div class="flex items-center gap-3.5">
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-[#006E2E] flex items-center justify-center shrink-0 border border-emerald-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-xs font-bold text-slate-800 leading-tight">Titip Warung / Toko Lain</h3>
+          <p class="text-[10px] text-slate-500 mt-0.5">Request toko atau barang belanjaan lainnya</p>
+        </div>
+      </div>
+
+      <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+      </svg>
+    </a>
+
+    <!-- 5. KEUNGGULAN JASTIP -->
+    <div class="grid grid-cols-2 gap-2.5 pt-1 shrink-0">
+      <div class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200/60">
+        <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        <span class="text-[11px] font-bold text-slate-700">Pengiriman Cepat</span>
+      </div>
+      <div class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200/60">
+        <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+        </svg>
+        <span class="text-[11px] font-bold text-slate-700">Pesanan Aman</span>
+      </div>
+    </div>
+
+    <!-- 6. FLOATING BANNER TITIPAN (MUNCUL OTOMATIS JIKA ADA CART) -->
+    <a 
+      href="/jastip/titipan" 
+      id="jastip-cart-banner"
+      class="hidden block w-full bg-[#006E2E] text-white rounded-2xl p-3.5 shadow-lg shrink-0 active:scale-[0.98] transition-transform"
+    >
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="relative w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+            <span 
+              id="jastip-cart-count-badge" 
+              class="absolute -top-1.5 -right-1.5 bg-amber-400 text-slate-950 text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-xs"
+            >
+              0
+            </span>
+          </div>
+          <div>
+            <p id="jastip-cart-title" class="text-xs font-bold leading-tight">0 Item Titipan</p>
+            <p class="text-[10px] text-emerald-100 mt-0.5">Ketuk untuk lihat pesanan</p>
+          </div>
+        </div>
+
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </div>
+    </a>
+
+  </div>
+</Layout>
+
+<script>
+  const JASTIP_STORAGE_KEY = 'bangsri_jastip_cart';
+
+  function syncJastipCartUI() {
+    const banner = document.getElementById('jastip-cart-banner');
+    const countBadge = document.getElementById('jastip-cart-count-badge');
+    const titleText = document.getElementById('jastip-cart-title');
+
+    if (!banner || !countBadge || !titleText) return;
+
+    try {
+      const data = localStorage.getItem(JASTIP_STORAGE_KEY);
+      const items = data ? JSON.parse(data) : [];
+      const totalQty = items.reduce((sum: number, item: any) => sum + (item.jumlah || item.qty || 1), 0);
+
+      if (totalQty > 0) {
+        banner.classList.remove('hidden');
+        countBadge.textContent = totalQty > 99 ? '99+' : totalQty.toString();
+        titleText.textContent = `${totalQty} Item Titipan Jastip`;
+      } else {
+        banner.classList.add('hidden');
+      }
+    } catch {
+      banner.classList.add('hidden');
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncJastipCartUI);
+  } else {
+    syncJastipCartUI();
+  }
+
+  window.addEventListener('storage', syncJastipCartUI);
+  window.addEventListener('jastip-cart-updated', syncJastipCartUI);
+  window.addEventListener('cart-updated', syncJastipCartUI);
+</script>

@@ -1,0 +1,266 @@
+---
+import PlainLayout from '../../layouts/PlainLayout.astro';
+---
+
+<PlainLayout title="Buat Jastip Baru - BangsriGo">
+  <!-- 1. HEADER ATAS (NAVBAR STICKY) -->
+  <header class="sticky top-0 z-30 flex items-center justify-between bg-white/95 backdrop-blur-md px-4 py-3.5 border-b border-slate-200/80 shadow-2xs shrink-0">
+    <div class="flex items-center gap-3">
+      <a href="/jastip" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 active:scale-95 transition-all">
+        <svg class="w-5 h-5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+      </a>
+      <h1 class="text-base font-extrabold text-slate-900 tracking-tight">Buat Jastip Baru</h1>
+    </div>
+
+    <!-- TOMBOL & BADGE KERANJANG JASTIP DI HEADER -->
+    <a href="/jastip/keranjang" class="relative w-9 h-9 rounded-full bg-emerald-50 hover:bg-emerald-100 flex items-center justify-center text-[#006E2E] active:scale-95 transition-all">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+      </svg>
+      <!-- Counter Badge -->
+      <span id="cart-badge" class="absolute -top-1 -right-1 hidden min-w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-black rounded-full items-center justify-center px-1 border-2 border-white shadow-xs">
+        0
+      </span>
+    </a>
+  </header>
+
+  <!-- POP-UP NOTIFIKASI / TOAST CUSTOM -->
+  <div id="toast-notif" class="fixed inset-x-4 top-5 z-50 transform -translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="max-w-md mx-auto bg-slate-900/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-xl flex items-center justify-between border border-slate-700">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-white">Berhasil Ditambahkan!</p>
+          <p class="text-[11px] text-slate-300">Barang masuk ke keranjang jastip.</p>
+        </div>
+      </div>
+      <a href="/jastip/keranjang" class="pointer-events-auto text-xs font-extrabold text-emerald-400 hover:text-emerald-300 underline underline-offset-2 ml-2">
+        Lihat
+      </a>
+    </div>
+  </div>
+
+  <!-- 2. FORM & KONTEN ISI -->
+  <form id="form-jastip" class="flex-1 overflow-y-auto px-4 py-5 pb-28 no-scrollbar space-y-5">
+
+    <!-- DETAIL TITIPAN -->
+    <section class="space-y-4 pt-1">
+      <h2 class="text-xs font-bold uppercase tracking-wider text-slate-600">
+        Detail Titipan
+      </h2>
+
+      <!-- Input: Nama Barang -->
+      <div class="space-y-1.5">
+        <label for="nama_barang" class="block text-xs font-bold text-slate-700">
+          Nama Barang / Request <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="nama_barang" 
+          required 
+          placeholder="Contoh: Parfum Zara Violet Blossom" 
+          class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:border-[#006E2E] focus:ring-2 focus:ring-[#006E2E]/20 outline-none transition-all shadow-2xs"
+        />
+      </div>
+
+      <!-- Input: Deskripsi -->
+      <div class="space-y-1.5">
+        <div class="flex justify-between items-center">
+          <label for="deskripsi" class="block text-xs font-bold text-slate-700">
+            Deskripsi <span class="text-slate-400 font-normal">(Optional)</span>
+          </label>
+          <span class="text-[10px] text-slate-400" id="desc-count">0/200</span>
+        </div>
+        <textarea 
+          id="deskripsi" 
+          maxlength="200" 
+          rows="3" 
+          placeholder="Tambahkan detail agar admin lebih mudah mencarikan (ukuran, warna, rasa, dll)..." 
+          class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:border-[#006E2E] focus:ring-2 focus:ring-[#006E2E]/20 outline-none transition-all resize-none shadow-2xs"
+        ></textarea>
+      </div>
+
+      <!-- Input: Jumlah Counter -->
+      <div class="space-y-1.5">
+        <label class="block text-xs font-bold text-slate-700">Jumlah</label>
+        <div class="inline-flex items-center border border-slate-200 bg-white rounded-xl p-1 gap-3 shadow-2xs">
+          <button 
+            type="button" 
+            id="btn-minus" 
+            class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700 font-bold text-base hover:bg-slate-200 active:scale-95 transition-all disabled:opacity-40"
+            disabled
+          >
+            -
+          </button>
+          <span id="qty-text" class="text-sm font-black text-slate-900 min-w-[20px] text-center">1</span>
+          <button 
+            type="button" 
+            id="btn-plus" 
+            class="w-8 h-8 rounded-lg bg-emerald-100 text-[#006E2E] flex items-center justify-center font-bold text-base hover:bg-emerald-200 active:scale-95 transition-all"
+          >
+            +
+          </button>
+        </div>
+      </div>
+
+      <!-- Input: Catatan -->
+      <div class="space-y-1.5">
+        <div class="flex justify-between items-center">
+          <label for="catatan" class="block text-xs font-bold text-slate-700">
+            Catatan Tambahan <span class="text-slate-400 font-normal">(Optional)</span>
+          </label>
+          <span class="text-[10px] text-slate-400" id="note-count">0/100</span>
+        </div>
+        <input 
+          type="text" 
+          id="catatan" 
+          maxlength="100" 
+          placeholder="Contoh: Kalau habis, kabarin ya" 
+          class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:border-[#006E2E] focus:ring-2 focus:ring-[#006E2E]/20 outline-none transition-all shadow-2xs"
+        />
+      </div>
+    </section>
+
+    <!-- FLOATING ACTION BUTTON -->
+    <div class="absolute bottom-0 left-0 right-0 p-4 bg-white/95 backdrop-blur-md border-t border-slate-200/80 z-20">
+      <button 
+        type="submit" 
+        class="w-full py-3.5 px-4 bg-[#006E2E] hover:bg-emerald-800 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-emerald-900/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+      >
+        <span>Masukkan Keranjang</span>
+        <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+        </svg>
+      </button>
+    </div>
+
+  </form>
+
+  <script>
+    const JASTIP_STORAGE_KEY = 'bangsri_jastip_cart';
+
+    // Counter Jumlah
+    let qty = 1;
+    const qtyText = document.getElementById('qty-text');
+    const btnMinus = document.getElementById('btn-minus') as HTMLButtonElement;
+    const btnPlus = document.getElementById('btn-plus');
+
+    function updateQtyUI() {
+      if (qtyText) qtyText.textContent = qty.toString();
+      if (btnMinus) btnMinus.disabled = qty <= 1;
+    }
+
+    btnMinus?.addEventListener('click', () => {
+      if (qty > 1) {
+        qty--;
+        updateQtyUI();
+      }
+    });
+
+    btnPlus?.addEventListener('click', () => {
+      qty++;
+      updateQtyUI();
+    });
+
+    // Character Counter
+    const descInput = document.getElementById('deskripsi') as HTMLTextAreaElement;
+    const descCount = document.getElementById('desc-count');
+    descInput?.addEventListener('input', () => {
+      if (descCount) descCount.textContent = `${descInput.value.length}/200`;
+    });
+
+    const noteInput = document.getElementById('catatan') as HTMLInputElement;
+    const noteCount = document.getElementById('note-count');
+    noteInput?.addEventListener('input', () => {
+      if (noteCount) noteCount.textContent = `${noteInput.value.length}/100`;
+    });
+
+    // Update Badge Keranjang di Top Navbar
+    function updateCartBadge() {
+      const cartBadge = document.getElementById('cart-badge');
+      if (!cartBadge) return;
+
+      const existing = localStorage.getItem(JASTIP_STORAGE_KEY);
+      const items = existing ? JSON.parse(existing) : [];
+      const totalCount = items.length;
+
+      if (totalCount > 0) {
+        cartBadge.textContent = totalCount.toString();
+        cartBadge.classList.remove('hidden');
+        cartBadge.classList.add('flex');
+      } else {
+        cartBadge.classList.add('hidden');
+        cartBadge.classList.remove('flex');
+      }
+    }
+
+    // Inisialisasi Badge saat halaman pertama dipanggil
+    updateCartBadge();
+
+    // Trigger Animasi Notifikasi Toast
+    let toastTimeout: NodeJS.Timeout;
+    function showNotifToast() {
+      const toast = document.getElementById('toast-notif');
+      if (!toast) return;
+
+      clearTimeout(toastTimeout);
+      toast.classList.remove('-translate-y-20', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('-translate-y-20', 'opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    // Submit Handler Simpan ke LocalStorage tanpa Redirect
+    const form = document.getElementById('form-jastip') as HTMLFormElement;
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const namaBarang = (document.getElementById('nama_barang') as HTMLInputElement).value;
+      const deskripsi = descInput?.value || '';
+      const catatan = noteInput?.value || '';
+
+      const newItem = {
+        id: Date.now().toString(),
+        jenis: 'Custom Jastip',
+        nama: namaBarang,
+        deskripsi: deskripsi,
+        jumlah: qty,
+        catatan: catatan
+      };
+
+      try {
+        const existing = localStorage.getItem(JASTIP_STORAGE_KEY);
+        const items = existing ? JSON.parse(existing) : [];
+        items.push(newItem);
+        localStorage.setItem(JASTIP_STORAGE_KEY, JSON.stringify(items));
+
+        // Update badge UI keranjang
+        updateCartBadge();
+
+        // Broadcast event jika ada listener di tempat lain
+        window.dispatchEvent(new Event('jastip-cart-updated'));
+
+        // Reset form untuk input jastip berikutnya
+        form.reset();
+        qty = 1;
+        updateQtyUI();
+        if (descCount) descCount.textContent = '0/200';
+        if (noteCount) noteCount.textContent = '0/100';
+
+        // Tampilkan Notifikasi Toast
+        showNotifToast();
+      } catch (err) {
+        alert('Gagal menyimpan pesanan. Silakan coba lagi.');
+      }
+    });
+  </script>
+</PlainLayout>
