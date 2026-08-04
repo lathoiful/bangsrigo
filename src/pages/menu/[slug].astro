@@ -71,7 +71,7 @@ const formatRupiah = (price: number) => {
       />
       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
-      <!-- TOMBOL BACK & FAVORITE -->
+      <!-- TOMBOL BACK & CART -->
       <div class="absolute top-4 left-0 right-0 px-6 flex items-center justify-between z-20">
         <a href="/" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-800 shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:bg-white active:scale-95 transition">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,11 +79,12 @@ const formatRupiah = (price: number) => {
           </svg>
         </a>
 
-        <button type="button" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-800 shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:bg-white active:scale-95 transition cursor-pointer">
+        <!-- TOMBOL KERANJANG (MENGARAH KE /cart) -->
+        <a href="/cart" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-800 shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:bg-white active:scale-95 transition">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 2 0 11-4 0 2 2 0 014 0z" />
           </svg>
-        </button>
+        </a>
       </div>
     </div>
 
@@ -270,11 +271,13 @@ const formatRupiah = (price: number) => {
 
   spicyBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
+      // Reset semua tombol ke style default (tidak aktif)
       spicyBtns.forEach((b) => {
-        b.classList.remove('bg-[#16A34A]', 'text-[#ffffff]', 'border-[#16A34A]', 'shadow-md', 'shadow-green-600/20', 'active-spicy');
+        b.classList.remove('bg-[#16A34A]', 'text-white', 'border-[#16A34A]', 'shadow-md', 'shadow-green-600/20', 'active-spicy');
         b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
       });
 
+      // Aktifkan tombol yang diklik
       btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
       btn.classList.add('bg-[#16A34A]', 'text-white', 'border-[#16A34A]', 'shadow-md', 'shadow-green-600/20', 'active-spicy');
       
