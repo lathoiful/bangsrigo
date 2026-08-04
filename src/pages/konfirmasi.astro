@@ -1,26 +1,37 @@
----
-// src/pages/konfirmasi.astro
+---// src/pages/konfirmasi.astro
 import Layout from '../layouts/Layout.astro';
 import { Icon } from "astro-icon/components";
 ---
 
 <Layout>
-  <!-- Container full lebar dengan padding bawah agar tidak tertutup sticky/floating bar -->
-  <main class="w-full bg-[#F8FAFC] relative flex flex-col min-h-full pb-36">
+  <!-- Main Container -->
+  <main class="w-full bg-[#F8FAFC] relative flex flex-col min-h-full">
     
     <!-- ================= HEADER SECTION ================= -->
-    <header class="sticky top-[31px] z-40 bg-white/95 backdrop-blur-md border-b border-[#E5E7EB] h-[60px] px-5 flex items-center justify-between shadow-xs w-full">
-      <a href="/cart" aria-label="Kembali" class="p-2 -ml-2 text-[#111827] hover:bg-slate-100 rounded-full transition-colors">
-        <Icon name="lucide:arrow-left" class="w-5 h-5" />
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-slate-200/80 px-4 h-14 flex items-center justify-between shadow-xs w-full flex-shrink-0">
+      <a 
+        href="/cart" 
+        aria-label="Kembali ke keranjang" 
+        class="w-9 h-9 flex items-center justify-center text-slate-700 hover:text-slate-900 bg-slate-100/80 hover:bg-slate-200/80 active:scale-95 rounded-full transition-all"
+      >
+        <Icon name="lucide:chevron-left" class="w-5 h-5 -ml-0.5" />
       </a>
 
-      <h1 class="text-base font-bold text-[#111827]">Konfirmasi Pesanan</h1>
+      <div class="flex flex-col items-center justify-center text-center">
+        <h1 class="text-sm font-bold text-slate-900 tracking-tight leading-tight">
+          Konfirmasi Pesanan
+        </h1>
+        <div class="flex items-center gap-1.5 mt-0.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="text-[10px] font-medium text-slate-500">BangsriGo Order</span>
+        </div>
+      </div>
 
       <div class="w-9"></div> 
     </header>
 
     <!-- ================= MAIN CONTENT SECTION ================= -->
-    <div class="flex-1 w-full p-4 sm:p-5 space-y-4">
+    <div class="flex-1 w-full p-4 sm:p-5 space-y-4 pb-10">
       
       <!-- FORM DATA PEMESAN -->
       <section class="w-full bg-white rounded-2xl p-4 sm:p-5 border border-[#E5E7EB] shadow-xs space-y-4">
@@ -108,7 +119,7 @@ import { Icon } from "astro-icon/components";
         </div>
       </section>
 
-      <!-- RINGKASAN PESANAN (Dinamis dari LocalStorage) -->
+      <!-- RINGKASAN PESANAN -->
       <section class="w-full bg-white rounded-2xl p-4 sm:p-5 border border-[#E5E7EB] shadow-xs space-y-4">
         <div class="flex items-center gap-2 pb-2.5 border-b border-slate-100">
           <div class="w-7 h-7 rounded-lg bg-emerald-50 text-[#0E9F3E] flex items-center justify-center">
@@ -144,40 +155,40 @@ import { Icon } from "astro-icon/components";
         </div>
       </section>
 
-      <!-- INFO BANNER KECIL -->
-      <section class="w-full bg-emerald-50/80 rounded-2xl p-4 border border-emerald-100 flex gap-3 items-start">
-        <div class="text-[#0E9F3E] mt-0.5 flex-shrink-0">
-          <Icon name="lucide:info" class="w-4 h-4" />
+      <!-- SECTION AKHIR (COMBINED INFO BANNER + TOMBOL WA) -->
+      <section class="w-full bg-white rounded-2xl p-4 sm:p-5 border border-[#E5E7EB] shadow-xs space-y-3">
+        
+        <!-- Info Banner Hijau -->
+        <div class="w-full bg-emerald-50/80 rounded-xl p-3.5 border border-emerald-100/80 flex gap-3 items-start">
+          <div class="text-[#0E9F3E] mt-0.5 flex-shrink-0">
+            <Icon name="lucide:info" class="w-4 h-4" />
+          </div>
+          <p class="text-[11px] sm:text-xs text-slate-700 leading-relaxed">
+            Nanti pesanan otomatis dirangkum dan dikirim via WhatsApp ke admin setelah tombol di bawah ditekan.
+          </p>
         </div>
-        <p class="text-[11px] sm:text-xs text-slate-700 leading-relaxed">
-          Nanti pesanan otomatis dirangkum dan dikirim via WhatsApp ke admin setelah tombol di bawah ditekan.
-        </p>
+
+        <!-- Tombol WhatsApp & Keterangan -->
+        <div class="space-y-1.5 text-center pt-1">
+          <button
+            type="button"
+            id="btn-whatsapp"
+            class="w-full h-[50px] bg-[#25D366] hover:bg-[#20ba5a] active:scale-[0.98] text-white font-semibold rounded-xl flex items-center justify-center gap-2.5 shadow-sm transition-all cursor-pointer text-sm sm:text-base border-none"
+          >
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+            </svg>
+            <span>Kirim Pesanan ke WhatsApp</span>
+          </button>
+          <span class="block text-[10px] text-[#6B7280]">Kamu bakal diarahkan langsung ke aplikasi WhatsApp.</span>
+        </div>
       </section>
 
-    </div>
-
-    <!-- ================= FLOATING ACTION BAR ================= -->
-    <div class="fixed bottom-3 left-3 right-3 sm:absolute sm:bottom-4 sm:left-4 sm:right-4 z-50">
-      <div class="w-full bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-2xl p-3.5 shadow-[0_10px_35px_rgba(0,0,0,0.12)] flex flex-col gap-1.5 text-center">
-        <button
-          type="button"
-          id="btn-whatsapp"
-          class="w-full h-[52px] bg-[#25D366] hover:bg-[#20ba5a] active:scale-[0.98] text-white font-semibold rounded-xl flex items-center justify-center gap-2.5 shadow-sm transition-all cursor-pointer text-sm sm:text-base border-none"
-        >
-          <!-- SVG Logo WhatsApp Asli -->
-          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-          </svg>
-          <span>Kirim Pesanan ke WhatsApp</span>
-        </button>
-        <span class="text-[10px] text-[#6B7280]">Kamu bakal diarahkan langsung ke aplikasi WhatsApp.</span>
-      </div>
     </div>
 
   </main>
 </Layout>
 
-<!-- SCRIPT LOCALSTORAGE & WHATSAPP GENERATOR -->
 <script>
   interface AddonItem {
     name: string;
@@ -201,7 +212,7 @@ import { Icon } from "astro-icon/components";
 
   const STORAGE_KEY = 'bangsri_cart';
   const FORM_STORAGE_KEY = 'bangsri_checkout_form';
-  const ADMIN_PHONE = '6285185032089'; // Ganti dengan nomor WhatsApp Admin Anda (format 62...)
+  const ADMIN_PHONE = '6285185032089';
 
   function formatRupiah(price: number): string {
     return new Intl.NumberFormat('id-ID', {
@@ -228,12 +239,13 @@ import { Icon } from "astro-icon/components";
   }
 
   function renderCheckoutSummary() {
-    const cart = getCart();
     const container = document.getElementById('checkout-items-container');
     const subtotalEl = document.getElementById('checkout-subtotal');
     const totalEl = document.getElementById('checkout-total');
 
     if (!container || !subtotalEl || !totalEl) return;
+
+    const cart = getCart();
 
     if (cart.length === 0) {
       container.innerHTML = `<p class="text-xs text-slate-500 py-2">Keranjang kosong. <a href="/cart" class="text-[#0E9F3E] underline font-medium">Kembali ke keranjang</a></p>`;
@@ -281,11 +293,9 @@ import { Icon } from "astro-icon/components";
     totalEl.textContent = formatRupiah(subtotal);
   }
 
-  // Simpan data input form otomatis ke localStorage agar tidak hilang saat refresh
   function initFormStorage() {
     const fields = ['name', 'dukuh', 'rt', 'address', 'landmark', 'note'];
     
-    // Load saved form data
     try {
       const savedForm = localStorage.getItem(FORM_STORAGE_KEY);
       if (savedForm) {
@@ -299,7 +309,6 @@ import { Icon } from "astro-icon/components";
       }
     } catch {}
 
-    // Save on input change
     fields.forEach(fieldId => {
       const input = document.getElementById(fieldId);
       if (input) {
@@ -315,7 +324,6 @@ import { Icon } from "astro-icon/components";
     });
   }
 
-  // Kirim Pesanan ke WhatsApp
   function handleWhatsAppCheckout() {
     const cart = getCart();
     if (cart.length === 0) {
@@ -331,7 +339,6 @@ import { Icon } from "astro-icon/components";
     const landmark = (document.getElementById('landmark') as HTMLInputElement)?.value.trim();
     const note = (document.getElementById('note') as HTMLTextAreaElement)?.value.trim();
 
-    // Validasi field wajib
     if (!name || !dukuh || !rt || !address) {
       alert('Mohon lengkapi data alamat pengiriman yang wajib diisi (*)!');
       document.getElementById('name')?.focus();
@@ -345,11 +352,11 @@ import { Icon } from "astro-icon/components";
       subtotal += itemTotal;
 
       let desc = `${index + 1}. *${item.name}* (x${qty})\n`;
-      if (item.spicyLevel) desc += `   └ Level: ${item.spicyLevel}\n`;
+      if (item.spicyLevel) desc += `    └ Level: ${item.spicyLevel}\n`;
       if (item.addons && item.addons.length > 0) {
-        desc += `   └ Extra: ${item.addons.map(a => a.name).join(', ')}\n`;
+        desc += `    └ Extra: ${item.addons.map(a => a.name).join(', ')}\n`;
       }
-      desc += `   └ Harga: ${formatRupiah(itemTotal)}`;
+      desc += `    └ Harga: ${formatRupiah(itemTotal)}`;
       return desc;
     }).join('\n\n');
 
@@ -376,10 +383,6 @@ import { Icon } from "astro-icon/components";
 
     const encodedMessage = encodeURIComponent(message);
     const waUrl = `https://wa.me/${ADMIN_PHONE}?text=${encodedMessage}`;
-
-    // Kosongkan keranjang & form setelah pesanan dikirim (opsional)
-    // localStorage.removeItem(STORAGE_KEY);
-    // localStorage.removeItem(FORM_STORAGE_KEY);
 
     window.open(waUrl, '_blank');
   }
