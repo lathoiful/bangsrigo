@@ -1,14 +1,15 @@
----// src/pages/konfirmasi.astro
+--- 
+// src/pages/konfirmasi.astro
 import Layout from '../layouts/Layout.astro';
 import { Icon } from "astro-icon/components";
 ---
 
 <Layout>
-  <!-- Main Container -->
-  <main class="w-full bg-[#F8FAFC] relative flex flex-col min-h-full">
+  <!-- MAIN WRAPPER: Dibuat pas seukuran layar (h-screen) & matikan scroll luar (overflow-hidden) -->
+  <main class="w-full max-w-md mx-auto bg-[#F8FAFC] relative flex flex-col h-screen overflow-hidden">
     
-    <!-- ================= HEADER SECTION ================= -->
-    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-slate-200/80 px-4 h-14 flex items-center justify-between shadow-xs w-full flex-shrink-0">
+    <!-- ================= HEADER SECTION (TETAP DIAM DI ATAS) ================= -->
+    <header class="bg-white border-b border-slate-200/80 px-4 h-14 flex items-center justify-between shadow-xs w-full flex-shrink-0 z-50">
       <a 
         href="/cart" 
         aria-label="Kembali ke keranjang" 
@@ -30,8 +31,8 @@ import { Icon } from "astro-icon/components";
       <div class="w-9"></div> 
     </header>
 
-    <!-- ================= MAIN CONTENT SECTION ================= -->
-    <div class="flex-1 w-full p-4 sm:p-5 space-y-4 pb-10">
+    <!-- ================= MAIN CONTENT SECTION (HANYA INI YANG DI-SCROLL) ================= -->
+    <div class="flex-1 w-full p-4 sm:p-5 space-y-4 overflow-y-auto pb-10">
       
       <!-- FORM DATA PEMESAN -->
       <section class="w-full bg-white rounded-2xl p-4 sm:p-5 border border-[#E5E7EB] shadow-xs space-y-4">
