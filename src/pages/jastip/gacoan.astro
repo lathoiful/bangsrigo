@@ -199,9 +199,9 @@ const menuGacoan = [
 
 <PlainLayout title="Mie Gacoan - BangsriGo">
   <!-- Wrapper Container Utama -->
-  <div class="max-w-md mx-auto w-full min-h-screen bg-slate-50 flex flex-col relative pb-28 border-x border-slate-200/60 overflow-y-auto">
+  <div class="max-w-md mx-auto w-full min-h-screen bg-slate-50 flex flex-col relative pb-6 border-x border-slate-200/60 overflow-y-auto">
     
-    <!-- TOAST NOTIFICATION (PEMBERITAHUAN) -->
+    <!-- TOAST NOTIFICATION -->
     <div 
       id="toast-notification" 
       class="fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-[90%] w-80 bg-slate-900/95 backdrop-blur-md text-white px-3.5 py-2.5 rounded-xl shadow-xl flex items-center justify-between gap-3 border border-slate-700/50 transition-all duration-300 transform -translate-y-16 opacity-0 pointer-events-none"
@@ -224,20 +224,34 @@ const menuGacoan = [
     <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-100 px-4 py-3">
       <div class="flex items-center justify-between mb-3">
         <div class="flex items-center gap-2.5">
-          <a href="/jastip" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
-            <svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <a href="/jastip" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
+            <svg class="w-5 h-5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </a>
           <div>
-            <h1 class="text-sm font-bold text-slate-900 leading-tight">Mie Gacoan</h1>
-            <p class="text-[10px] text-slate-400 font-medium">Bangsri & Sekitarnya</p>
+            <h1 class="text-base font-extrabold text-slate-900 leading-tight">Mie Gacoan</h1>
+            <p class="text-[11px] text-slate-400 font-medium">Bangsri & Sekitarnya</p>
           </div>
         </div>
 
-        <span class="text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-md">
-          Jastip Resmi
-        </span>
+        <!-- Keranjang Kanan Atas (Lebih Besar Tanpa Badge Jastip) -->
+        <button 
+          id="btn-header-cart" 
+          type="button" 
+          class="relative w-11 h-11 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition-all shadow-md shadow-emerald-600/20 active:scale-95"
+          aria-label="Lihat Keranjang"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          <span 
+            id="header-cart-badge" 
+            class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-xs hidden"
+          >
+            0
+          </span>
+        </button>
       </div>
 
       <!-- FILTER KATEGORI TAB -->
@@ -279,6 +293,7 @@ const menuGacoan = [
           <div 
             class="menu-card bg-white rounded-xl border border-slate-200/70 overflow-hidden flex flex-col justify-between"
             data-category={item.category}
+            data-menu-id={item.id}
           >
             <div>
               <!-- FOTO MENU -->
@@ -320,15 +335,35 @@ const menuGacoan = [
                   Pilih
                 </button>
               ) : (
-                <button 
-                  type="button"
-                  class="btn-add-simple w-6 h-6 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-lg flex items-center justify-center transition-colors"
-                  data-id={item.id}
-                  data-name={item.name}
-                  data-price={item.price}
-                >
-                  +
-                </button>
+                <div class="card-action-container flex items-center" data-id={item.id}>
+                  <!-- Tombol Tambah Pertama kali -->
+                  <button 
+                    type="button"
+                    class="btn-add-simple btn-first-add w-6 h-6 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-lg flex items-center justify-center transition-colors"
+                    data-id={item.id}
+                    data-name={item.name}
+                    data-price={item.price}
+                  >
+                    +
+                  </button>
+
+                  <!-- Kontrol - + di Card (Tampil jika qty > 0) -->
+                  <div class="card-qty-control hidden items-center border border-slate-200 rounded-lg overflow-hidden bg-slate-50">
+                    <button 
+                      type="button" 
+                      class="btn-card-minus px-1.5 py-0.5 text-slate-600 hover:bg-slate-200 text-xs font-bold"
+                      data-id={item.id}
+                    >-</button>
+                    <span class="card-qty-count px-1.5 text-[11px] font-bold text-slate-900">0</span>
+                    <button 
+                      type="button" 
+                      class="btn-card-plus px-1.5 py-0.5 text-slate-600 hover:bg-slate-200 text-xs font-bold"
+                      data-id={item.id}
+                      data-name={item.name}
+                      data-price={item.price}
+                    >+</button>
+                  </div>
+                </div>
               )}
             </div>
           </div>
@@ -423,25 +458,6 @@ const menuGacoan = [
       </div>
     </div>
 
-    <!-- FLOATING BOTTOM BAR -->
-    <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto p-3 bg-white/95 backdrop-blur-md border-t border-slate-100 z-40 flex items-center justify-between gap-3 shadow-lg">
-      <div>
-        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Total Pesanan</p>
-        <p class="text-xs font-black text-slate-900" id="cart-summary-text">0 Item Ditambah</p>
-      </div>
-
-      <button 
-        id="btn-open-cart-drawer"
-        type="button"
-        class="py-2.5 px-4 bg-[#006E2E] hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition-all flex items-center gap-2 shadow-xs"
-      >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-        </svg>
-        <span>Lihat Keranjang</span>
-      </button>
-    </div>
-
   </div>
 
   <script>
@@ -459,7 +475,8 @@ const menuGacoan = [
     const levelContainer = document.getElementById('level-options-container');
 
     const drawerCart = document.getElementById('drawer-cart');
-    const btnOpenCartDrawer = document.getElementById('btn-open-cart-drawer');
+    const btnHeaderCart = document.getElementById('btn-header-cart');
+    const headerCartBadge = document.getElementById('header-cart-badge');
     const btnCloseCart = document.getElementById('btn-close-cart');
     const btnClearCart = document.getElementById('btn-clear-cart');
     const cartItemsContainer = document.getElementById('cart-items-container');
@@ -482,14 +499,11 @@ const menuGacoan = [
       toastTitle.textContent = title;
       toastMessage.textContent = message;
 
-      // Reset timer sebelumnya jika ada
       if (toastTimeout) clearTimeout(toastTimeout);
 
-      // Tampilkan Toast
       toastNotification.classList.remove('-translate-y-16', 'opacity-0', 'pointer-events-none');
       toastNotification.classList.add('translate-y-0', 'opacity-100');
 
-      // Sembunyikan otomatis dalam 2.5 detik
       toastTimeout = setTimeout(() => {
         hideToast();
       }, 2500);
@@ -544,18 +558,67 @@ const menuGacoan = [
       updateCartUI();
     }
 
-    // 3. Render & Sync UI Keranjang
+    function addOrUpdateCartItem(menuId: string, name: string, price: number, catatan: string = 'Original') {
+      const items = getCartItems();
+      const existingIndex = items.findIndex(item => item.menuId === menuId && item.catatan === catatan);
+
+      if (existingIndex > -1) {
+        items[existingIndex].jumlah = (items[existingIndex].jumlah || 1) + 1;
+      } else {
+        items.push({
+          id: `${menuId}-${Date.now()}`,
+          menuId: menuId,
+          jenis: 'Jastip Gacoan',
+          nama: name,
+          harga: price,
+          deskripsi: `Rp ${price.toLocaleString('id-ID')}`,
+          jumlah: 1,
+          catatan: catatan
+        });
+      }
+
+      saveCartItems(items);
+    }
+
+    // 3. Render & Sync UI Keranjang & Card Controls
     function updateCartUI() {
       const items = getCartItems();
       const totalQty = items.reduce((sum, item) => sum + (item.jumlah || item.qty || 1), 0);
-      
-      // Update Summary Bar
-      const summaryText = document.getElementById('cart-summary-text');
-      if (summaryText) {
-        summaryText.textContent = `${totalQty} Item Ditambah`;
+
+      // Update Badge Keranjang Header Kanan Atas
+      if (headerCartBadge) {
+        if (totalQty > 0) {
+          headerCartBadge.textContent = totalQty.toString();
+          headerCartBadge.classList.remove('hidden');
+        } else {
+          headerCartBadge.classList.add('hidden');
+        }
       }
 
-      // Render items inside drawer
+      // Sync Kontrol Qty (- / +) pada setiap Card Menu Sederhana
+      document.querySelectorAll('.card-action-container').forEach((container) => {
+        const menuId = container.getAttribute('data-id');
+        const firstAddBtn = container.querySelector('.btn-first-add');
+        const qtyControl = container.querySelector('.card-qty-control');
+        const qtyCount = container.querySelector('.card-qty-count');
+
+        const itemQty = items
+          .filter(i => i.menuId === menuId || i.id?.startsWith(`${menuId}-`))
+          .reduce((sum, i) => sum + (i.jumlah || i.qty || 1), 0);
+
+        if (itemQty > 0) {
+          firstAddBtn?.classList.add('hidden');
+          qtyControl?.classList.remove('hidden');
+          qtyControl?.classList.add('flex');
+          if (qtyCount) qtyCount.textContent = itemQty.toString();
+        } else {
+          firstAddBtn?.classList.remove('hidden');
+          qtyControl?.classList.add('hidden');
+          qtyControl?.classList.remove('flex');
+        }
+      });
+
+      // Render item di dalam Drawer Keranjang
       if (!cartItemsContainer) return;
 
       if (items.length === 0) {
@@ -586,7 +649,6 @@ const menuGacoan = [
               <p class="text-[11px] font-medium text-slate-500 mt-0.5">Rp ${numPrice.toLocaleString('id-ID')}</p>
             </div>
 
-            <!-- Operational Buttons + - Delete -->
             <div class="flex items-center gap-2 shrink-0">
               <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-slate-50">
                 <button type="button" class="btn-qty-minus px-2 py-1 text-slate-600 hover:bg-slate-200 text-xs font-bold" data-index="${idx}">-</button>
@@ -641,38 +703,48 @@ const menuGacoan = [
       });
     }
 
-    // 4. Tambah Menu Tanpa Level (+ NOTIFIKASI TOAST)
+    // 4. Handler Tambah Pertama Kali pada Card
     document.querySelectorAll('.btn-add-simple').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         const button = e.currentTarget as HTMLButtonElement;
-        const id = button.getAttribute('data-id');
+        const id = button.getAttribute('data-id') || '';
         const name = button.getAttribute('data-name') || 'Menu';
         const price = Number(button.getAttribute('data-price') || 0);
 
-        const items = getCartItems();
-        items.push({
-          id: `${id}-${Date.now()}`,
-          jenis: 'Jastip Gacoan',
-          nama: name,
-          harga: price,
-          deskripsi: `Rp ${price.toLocaleString('id-ID')}`,
-          jumlah: 1,
-          catatan: 'Original'
-        });
-
-        saveCartItems(items);
-
-        // Pemicu Notifikasi Info
+        addOrUpdateCartItem(id, name, price, 'Original');
         showToast('Berhasil Ditambahkan!', `${name} masuk keranjang.`);
+      });
+    });
 
-        // Feedback visual pada tombol
-        const origText = button.textContent;
-        button.textContent = '✓';
-        button.classList.add('bg-emerald-600', 'text-white');
-        setTimeout(() => {
-          button.textContent = origText;
-          button.classList.remove('bg-emerald-600', 'text-white');
-        }, 700);
+    // Handler Tombol (+) pada Card langsung
+    document.querySelectorAll('.btn-card-plus').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const button = e.currentTarget as HTMLButtonElement;
+        const id = button.getAttribute('data-id') || '';
+        const name = button.getAttribute('data-name') || 'Menu';
+        const price = Number(button.getAttribute('data-price') || 0);
+
+        addOrUpdateCartItem(id, name, price, 'Original');
+      });
+    });
+
+    // Handler Tombol (-) pada Card langsung
+    document.querySelectorAll('.btn-card-minus').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const button = e.currentTarget as HTMLButtonElement;
+        const menuId = button.getAttribute('data-id') || '';
+
+        const items = getCartItems();
+        const idx = items.map(i => i.menuId || i.id?.split('-')[0]).lastIndexOf(menuId);
+
+        if (idx > -1) {
+          if ((items[idx].jumlah || 1) > 1) {
+            items[idx].jumlah -= 1;
+          } else {
+            items.splice(idx, 1);
+          }
+          saveCartItems(items);
+        }
       });
     });
 
@@ -722,27 +794,20 @@ const menuGacoan = [
 
     btnCloseModal?.addEventListener('click', () => modalLevel?.classList.add('hidden'));
 
-    // Konfirmasi Level Pedas (+ NOTIFIKASI TOAST)
+    // Konfirmasi Level Pedas (+ TOAST)
     btnConfirmLevel?.addEventListener('click', () => {
       if (!currentSelectedItem) return;
 
       const catatanVal = modalCatatan?.value?.trim();
       const finalCatatan = `Level ${selectedLevel}${catatanVal ? ` (${catatanVal})` : ''}`;
 
-      const items = getCartItems();
-      items.push({
-        id: `${currentSelectedItem.id}-${Date.now()}`,
-        jenis: 'Jastip Gacoan',
-        nama: currentSelectedItem.name,
-        harga: currentSelectedItem.price,
-        deskripsi: `Rp ${currentSelectedItem.price.toLocaleString('id-ID')}`,
-        jumlah: 1,
-        catatan: finalCatatan
-      });
+      addOrUpdateCartItem(
+        currentSelectedItem.id, 
+        currentSelectedItem.name, 
+        currentSelectedItem.price, 
+        finalCatatan
+      );
 
-      saveCartItems(items);
-
-      // Pemicu Notifikasi Info
       showToast('Berhasil Ditambahkan!', `${currentSelectedItem.name} (${finalCatatan}) masuk keranjang.`);
 
       modalLevel?.classList.add('hidden');
@@ -750,7 +815,7 @@ const menuGacoan = [
     });
 
     // 6. Controller Drawer Keranjang
-    btnOpenCartDrawer?.addEventListener('click', () => {
+    btnHeaderCart?.addEventListener('click', () => {
       updateCartUI();
       drawerCart?.classList.remove('hidden');
     });

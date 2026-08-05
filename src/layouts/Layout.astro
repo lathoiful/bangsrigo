@@ -2,7 +2,7 @@
 // src/layouts/Layout.astro
 interface Props {
   title?: string;
-  activeTab?: 'beranda' | 'jastip' | 'titipan' | 'keranjang';
+  activeTab?: 'beranda' | 'menu' | 'jastip' | 'titipan' | 'keranjang';
 }
 
 const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } = Astro.props;
@@ -26,8 +26,8 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
       <!-- KONTEN HALAMAN (SLOT) -->
       <slot />
 
-      <!-- FLOATING BOTTOM NAVIGATION BAR (4 NAV MENU) -->
-      <nav class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-[390px] bg-white/95 backdrop-blur-md rounded-[24px] shadow-lg border border-slate-100 px-3 py-2 z-50 flex items-center justify-between">
+      <!-- FLOATING BOTTOM NAVIGATION BAR (5 NAV MENU) -->
+      <nav class="absolute bottom-3 left-1/2 -translate-x-1/2 w-[94%] max-w-[400px] bg-white/95 backdrop-blur-md rounded-[24px] shadow-lg border border-slate-100 px-2 py-2 z-50 flex items-center justify-between">
         
         <!-- 1. Beranda -->
         <a 
@@ -42,7 +42,20 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
           <span class="text-[10px] font-semibold tracking-wide">Beranda</span>
         </a>
 
-        <!-- 2. Jastip -->
+        <!-- 2. Menu Makanan -->
+        <a 
+          href="/menu" 
+          class={`flex flex-col items-center gap-0.5 flex-1 transition-colors ${
+            activeTab === 'menu' ? 'text-[#16A34A]' : 'text-slate-400 hover:text-slate-600'
+          }`}
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+          <span class="text-[10px] font-semibold tracking-wide">Menu</span>
+        </a>
+
+        <!-- 3. Jastip -->
         <a 
           href="/jastip" 
           class={`flex flex-col items-center gap-0.5 flex-1 transition-colors ${
@@ -55,18 +68,18 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
           <span class="text-[10px] font-semibold tracking-wide">Jastip</span>
         </a>
 
-        <!-- 3. Titipan (Dibuat Besar & Floating seperti Keranjang) -->
+        <!-- 4. Titipan (Floating Button) -->
         <a 
           href="/jastip/titipan" 
           class={`relative flex flex-col items-center flex-1 transition-colors ${
             activeTab === 'titipan' ? 'text-[#16A34A]' : 'text-slate-600 hover:text-slate-800'
           }`}
         >
-          <div class="relative -mt-7 mb-0.5">
-            <div class={`w-11 h-11 rounded-full flex items-center justify-center text-white shadow-md ring-4 ring-white active:scale-95 transition-transform ${
+          <div class="relative -mt-6 mb-0.5">
+            <div class={`w-10 h-10 rounded-full flex items-center justify-center text-white shadow-md ring-4 ring-white active:scale-95 transition-transform ${
               activeTab === 'titipan' ? 'bg-[#16A34A] shadow-emerald-900/30' : 'bg-slate-700 shadow-slate-900/20'
             }`}>
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
 
@@ -82,19 +95,19 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
           <span class="text-[10px] font-semibold tracking-wide">Titipan</span>
         </a>
 
-        <!-- 4. Keranjang (Floating Button Utama) -->
+        <!-- 5. Keranjang Makanan (Floating Button Utama) -->
         <a 
           href="/cart" 
           class={`relative flex flex-col items-center flex-1 transition-colors ${
             activeTab === 'keranjang' ? 'text-[#16A34A]' : 'text-slate-600 hover:text-slate-800'
           }`}
         >
-          <div class="relative -mt-7 mb-0.5">
-            <div class={`w-11 h-11 rounded-full flex items-center justify-center text-white shadow-md ring-4 ring-white active:scale-95 transition-transform ${
+          <div class="relative -mt-6 mb-0.5">
+            <div class={`w-10 h-10 rounded-full flex items-center justify-center text-white shadow-md ring-4 ring-white active:scale-95 transition-transform ${
               activeTab === 'keranjang' ? 'bg-[#16A34A] shadow-emerald-900/30' : 'bg-[#006E2E] shadow-emerald-900/30'
             }`}>
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 000-4z" />
               </svg>
 
               <!-- Badge Keranjang Warung Utama -->

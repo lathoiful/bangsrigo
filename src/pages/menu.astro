@@ -1,0 +1,389 @@
+---
+// src/pages/menu.astro
+import Layout from '../layouts/Layout.astro';
+import logo from '../assets/logo.svg';
+import { supabase } from '../lib/supabase';
+
+interface MenuItemDB {
+  id: number;
+  created_at: string;
+  slug: string;
+  name: string;
+  description: string;
+  subdescription?: string;
+  price: string | number;
+  image: string;
+  badge?: string | null;
+  addons: string | any[];
+  category: string;
+  spice_levels: string | number[];
+}
+
+const [categoriesResponse, menusResponse] = await Promise.all([
+  supabase.from('categories').select('*').order('id', { ascending: true }),
+  supabase.from('menus').select('*').order('created_at', { ascending: false })
+]);
+
+const rawMenus: MenuItemDB[] = menusResponse.data || [];
+
+const menus = rawMenus.map((item) => {
+  let parsedAddons = [];
+  let parsedSpiceLevels = [];
+
+  try {
+    parsedAddons = typeof item.addons === 'string' ? JSON.parse(item.addons) : item.addons || [];
+  } catch (e) {
+    parsedAddons = [];
+  }
+
+  try {
+    parsedSpiceLevels = typeof item.spice_levels === 'string' ? JSON.parse(item.spice_levels) : item.spice_levels || [];
+  } catch (e) {
+    parsedSpiceLevels = [];
+  }
+
+  return {
+    ...item,
+    priceNumber: Number(item.price) || 0,
+    parsedAddons,
+    parsedSpiceLevels
+  };
+});
+
+const categories = [
+  { id: 'all', name: 'Semua' },
+  { id: 'makanan', name: 'Makanan' },
+  { id: 'minuman', name: 'Minuman' }
+];
+
+const formatRupiah = (price: number) => {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    maximumFractionDigits: 0,
+  }).format(price).replace('Rp', 'Rp ');
+};
+---
+
+<Layout title="Daftar Menu - BangsriGo" activeTab="menu">
+  <main class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col h-screen overflow-hidden">
+    <!-- TOP SECTION -->
+    <div class="bg-white shrink-0 border-b border-slate-100 shadow-2xs">
+      <header class="px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <a href="/" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 active:scale-95 transition-all">
+            <svg class="w-5 h-5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </a>
+          <h1 class="font-extrabold text-slate-900 text-base">Menu Makanan</h1>
+        </div>
+
+        <a 
+          href="/cart" 
+          aria-label="Lihat Keranjang"
+          class="relative p-2.5 rounded-xl bg-emerald-50 text-[#16A34A] hover:bg-emerald-100 transition active:scale-95"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <span 
+            id="cart-badge-header" 
+            class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center border-2 border-white hidden"
+          >
+            0
+          </span>
+        </a>
+      </header>
+
+      <!-- SEARCH BAR -->
+      <section class="px-4 py-1.5">
+        <div class="relative flex items-center">
+          <svg class="w-5 h-5 absolute left-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input 
+            id="search-input"
+            type="text" 
+            placeholder="Cari makanan atau minuman..." 
+            class="w-full bg-[#F8F8F8] border border-slate-200/80 rounded-xl py-2 pl-10 pr-4 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:border-[#16A34A] focus:bg-white transition"
+          />
+        </div>
+      </section>
+
+      <!-- KATEGORI -->
+      <section class="mt-1 pb-2">
+        <div class="flex items-center gap-2.5 overflow-x-auto no-scrollbar px-4 py-1" id="category-container">
+          {categories.map((cat, index) => (
+            <button 
+              type="button"
+              data-category={cat.id}
+              class={`category-btn px-4 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap cursor-pointer transition-all ${
+                index === 0 
+                  ? 'bg-[#16A34A] text-white shadow-xs' 
+                  : 'bg-[#F8F8F8] text-slate-600 border border-slate-200/60 hover:bg-slate-100'
+              }`}
+            >
+              {cat.name}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <!-- TITLE -->
+      <div class="px-4 py-2 bg-slate-50 border-t border-slate-100">
+        <h2 class="font-bold text-slate-900 text-sm">Daftar Menu</h2>
+        <p class="text-[11px] text-slate-500">Pilih menu favoritmu di sini</p>
+      </div>
+    </div>
+
+    <!-- AREA CARD MENU -->
+    <div class="flex-1 overflow-y-auto px-4 py-3 no-scrollbar pb-28">
+      <div class="grid grid-cols-2 gap-3" id="menu-grid">
+        {menus.length === 0 ? (
+          <p class="col-span-2 text-center text-sm text-slate-500 py-6">Belum ada menu yang tersedia.</p>
+        ) : (
+          menus.map((item) => (
+            <div 
+              class="menu-item bg-white border border-slate-100 rounded-2xl p-2 flex flex-col gap-2 shadow-xs hover:border-slate-200 transition group relative"
+              data-category={item.category}
+              data-name={item.name.toLowerCase()}
+            >
+              <a href={`/menu/${item.slug || item.id}`} class="contents">
+                <div class="relative w-full h-28 shrink-0 overflow-hidden rounded-xl">
+                  <img 
+                    src={item.image || 'https://placehold.co/300x300'} 
+                    alt={item.name} 
+                    class="w-full h-full object-cover bg-slate-100 group-hover:scale-105 transition duration-300"
+                  />
+                </div>
+                <div class="flex-1 flex flex-col min-w-0">
+                  <h3 class="font-bold text-slate-900 text-sm truncate group-hover:text-[#16A34A] transition">{item.name}</h3>
+                  <p class="text-[11px] text-slate-500 truncate mt-0.5" title={item.description}>{item.description}</p>
+                </div>
+              </a>
+
+              <div class="mt-auto pt-2 flex items-end justify-between">
+                <div>
+                  <div class="font-bold text-slate-900 text-[13px]">{formatRupiah(item.priceNumber)}</div>
+                  {item.parsedSpiceLevels && item.parsedSpiceLevels.length > 0 && (
+                    <div class="flex items-center gap-1 text-[10px] text-amber-600 font-medium mt-0.5">
+                      <span>🌶️ Level {Math.min(...item.parsedSpiceLevels)}-{Math.max(...item.parsedSpiceLevels)}</span>
+                    </div>
+                  )}
+                </div>
+
+                <button 
+                  type="button" 
+                  aria-label={`Tambah ${item.name} ke keranjang`}
+                  class="btn-add-cart w-9 h-9 rounded-xl bg-gradient-to-br from-[#16A34A] to-emerald-600 text-white flex items-center justify-center hover:from-emerald-600 hover:to-emerald-700 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 active:scale-95 shadow-sm cursor-pointer z-10"
+                  data-id={item.id}
+                  data-slug={item.slug || ''}
+                  data-name={item.name}
+                  data-price={item.priceNumber}
+                  data-image={item.image}
+                  data-has-spicy={item.parsedSpiceLevels.length > 0 ? 'true' : 'false'}
+                >
+                  <svg class="w-5 h-5 drop-shadow-sm pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+      <div id="no-result" class="hidden col-span-2 text-center text-sm text-slate-500 py-6">Menu tidak ditemukan.</div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  interface AddonItem {
+    name: string;
+    price: number;
+  }
+
+  interface CartItem {
+    cartItemId: string;
+    id: string | number;
+    menuId?: string | number;
+    slug?: string;
+    name: string;
+    price: number;
+    basePrice?: number;
+    image: string;
+    qty: number;
+    quantity?: number;
+    addons?: AddonItem[];
+    notes?: string;
+    spicyLevel?: string;
+    totalPrice?: number;
+  }
+
+  const STORAGE_KEY = 'bangsri_cart';
+
+  function getCart(): CartItem[] {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function saveCart(cart: CartItem[]) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    window.dispatchEvent(new Event('cart-updated'));
+  }
+
+  function updateCartUI() {
+    const cart = getCart();
+    const cartBadgeHeader = document.getElementById('cart-badge-header');
+
+    if (!cartBadgeHeader) return;
+
+    const totalQty = cart.reduce((sum, item) => sum + (item.qty || item.quantity || 0), 0);
+
+    if (totalQty > 0) {
+      cartBadgeHeader.classList.remove('hidden');
+      cartBadgeHeader.textContent = totalQty.toString();
+    } else {
+      cartBadgeHeader.classList.add('hidden');
+    }
+  }
+
+  function addToCart(btn: HTMLButtonElement) {
+    const id = btn.dataset.id || '';
+    const slug = btn.dataset.slug || '';
+    const name = btn.dataset.name || '';
+    const price = Number(btn.dataset.price || 0);
+    const image = btn.dataset.image || '';
+    const hasSpicy = btn.dataset.hasSpicy === 'true';
+
+    if (!id) return;
+
+    const cart = getCart();
+    const defaultSpicy = hasSpicy ? '1' : undefined;
+
+    const existingIndex = cart.findIndex((item) => {
+      const itemId = item.id || item.menuId;
+      const hasNoAddons = !item.addons || item.addons.length === 0;
+      const hasNoNotes = !item.notes;
+      const sameSpicy = item.spicyLevel === defaultSpicy;
+      return String(itemId) === String(id) && hasNoAddons && hasNoNotes && sameSpicy;
+    });
+
+    if (existingIndex > -1) {
+      const item = cart[existingIndex];
+      const currentQty = item.qty || item.quantity || 1;
+      item.qty = currentQty + 1;
+      item.quantity = item.qty;
+    } else {
+      cart.push({
+        cartItemId: `${id}_basic_${Date.now()}`,
+        id: id,
+        menuId: id,
+        slug: slug,
+        name,
+        price,
+        basePrice: price,
+        image,
+        qty: 1,
+        quantity: 1,
+        addons: [],
+        notes: '',
+        spicyLevel: defaultSpicy
+      });
+    }
+
+    saveCart(cart);
+    updateCartUI();
+
+    btn.classList.add('scale-125');
+    setTimeout(() => btn.classList.remove('scale-125'), 150);
+  }
+
+  function initFilter() {
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const menuItems = document.querySelectorAll('.menu-item');
+    const noResult = document.getElementById('no-result');
+
+    let currentCategory = 'all';
+    let searchQuery = '';
+
+    function filterMenus() {
+      let visibleCount = 0;
+      menuItems.forEach((el) => {
+        const item = el as HTMLElement;
+        const category = item.dataset.category || '';
+        const name = item.dataset.name || '';
+
+        const matchesCategory = currentCategory === 'all' || category.toLowerCase() === currentCategory.toLowerCase();
+        const matchesSearch = name.includes(searchQuery.toLowerCase());
+
+        if (matchesCategory && matchesSearch) {
+          item.style.display = 'flex';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      if (noResult) {
+        if (visibleCount === 0) {
+          noResult.classList.remove('hidden');
+        } else {
+          noResult.classList.add('hidden');
+        }
+      }
+    }
+
+    categoryButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        categoryButtons.forEach((b) => {
+          b.classList.remove('bg-[#16A34A]', 'text-white', 'shadow-xs');
+          b.classList.add('bg-[#F8F8F8]', 'text-slate-600', 'border', 'border-slate-200/60', 'hover:bg-slate-100');
+        });
+        btn.classList.remove('bg-[#F8F8F8]', 'text-slate-600', 'border', 'border-slate-200/60', 'hover:bg-slate-100');
+        btn.classList.add('bg-[#16A34A]', 'text-white', 'shadow-xs');
+
+        currentCategory = (btn as HTMLElement).dataset.category || 'all';
+        filterMenus();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = (e.target as HTMLInputElement).value.trim();
+        filterMenus();
+      });
+    }
+  }
+
+  function init() {
+    updateCartUI();
+    initFilter();
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const btn = target.closest('.btn-add-cart') as HTMLButtonElement;
+
+      if (btn) {
+        e.preventDefault();
+        e.stopPropagation();
+        addToCart(btn);
+      }
+    });
+
+    window.addEventListener('storage', updateCartUI);
+    window.addEventListener('cart-updated', updateCartUI);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
