@@ -4,29 +4,27 @@ import Layout from '../layouts/Layout.astro';
 import { Icon } from "astro-icon/components";
 
 // Jarak bawah diperlebar agar tidak tertutup bottom nav/tombol fixed
-const JARA_BAWAH = "pb-32"; 
+const JARAK_BAWAH = "pb-28"; 
 ---
 
 <Layout title="Keranjang Belanja - BangsriGo">
-  <main 
-    class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col h-[calc(100vh-64px)] overflow-hidden font-sans"
-  >
+  <main class="w-full max-w-md mx-auto bg-slate-50/80 relative flex flex-col h-[calc(100vh-56px)] overflow-hidden font-sans">
     
-    <!-- ================= HEADER SECTION (TETAP DIAM DI ATAS) ================= -->
-    <header class="bg-white border-b border-slate-200/80 px-4 h-14 flex items-center justify-between shadow-xs w-full flex-shrink-0 z-40">
+    <!-- ================= HEADER SECTION ================= -->
+    <header class="bg-white border-b border-slate-200/80 px-4 h-13 flex items-center justify-between shadow-xs w-full flex-shrink-0 z-40">
       <a 
         href="/" 
         aria-label="Kembali" 
-        class="w-9 h-9 flex items-center justify-center text-slate-700 hover:text-slate-900 bg-slate-100/80 hover:bg-slate-200/80 active:scale-95 rounded-full transition-all"
+        class="w-8 h-8 flex items-center justify-center text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 active:scale-95 rounded-full transition-all"
       >
-        <Icon name="lucide:chevron-left" class="w-5 h-5 -ml-0.5" />
+        <Icon name="lucide:chevron-left" class="w-4 h-4 -ml-0.5" />
       </a>
 
       <div class="flex flex-col items-center justify-center text-center">
-        <h1 class="text-sm font-bold text-slate-900 tracking-tight leading-tight">
+        <h1 class="text-xs font-bold text-slate-900 tracking-tight leading-tight">
           Keranjang Belanja
         </h1>
-        <div class="flex items-center gap-1.5 mt-0.5">
+        <div class="flex items-center gap-1 mt-0.5">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
           <span id="header-item-count" class="text-[10px] font-medium text-slate-500">0 Item</span>
         </div>
@@ -35,123 +33,121 @@ const JARA_BAWAH = "pb-32";
       <button 
         id="btn-clear-cart" 
         aria-label="Hapus Keranjang" 
-        class="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 active:scale-95 rounded-full transition-all cursor-pointer"
+        class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 active:scale-95 rounded-full transition-all cursor-pointer"
       >
-        <Icon name="lucide:trash-2" class="w-4 h-4" />
+        <Icon name="lucide:trash-2" class="w-3.5 h-3.5" />
       </button>
     </header>
 
     <!-- ================= MAIN CONTENT SECTION ================= -->
-    <div 
-      class={`flex-1 w-full p-4 space-y-4 overflow-y-auto ${JARA_BAWAH}`}
-    >
+    <div class={`flex-1 w-full p-3.5 space-y-3.5 overflow-y-auto ${JARAK_BAWAH}`}>
       
       <!-- DAFTAR MENU CONTAINER -->
-      <div id="cart-items-container" class="space-y-3">
+      <div id="cart-items-container" class="space-y-2.5">
         <!-- Dinamis dirender via script dari localStorage -->
       </div>
 
-      <!-- SECTION FORM & RINGKASAN (Ditampilkan jika cart tidak kosong) -->
-      <div id="checkout-wrapper" class="space-y-4 hidden">
+      <!-- SECTION FORM & RINGKASAN -->
+      <div id="checkout-wrapper" class="space-y-3.5 hidden">
         
-        <!-- FORM DATA PEMESAN -->
-        <section class="w-full bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-4">
-          <div class="flex items-center gap-2 pb-2.5 border-b border-slate-100">
-            <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <Icon name="lucide:map-pin" class="w-4 h-4" />
+        <!-- FORM DATA PEMESAN (Compact) -->
+        <section class="w-full bg-white rounded-2xl p-3.5 sm:p-4 border border-slate-200/80 shadow-xs space-y-3">
+          <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
+            <div class="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <Icon name="lucide:map-pin" class="w-3.5 h-3.5" />
             </div>
-            <h2 class="text-sm font-bold text-slate-900">
+            <h2 class="text-xs font-bold text-slate-900">
               Alamat Pengiriman
             </h2>
           </div>
 
-          <div class="space-y-3.5">
+          <div class="space-y-3">
             <!-- Nama Pemesan -->
-            <div class="w-full">
-              <label for="name" class="block text-[11px] font-semibold text-slate-600 mb-1">Nama Penerima <span class="text-red-500">*</span></label>
+            <div>
+              <label for="name" class="block text-[10px] font-semibold text-slate-600 mb-1">Nama Penerima <span class="text-red-500">*</span></label>
               <input
                 type="text"
                 id="name"
                 required
                 autocomplete="name"
                 placeholder="Contoh: Dimas"
-                class="w-full border border-slate-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 transition-all bg-slate-50/40"
+                class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 bg-slate-50/40"
               />
             </div>
 
             <!-- Grid Dukuh & RT -->
-            <div class="grid grid-cols-2 gap-3 w-full">
+            <div class="grid grid-cols-2 gap-2.5">
               <div>
-                <label for="dukuh" class="block text-[11px] font-semibold text-slate-600 mb-1">Dukuh <span class="text-red-500">*</span></label>
+                <label for="dukuh" class="block text-[10px] font-semibold text-slate-600 mb-1">Dukuh <span class="text-red-500">*</span></label>
                 <input
                   type="text"
                   id="dukuh"
                   required
                   placeholder="Contoh: Banjarmelati"
-                  class="w-full border border-slate-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 transition-all bg-slate-50/40"
+                  class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 bg-slate-50/40"
                 />
               </div>
               <div>
-                <label for="rt" class="block text-[11px] font-semibold text-slate-600 mb-1">RT <span class="text-red-500">*</span></label>
+                <label for="rt" class="block text-[10px] font-semibold text-slate-600 mb-1">RT <span class="text-red-500">*</span></label>
                 <input
                   type="text"
                   id="rt"
                   required
                   placeholder="Contoh: RT 01"
-                  class="w-full border border-slate-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 transition-all bg-slate-50/40"
+                  class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 bg-slate-50/40"
                 />
               </div>
             </div>
 
             <!-- Detail Alamat / Kos -->
-            <div class="w-full">
-              <label for="address" class="block text-[11px] font-semibold text-slate-600 mb-1">Detail Tempat / Nama Kos <span class="text-red-500">*</span></label>
+            <div>
+              <label for="address" class="block text-[10px] font-semibold text-slate-600 mb-1">Detail Tempat / Nama Kos <span class="text-red-500">*</span></label>
               <input
                 type="text"
                 id="address"
                 required
                 autocomplete="street-address"
                 placeholder="Contoh: Kos Bu Siti No. 4"
-                class="w-full border border-slate-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 transition-all bg-slate-50/40"
+                class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 bg-slate-50/40"
               />
             </div>
 
             <!-- Patokan -->
-            <div class="w-full">
-              <label for="landmark" class="block text-[11px] font-semibold text-slate-600 mb-1">Patokan (Opsional)</label>
+            <div>
+              <label for="landmark" class="block text-[10px] font-semibold text-slate-600 mb-1">Patokan (Opsional)</label>
               <input
                 type="text"
                 id="landmark"
                 placeholder="Contoh: Depan warung Madura"
-                class="w-full border border-slate-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 transition-all bg-slate-50/40"
+                class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 bg-slate-50/40"
               />
             </div>
 
             <!-- Catatan Kurir -->
-            <div class="w-full">
-              <label for="note" class="block text-[11px] font-semibold text-slate-600 mb-1">Catatan Pengantaran (Opsional)</label>
+            <div>
+              <label for="note" class="block text-[10px] font-semibold text-slate-600 mb-1">Catatan Pengantaran (Opsional)</label>
               <textarea
                 id="note"
                 rows="2"
                 placeholder="Contoh: Tolong taruh di teras depan"
-                class="w-full border border-slate-200 rounded-xl p-3.5 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 resize-none placeholder:text-slate-400 transition-all bg-slate-50/40"
+                class="w-full border border-slate-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 resize-none placeholder:text-slate-400 bg-slate-50/40"
               ></textarea>
             </div>
           </div>
         </section>
 
         <!-- RINGKASAN PEMBAYARAN -->
-        <section id="summary-section" class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-4">
-          <div class="flex items-center gap-2 pb-2.5 border-b border-slate-100">
-            <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <Icon name="lucide:receipt" class="w-4 h-4" />
+        <section id="summary-section" class="bg-white rounded-2xl p-3.5 sm:p-4 border border-slate-200/80 shadow-xs space-y-3">
+          <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
+            <div class="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <Icon name="lucide:receipt" class="w-3.5 h-3.5" />
             </div>
-            <h3 class="text-sm font-bold text-slate-900">
+            <h3 class="text-xs font-bold text-slate-900">
               Ringkasan Pembayaran
             </h3>
           </div>
 
-          <div class="space-y-2 text-xs sm:text-sm text-slate-600">
+          <div class="space-y-2 text-xs text-slate-600">
             <div class="flex justify-between items-center">
               <span>Subtotal</span>
               <span id="summary-subtotal" class="font-medium text-slate-900">Rp 0</span>
@@ -159,41 +155,41 @@ const JARA_BAWAH = "pb-32";
             <div class="flex justify-between items-center">
               <span class="flex items-center gap-1.5">
                 Ongkir 
-                <span class="text-[9px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded font-medium border border-amber-200/50">Info WA</span>
+                <span class="text-[9px] bg-amber-50 text-amber-700 px-1 py-0.2 rounded font-medium border border-amber-200/50">Info WA</span>
               </span>
               <span class="font-medium text-slate-900">Rp 0 - 5.000</span>
             </div>
           </div>
 
-          <div class="border-t border-slate-200/80 pt-3.5 flex justify-between items-center">
-            <span class="text-xs sm:text-sm font-bold text-slate-900">Total Sementara</span>
-            <span id="summary-total" class="text-base sm:text-lg font-bold text-emerald-600">Rp 0</span>
+          <div class="border-t border-slate-200/80 pt-3 flex justify-between items-center">
+            <span class="text-xs font-bold text-slate-900">Total Sementara</span>
+            <span id="summary-total" class="text-sm sm:text-base font-bold text-emerald-600">Rp 0</span>
           </div>
         </section>
 
         <!-- SECTION AKHIR (INFO BANNER + TOMBOL WA) -->
-        <section class="w-full bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-3">
-          <div class="w-full bg-emerald-50/80 rounded-xl p-3.5 border border-emerald-100/80 flex gap-3 items-start">
+        <section class="w-full bg-white rounded-2xl p-3.5 sm:p-4 border border-slate-200/80 shadow-xs space-y-3">
+          <div class="w-full bg-emerald-50/80 rounded-xl p-3 border border-emerald-100/80 flex gap-2.5 items-start">
             <div class="text-emerald-600 mt-0.5 flex-shrink-0">
-              <Icon name="lucide:info" class="w-4 h-4" />
+              <Icon name="lucide:info" class="w-3.5 h-3.5" />
             </div>
-            <p class="text-[11px] sm:text-xs text-slate-700 leading-relaxed">
-              Nanti pesanan otomatis dirangkum dan dikirim via WhatsApp ke admin setelah tombol di bawah ditekan.
+            <p class="text-[10px] text-slate-700 leading-relaxed">
+              Pesanan otomatis dirangkum dan dikirim via WhatsApp ke admin setelah tombol ditekan.
             </p>
           </div>
 
-          <div class="space-y-1.5 text-center pt-1">
+          <div class="space-y-1 text-center">
             <button
               type="button"
               id="btn-whatsapp"
-              class="w-full h-[50px] bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-semibold rounded-xl flex items-center justify-center gap-2.5 shadow-sm transition-all cursor-pointer text-sm sm:text-base border-none"
+              class="w-full h-11 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-semibold rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer text-xs sm:text-sm border-none"
             >
-              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
               </svg>
               <span>Lanjut ke Konfirmasi Invoice</span>
             </button>
-            <span class="block text-[10px] text-slate-500">Periksa ringkasan pesanan sebelum terkirim ke WhatsApp.</span>
+            <span class="block text-[9px] text-slate-400">Periksa ringkasan pesanan sebelum terkirim ke WhatsApp.</span>
           </div>
         </section>
 
@@ -203,64 +199,61 @@ const JARA_BAWAH = "pb-32";
 
     <!-- ================= MODAL PREVIEW INVOICE ================= -->
     <div id="invoice-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 hidden opacity-0 transition-opacity duration-300">
-      <div id="invoice-modal-content" class="bg-white w-full max-w-sm rounded-t-3xl sm:rounded-3xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden transform translate-y-full sm:translate-y-0 sm:scale-95 transition-all duration-300 max-h-[85vh] sm:max-h-[85vh] pb-safe">
+      <div id="invoice-modal-content" class="bg-white w-full max-w-sm rounded-t-3xl sm:rounded-2xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden transform translate-y-full sm:translate-y-0 sm:scale-95 transition-all duration-300 max-h-[85vh]">
         
         <!-- Header Invoice -->
-        <div class="bg-[#006E2E] text-white p-4 sm:p-5 text-center relative shrink-0">
+        <div class="bg-[#006E2E] text-white p-4 text-center relative shrink-0">
           <div class="absolute top-3 right-3">
-            <button id="close-invoice-modal" class="w-7 h-7 bg-white/20 hover:bg-white/35 rounded-full flex items-center justify-center text-white transition-colors cursor-pointer">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button id="close-invoice-modal" class="w-6 h-6 bg-white/20 hover:bg-white/35 rounded-full flex items-center justify-center text-white transition-colors cursor-pointer">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
               </svg>
             </button>
           </div>
-          <span class="text-[9px] sm:text-[10px] uppercase font-bold tracking-widest bg-white/20 px-2.5 py-0.5 sm:py-1 rounded-md">Pratinjau Tagihan</span>
-          <h2 class="text-base sm:text-lg font-black mt-1.5 sm:mt-2">BangsriGo Jastip</h2>
-          <p id="invoice-date" class="text-[10px] sm:text-[11px] text-emerald-100 mt-0.5">-</p>
+          <span class="text-[9px] uppercase font-bold tracking-widest bg-white/20 px-2 py-0.5 rounded">Pratinjau Tagihan</span>
+          <h2 class="text-sm font-black mt-1">BangsriGo Jastip</h2>
+          <p id="invoice-date" class="text-[10px] text-emerald-100 mt-0.5">-</p>
         </div>
 
-        <!-- Body Invoice (Scrollable) -->
-        <div class="p-4 sm:p-5 space-y-3 sm:space-y-4 overflow-y-auto no-scrollbar text-xs flex-1">
+        <!-- Body Invoice -->
+        <div class="p-3.5 space-y-3 overflow-y-auto text-xs flex-1">
           
-          <!-- Info Ringkas -->
-          <div class="flex justify-between items-center text-slate-500 border-b border-slate-100 pb-2.5 sm:pb-3">
+          <div class="flex justify-between items-center text-slate-500 border-b border-slate-100 pb-2.5">
             <div>
-              <p class="text-[9px] sm:text-[10px] text-slate-400">ID Transaksi</p>
-              <p id="invoice-id" class="font-bold text-slate-800 text-[11px] sm:text-xs">BG-JASTIP-XXXX</p>
+              <p class="text-[9px] text-slate-400">ID Transaksi</p>
+              <p id="invoice-id" class="font-bold text-slate-800 text-[11px]">BG-JASTIP-XXXX</p>
             </div>
             <div class="text-right">
-              <p class="text-[9px] sm:text-[10px] text-slate-400">Status Pembayaran</p>
-              <span class="inline-block text-[9px] sm:text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">Menunggu WA</span>
+              <p class="text-[9px] text-slate-400">Status Pembayaran</p>
+              <span class="inline-block text-[9px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">Menunggu WA</span>
             </div>
           </div>
 
-          <!-- Ringkasan Alamat Pengiriman -->
-          <div class="bg-emerald-50/60 border border-emerald-100 rounded-2xl p-2.5 sm:p-3 space-y-0.5 sm:space-y-1">
-            <p class="font-bold text-[#006E2E] text-[9px] sm:text-[10px] uppercase tracking-wider">Alamat Pengiriman:</p>
-            <p id="inv-nama" class="font-bold text-slate-800 text-xs sm:text-xs">-</p>
-            <p id="inv-alamat-detail" class="text-slate-600 text-[10px] sm:text-[11px] leading-relaxed">-</p>
-            <p id="inv-catatan-pengantaran" class="text-slate-500 text-[9px] sm:text-[10px] italic pt-1 border-t border-emerald-100/60 hidden">-</p>
+          <!-- Alamat -->
+          <div class="bg-emerald-50/60 border border-emerald-100 rounded-xl p-2.5 space-y-0.5">
+            <p class="font-bold text-[#006E2E] text-[9px] uppercase tracking-wider">Alamat Pengiriman:</p>
+            <p id="inv-nama" class="font-bold text-slate-800 text-xs">-</p>
+            <p id="inv-alamat-detail" class="text-slate-600 text-[10px] leading-relaxed">-</p>
+            <p id="inv-catatan-pengantaran" class="text-slate-500 text-[9px] italic pt-1 border-t border-emerald-100/60 hidden">-</p>
           </div>
 
-          <!-- Daftar Item Invoice -->
-          <div class="space-y-1.5 sm:space-y-2">
-            <p class="font-bold text-slate-700 uppercase text-[9px] sm:text-[10px] tracking-wider">Rincian Belanjaan:</p>
-            <div id="invoice-items-list" class="space-y-2 divide-y divide-slate-50">
-              <!-- Render via JS -->
-            </div>
+          <!-- Daftar Item -->
+          <div class="space-y-1">
+            <p class="font-bold text-slate-700 uppercase text-[9px] tracking-wider">Rincian Belanjaan:</p>
+            <div id="invoice-items-list" class="space-y-1.5 divide-y divide-slate-50"></div>
           </div>
 
-          <!-- Kalkulasi Total Invoice -->
-          <div class="bg-slate-50 rounded-2xl p-3 sm:p-3.5 space-y-1.5 sm:space-y-2 border border-slate-100">
-            <div class="flex justify-between text-slate-500 font-medium text-[11px] sm:text-xs">
+          <!-- Kalkulasi -->
+          <div class="bg-slate-50 rounded-xl p-3 space-y-1.5 border border-slate-100">
+            <div class="flex justify-between text-slate-500 font-medium text-[11px]">
               <span>Subtotal Barang</span>
               <span id="invoice-subtotal" class="font-bold text-slate-800">Rp 0</span>
             </div>
-            <div class="flex justify-between text-slate-500 font-medium text-[11px] sm:text-xs">
+            <div class="flex justify-between text-slate-500 font-medium text-[11px]">
               <span>Biaya Jastip & Ongkir</span>
-              <span class="text-emerald-700 font-bold">Konfirmasi via WA</span>
+              <span class="text-emerald-700 font-bold">Konfirmasi WA</span>
             </div>
-            <div class="pt-2 border-t border-slate-200/60 flex justify-between text-xs sm:text-sm">
+            <div class="pt-1.5 border-t border-slate-200/60 flex justify-between text-xs">
               <span class="font-black text-slate-900">Total Estimasi</span>
               <span id="invoice-total" class="font-black text-[#006E2E]">Rp 0</span>
             </div>
@@ -268,13 +261,13 @@ const JARA_BAWAH = "pb-32";
 
         </div>
 
-        <!-- Footer Modal / Aksi Konfirmasi (Sticky/Shrink-0 agar tidak ikut terpotong) -->
-        <div class="p-3.5 sm:p-4 bg-slate-50 border-t border-slate-100 flex gap-2 shrink-0">
-          <button id="btn-cancel-modal" class="w-1/3 py-2.5 sm:py-3 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold transition-colors cursor-pointer">
+        <!-- Footer Modal -->
+        <div class="p-3 bg-slate-50 border-t border-slate-100 flex gap-2 shrink-0">
+          <button id="btn-cancel-modal" class="w-1/3 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold transition-colors cursor-pointer">
             Kembali
           </button>
-          <button id="btn-confirm-whatsapp" class="w-2/3 py-2.5 sm:py-3 rounded-xl bg-[#006E2E] hover:bg-[#005a25] text-white text-xs font-black shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+          <button id="btn-confirm-whatsapp" class="w-2/3 py-2.5 rounded-xl bg-[#006E2E] hover:bg-[#005a25] text-white text-xs font-black shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
               <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
             </svg>
             Kirim ke WA
@@ -375,15 +368,15 @@ const JARA_BAWAH = "pb-32";
 
     if (cart.length === 0) {
       container.innerHTML = `
-        <div class="bg-white rounded-2xl p-8 text-center space-y-3 border border-slate-200/80 shadow-xs mt-4">
-          <div class="w-12 h-12 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        <div class="bg-white rounded-2xl p-6 text-center space-y-2.5 border border-slate-200/80 shadow-xs mt-2">
+          <div class="w-10 h-10 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
           </div>
-          <div class="space-y-1">
-            <p class="text-sm font-bold text-slate-800">Keranjang Belanja Kosong</p>
-            <p class="text-xs text-slate-500">Anda belum menambahkan item makanan/minuman.</p>
+          <div class="space-y-0.5">
+            <p class="text-xs font-bold text-slate-800">Keranjang Belanja Kosong</p>
+            <p class="text-[11px] text-slate-500">Anda belum menambahkan item.</p>
           </div>
-          <a href="/" class="inline-block mt-2 px-5 py-2.5 bg-emerald-600 text-white text-xs font-semibold rounded-xl hover:bg-emerald-700 transition-all">
+          <a href="/" class="inline-block mt-1 px-4 py-2 bg-emerald-600 text-white text-[11px] font-semibold rounded-xl hover:bg-emerald-700 transition-all">
             Mulai Belanja
           </a>
         </div>
@@ -403,25 +396,25 @@ const JARA_BAWAH = "pb-32";
 
       let detailsHtml = '';
       if (item.spicyLevel) {
-        detailsHtml += `<span class="inline-block bg-red-50 text-red-600 text-[10px] px-1.5 py-0.5 rounded font-medium border border-red-100">Level ${item.spicyLevel}</span> `;
+        detailsHtml += `<span class="inline-block bg-red-50 text-red-600 text-[9px] px-1.5 py-0.2 rounded font-medium border border-red-100">Level ${item.spicyLevel}</span> `;
       }
       if (item.addons && item.addons.length > 0) {
         const addonNames = item.addons.map(a => a.name).join(', ');
-        detailsHtml += `<span class="text-[11px] text-slate-500 block mt-0.5">+ ${addonNames}</span>`;
+        detailsHtml += `<span class="text-[10px] text-slate-500 block mt-0.5">+ ${addonNames}</span>`;
       }
 
       return `
-        <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-xs flex gap-3 items-center">
-          <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 bg-slate-100" />
+        <div class="bg-white rounded-xl p-3 border border-slate-200/80 shadow-xs flex gap-2.5 items-center">
+          <img src="${item.image}" alt="${item.name}" class="w-14 h-14 rounded-lg object-cover flex-shrink-0 bg-slate-100" />
           <div class="flex-1 min-w-0">
-            <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate">${item.name}</h4>
+            <h4 class="text-xs font-bold text-slate-900 truncate">${item.name}</h4>
             <div class="mt-0.5">${detailsHtml}</div>
             <p class="text-xs font-bold text-emerald-600 mt-1">${formatRupiah(itemTotal)}</p>
           </div>
-          <div class="flex items-center gap-2 bg-slate-50 border border-slate-200/80 rounded-lg p-1 shrink-0">
-            <button data-action="minus" data-id="${item.cartItemId}" class="w-6 h-6 flex items-center justify-center rounded bg-white text-slate-700 shadow-xs hover:bg-slate-100 active:scale-90 transition-all font-bold text-xs cursor-pointer">-</button>
+          <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200/80 rounded-lg p-0.5 shrink-0">
+            <button data-action="minus" data-id="${item.cartItemId}" class="w-5 h-5 flex items-center justify-center rounded bg-white text-slate-700 shadow-xs hover:bg-slate-100 active:scale-90 transition-all font-bold text-xs cursor-pointer">-</button>
             <span class="text-xs font-semibold w-4 text-center text-slate-800">${qty}</span>
-            <button data-action="plus" data-id="${item.cartItemId}" class="w-6 h-6 flex items-center justify-center rounded bg-white text-slate-700 shadow-xs hover:bg-slate-100 active:scale-90 transition-all font-bold text-xs cursor-pointer">+</button>
+            <button data-action="plus" data-id="${item.cartItemId}" class="w-5 h-5 flex items-center justify-center rounded bg-white text-slate-700 shadow-xs hover:bg-slate-100 active:scale-90 transition-all font-bold text-xs cursor-pointer">+</button>
           </div>
         </div>
       `;
@@ -473,7 +466,6 @@ const JARA_BAWAH = "pb-32";
     });
   }
 
-  // MODAL INVOICE LOGIC
   function openInvoiceModal() {
     const cart = getCart();
     if (cart.length === 0) {
@@ -494,7 +486,6 @@ const JARA_BAWAH = "pb-32";
       return;
     }
 
-    // Populate Modal Alamat & ID Transaksi
     const invNama = document.getElementById('inv-nama');
     const invAlamatDetail = document.getElementById('inv-alamat-detail');
     const invCatatan = document.getElementById('inv-catatan-pengantaran');
@@ -525,7 +516,6 @@ const JARA_BAWAH = "pb-32";
       invoiceDate.textContent = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
     }
 
-    // Populate Modal Items List
     const invoiceItemsList = document.getElementById('invoice-items-list');
     const invoiceSubtotal = document.getElementById('invoice-subtotal');
     const invoiceTotal = document.getElementById('invoice-total');
@@ -544,10 +534,10 @@ const JARA_BAWAH = "pb-32";
         }
 
         return `
-          <div class="pt-2 first:pt-0 flex justify-between items-start text-xs">
+          <div class="pt-1.5 first:pt-0 flex justify-between items-start text-[11px]">
             <div>
               <p class="font-bold text-slate-800">${item.name} <span class="text-slate-400 font-normal">x${qty}</span></p>
-              ${extras.length > 0 ? `<p class="text-[10px] text-slate-400 mt-0.5">${extras.join(', ')}</p>` : ''}
+              ${extras.length > 0 ? `<p class="text-[9px] text-slate-400 mt-0.5">${extras.join(', ')}</p>` : ''}
             </div>
             <span class="font-bold text-slate-800">${formatRupiah(itemTotal)}</span>
           </div>
@@ -558,7 +548,6 @@ const JARA_BAWAH = "pb-32";
     if (invoiceSubtotal) invoiceSubtotal.textContent = formatRupiah(subtotal);
     if (invoiceTotal) invoiceTotal.textContent = formatRupiah(subtotal);
 
-    // Show Modal with Animation
     const modal = document.getElementById('invoice-modal');
     const content = document.getElementById('invoice-modal-content');
 
@@ -657,7 +646,6 @@ const JARA_BAWAH = "pb-32";
     document.getElementById('close-invoice-modal')?.addEventListener('click', closeInvoiceModal);
     document.getElementById('btn-cancel-modal')?.addEventListener('click', closeInvoiceModal);
 
-    // Close on background backdrop click
     document.getElementById('invoice-modal')?.addEventListener('click', (e) => {
       if (e.target === e.currentTarget) {
         closeInvoiceModal();
