@@ -1,0 +1,533 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Keranjang Jastip - BangsriGo" activeTab="jastip">
+  <!-- WRAPPER UTAMA -->
+  <div class="w-full h-full flex flex-col justify-between p-4 pb-24 box-border overflow-y-auto no-scrollbar relative">
+    
+    <!-- Bagian Atas: Header & Daftar Item -->
+    <div class="space-y-4">
+      
+      <!-- 1. HEADER HALAMAN -->
+      <div class="flex items-center justify-between pt-1">
+        <div class="space-y-1">
+          <span class="inline-block text-[10px] font-extrabold uppercase tracking-widest text-[#006E2E] bg-emerald-100/70 px-2.5 py-1 rounded-md">
+            Detail Pesanan
+          </span>
+          <h1 class="text-2xl font-black text-slate-900 leading-tight">
+            Keranjang Jastip
+          </h1>
+        </div>
+        
+        <!-- Tombol Hapus Semua -->
+        <button 
+          id="btn-clear-cart"
+          class="hidden text-xs font-bold text-red-500 hover:text-red-600 bg-red-50 px-3 py-1.5 rounded-xl border border-red-100 transition-colors"
+        >
+          Kosongkan
+        </button>
+      </div>
+
+      <!-- 2. KONTTAINER DAFTAR ITEM KERANJANG -->
+      <div id="cart-page-items-container" class="space-y-3">
+        <!-- Render dinamis via JavaScript -->
+        <div class="py-12 text-center text-slate-400">
+          <svg class="w-12 h-12 mx-auto text-slate-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          <p class="text-xs font-bold text-slate-700">Keranjang Masih Kosong</p>
+          <p class="text-[10px] text-slate-500 mt-0.5">Belum ada item jastip atau Gacoan yang ditambahkan.</p>
+        </div>
+      </div>
+
+      <!-- 3. FORM ALAMAT PENGIRIMAN (MUNCUL JIKA ADA ITEM) -->
+      <div id="address-section" class="hidden space-y-3 pt-2">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded-lg bg-emerald-100 text-[#006E2E] flex items-center justify-center shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          <h2 class="text-xs font-black uppercase tracking-wider text-slate-900">Alamat Pengiriman</h2>
+        </div>
+
+        <div class="bg-white border border-slate-200/80 rounded-2xl p-4 space-y-3 shadow-xs">
+          <!-- Nama Penerima -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 mb-1">Nama Penerima <span class="text-red-500">*</span></label>
+            <input 
+              type="text" 
+              id="input-nama-penerima" 
+              placeholder="Contoh: Budi Santoso" 
+              class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#006E2E]"
+            />
+          </div>
+
+          <!-- Dukuh & RT (Grid 2 Kolom) -->
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Dukuh <span class="text-red-500">*</span></label>
+              <input 
+                type="text" 
+                id="input-dukuh" 
+                placeholder="Contoh: Bangsri" 
+                class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#006E2E]"
+              />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">RT <span class="text-red-500">*</span></label>
+              <input 
+                type="text" 
+                id="input-rt" 
+                placeholder="Contoh: 02/01" 
+                class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#006E2E]"
+              />
+            </div>
+          </div>
+
+          <!-- Detail Tempat / Nama Kos -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 mb-1">Detail Tempat / Nama Kos <span class="text-red-500">*</span></label>
+            <input 
+              type="text" 
+              id="input-detail-tempat" 
+              placeholder="Contoh: Kos Hijau / Rumah Cat Biru pagar hitam" 
+              class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#006E2E]"
+            />
+          </div>
+
+          <!-- Patokan (Opsional) -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 mb-1">Patokan (Opsional)</label>
+            <input 
+              type="text" 
+              id="input-patokan" 
+              placeholder="Contoh: Depan warung madura / sebelah masjid" 
+              class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#006E2E]"
+            />
+          </div>
+
+          <!-- Catatan Pengantaran (Opsional) -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 mb-1">Catatan Pengantaran (Opsional)</label>
+            <input 
+              type="text" 
+              id="input-catatan-pengantaran" 
+              placeholder="Contoh: Tolong taro di teras kalau tidak diangkat" 
+              class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#006E2E]"
+            />
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bagian Bawah: Ringkasan & Tombol Aksi Checkout -->
+    <div id="cart-footer-section" class="hidden pt-6 mt-6 border-t border-slate-100 space-y-3 shrink-0">
+      
+      <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 space-y-2">
+        <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+          <span>Estimasi Subtotal</span>
+          <span id="cart-page-subtotal" class="font-bold text-slate-800">Rp 0</span>
+        </div>
+        <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+          <span>Biaya Jastip (Estimasi)</span>
+          <span class="font-bold text-emerald-700">Menyesuaikan</span>
+        </div>
+        <div class="pt-2 border-t border-slate-200/60 flex items-center justify-between text-sm">
+          <span class="font-black text-slate-900">Total Sementara</span>
+          <span id="cart-page-total" class="font-black text-[#006E2E]">Rp 0</span>
+        </div>
+      </div>
+
+      <!-- Tombol Lanjut ke Preview Invoice -->
+      <button 
+        id="btn-preview-invoice"
+        class="w-full py-3.5 px-4 rounded-2xl bg-[#006E2E] hover:bg-[#005a25] text-white text-xs font-black shadow-lg shadow-emerald-900/10 flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        Buat Invoice & Konfirmasi
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- MODAL PREVIEW INVOICE -->
+  <div id="invoice-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+    <div id="invoice-modal-content" class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden transform scale-95 transition-transform duration-300 max-h-[90vh]">
+      
+      <!-- Header Invoice -->
+      <div class="bg-[#006E2E] text-white p-5 text-center relative">
+        <div class="absolute top-3 right-3">
+          <button id="close-invoice-modal" class="w-7 h-7 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <span class="text-[10px] uppercase font-bold tracking-widest bg-white/20 px-2.5 py-1 rounded-md">Pratinjau Tagihan</span>
+        <h2 class="text-lg font-black mt-2">BangsriGo Jastip</h2>
+        <p id="invoice-date" class="text-[11px] text-emerald-100 mt-0.5">-</p>
+      </div>
+
+      <!-- Body Invoice (Scrollable) -->
+      <div class="p-5 space-y-4 overflow-y-auto no-scrollbar text-xs">
+        
+        <!-- Info Ringkas -->
+        <div class="flex justify-between items-center text-slate-500 border-b border-slate-100 pb-3">
+          <div>
+            <p class="text-[10px] text-slate-400">ID Transaksi</p>
+            <p id="invoice-id" class="font-bold text-slate-800">BG-JASTIP-XXXX</p>
+          </div>
+          <div class="text-right">
+            <p class="text-[10px] text-slate-400">Status Pembayaran</p>
+            <span class="inline-block text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">Menunggu WA</span>
+          </div>
+        </div>
+
+        <!-- Ringkasan Alamat Pengiriman -->
+        <div class="bg-emerald-50/60 border border-emerald-100 rounded-2xl p-3 space-y-1">
+          <p class="font-bold text-[#006E2E] text-[10px] uppercase tracking-wider">Alamat Pengiriman:</p>
+          <p id="inv-nama" class="font-bold text-slate-800 text-xs">-</p>
+          <p id="inv-alamat-detail" class="text-slate-600 text-[11px] leading-relaxed">-</p>
+          <p id="inv-catatan-pengantaran" class="text-slate-500 text-[10px] italic pt-1 border-t border-emerald-100/60 hidden">-</p>
+        </div>
+
+        <!-- Daftar Item Invoice -->
+        <div class="space-y-2">
+          <p class="font-bold text-slate-700 uppercase text-[10px] tracking-wider">Rincian Belanjaan:</p>
+          <div id="invoice-items-list" class="space-y-2 divide-y divide-slate-50">
+            <!-- Render via JS -->
+          </div>
+        </div>
+
+        <!-- Kalkulasi Total Invoice -->
+        <div class="bg-slate-50 rounded-2xl p-3.5 space-y-2 border border-slate-100">
+          <div class="flex justify-between text-slate-500 font-medium">
+            <span>Subtotal Barang</span>
+            <span id="invoice-subtotal" class="font-bold text-slate-800">Rp 0</span>
+          </div>
+          <div class="flex justify-between text-slate-500 font-medium">
+            <span>Biaya Jastip & Ongkir</span>
+            <span class="text-emerald-700 font-bold">Konfirmasi via WA</span>
+          </div>
+          <div class="pt-2 border-t border-slate-200/60 flex justify-between text-sm">
+            <span class="font-black text-slate-900">Total Estimasi</span>
+            <span id="invoice-total" class="font-black text-[#006E2E]">Rp 0</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Modal / Aksi Konfirmasi -->
+      <div class="p-4 bg-slate-50 border-t border-slate-100 flex gap-2">
+        <button id="btn-cancel-modal" class="w-1/3 py-3 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold transition-colors">
+          Kembali
+        </button>
+        <button id="btn-confirm-whatsapp" class="w-2/3 py-3 rounded-xl bg-[#006E2E] hover:bg-[#005a25] text-white text-xs font-black shadow-md flex items-center justify-center gap-2 transition-all">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+          Kirim ke WA
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</Layout>
+
+<script>
+  const JASTIP_STORAGE_KEY = 'bangsri_jastip_cart';
+
+  function getCartItems(): any[] {
+    try {
+      const raw = localStorage.getItem(JASTIP_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function saveCartItems(items: any[]) {
+    localStorage.setItem(JASTIP_STORAGE_KEY, JSON.stringify(items));
+    window.dispatchEvent(new Event('jastip-cart-updated'));
+    renderPageCart();
+  }
+
+  function renderPageCart() {
+    const items = getCartItems();
+    const container = document.getElementById('cart-page-items-container');
+    const footerSection = document.getElementById('cart-footer-section');
+    const addressSection = document.getElementById('address-section');
+    const clearBtn = document.getElementById('btn-clear-cart');
+    const subtotalEl = document.getElementById('cart-page-subtotal');
+    const totalEl = document.getElementById('cart-page-total');
+
+    if (!container || !footerSection || !addressSection) return;
+
+    if (items.length === 0) {
+      container.innerHTML = `
+        <div class="py-12 text-center text-slate-400">
+          <svg class="w-12 h-12 mx-auto text-slate-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          <p class="text-xs font-bold text-slate-700">Keranjang Masih Kosong</p>
+          <p class="text-[10px] text-slate-500 mt-0.5">Belum ada item jastip atau Gacoan yang ditambahkan.</p>
+        </div>
+      `;
+      footerSection.classList.add('hidden');
+      addressSection.classList.add('hidden');
+      clearBtn?.classList.add('hidden');
+      return;
+    }
+
+    footerSection.classList.remove('hidden');
+    addressSection.classList.remove('hidden');
+    clearBtn?.classList.remove('hidden');
+
+    let subtotal = 0;
+
+    container.innerHTML = items.map((item, idx) => {
+      const price = Number(item.harga || 0);
+      const qty = Number(item.jumlah || item.qty || 1);
+      const itemSubtotal = price * qty;
+      subtotal += itemSubtotal;
+
+      const jenisBadge = item.jenis === 'Custom Jastip' 
+        ? '<span class="text-[9px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded">Custom Warung</span>'
+        : '<span class="text-[9px] font-bold bg-pink-100 text-pink-800 px-2 py-0.5 rounded">Jastip Gacoan</span>';
+
+      return `
+        <div class="bg-white border border-slate-200/80 rounded-2xl p-3.5 space-y-2.5 shadow-xs">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                ${jenisBadge}
+              </div>
+              <h3 class="text-xs font-bold text-slate-900 leading-tight">${item.nama || 'Barang Jastip'}</h3>
+              ${item.catatan ? `<p class="text-[10px] font-semibold text-emerald-700 mt-0.5">Catatan: ${item.catatan}</p>` : ''}
+              ${item.deskripsi && item.jenis === 'Custom Jastip' ? `<p class="text-[10px] text-slate-500 mt-0.5">${item.deskripsi}</p>` : ''}
+            </div>
+            <button type="button" class="btn-remove-page-item text-slate-400 hover:text-red-500 p-1 transition-colors shrink-0" data-index="${idx}">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+            <span class="text-xs font-bold text-slate-800">
+              ${price > 0 ? `Rp ${itemSubtotal.toLocaleString('id-ID')}` : 'Harga Menyesuaikan'}
+            </span>
+
+            <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-slate-50">
+              <button type="button" class="btn-page-minus px-2.5 py-1 text-slate-600 hover:bg-slate-200 text-xs font-bold" data-index="${idx}">-</button>
+              <span class="px-2.5 text-xs font-bold text-slate-800">${qty}</span>
+              <button type="button" class="btn-page-plus px-2.5 py-1 text-slate-600 hover:bg-slate-200 text-xs font-bold" data-index="${idx}">+</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    if (subtotalEl) subtotalEl.textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+    if (totalEl) totalEl.textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+
+    // Attach Event Listeners
+    document.querySelectorAll('.btn-page-plus').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = Number((e.currentTarget as HTMLButtonElement).getAttribute('data-index'));
+        const currentItems = getCartItems();
+        currentItems[idx].jumlah = (currentItems[idx].jumlah || 1) + 1;
+        saveCartItems(currentItems);
+      });
+    });
+
+    document.querySelectorAll('.btn-page-minus').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = Number((e.currentTarget as HTMLButtonElement).getAttribute('data-index'));
+        const currentItems = getCartItems();
+        if ((currentItems[idx].jumlah || 1) > 1) {
+          currentItems[idx].jumlah -= 1;
+        } else {
+          currentItems.splice(idx, 1);
+        }
+        saveCartItems(currentItems);
+      });
+    });
+
+    document.querySelectorAll('.btn-remove-page-item').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = Number((e.currentTarget as HTMLButtonElement).getAttribute('data-index'));
+        const currentItems = getCartItems();
+        currentItems.splice(idx, 1);
+        saveCartItems(currentItems);
+      });
+    });
+  }
+
+  document.getElementById('btn-clear-cart')?.addEventListener('click', () => {
+    if (confirm('Kosongkan semua keranjang jastip?')) {
+      saveCartItems([]);
+    }
+  });
+
+  // Logika Modal Invoice & Preview
+  const invoiceModal = document.getElementById('invoice-modal');
+  const invoiceModalContent = document.getElementById('invoice-modal-content');
+  const btnPreviewInvoice = document.getElementById('btn-preview-invoice');
+  const closeInvoiceModal = document.getElementById('close-invoice-modal');
+  const btnCancelModal = document.getElementById('btn-cancel-modal');
+
+  function openInvoiceModal() {
+    const items = getCartItems();
+    if (items.length === 0) return;
+
+    // Ambil Validasi Input Alamat di Halaman
+    const namaPenerima = (document.getElementById('input-nama-penerima') as HTMLInputElement)?.value.trim();
+    const dukuh = (document.getElementById('input-dukuh') as HTMLInputElement)?.value.trim();
+    const rt = (document.getElementById('input-rt') as HTMLInputElement)?.value.trim();
+    const detailTempat = (document.getElementById('input-detail-tempat') as HTMLInputElement)?.value.trim();
+    const patokan = (document.getElementById('input-patokan') as HTMLInputElement)?.value.trim();
+    const catatanPengantaran = (document.getElementById('input-catatan-pengantaran') as HTMLInputElement)?.value.trim();
+
+    if (!namaPenerima || !dukuh || !rt || !detailTempat) {
+      alert('Mohon lengkapi data alamat pengiriman yang wajib diisi (*): Nama Penerima, Dukuh, RT, dan Detail Tempat/Nama Kos.');
+      document.getElementById('address-section')?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    // Generate Invoice ID & Tanggal
+    const randomId = Math.floor(1000 + Math.random() * 9000);
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) + ' - ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    
+    document.getElementById('invoice-id')!.textContent = `BG-${randomId}`;
+    document.getElementById('invoice-date')!.textContent = dateStr;
+
+    // Set Tampilan Alamat di Modal Invoice
+    document.getElementById('inv-nama')!.textContent = namaPenerima;
+    document.getElementById('inv-alamat-detail')!.textContent = `${detailTempat}, Dukuh ${dukuh}, RT ${rt}${patokan ? ` (Patokan: ${patokan})` : ''}`;
+    
+    const invCatatanEl = document.getElementById('inv-catatan-pengantaran')!;
+    if (catatanPengantaran) {
+      invCatatanEl.textContent = `Catatan: ${catatanPengantaran}`;
+      invCatatanEl.classList.remove('hidden');
+    } else {
+      invCatatanEl.classList.add('hidden');
+    }
+
+    // Render Items ke dalam Modal Invoice
+    const itemsListContainer = document.getElementById('invoice-items-list');
+    let subtotal = 0;
+    
+    itemsListContainer!.innerHTML = items.map(item => {
+      const qty = item.jumlah || item.qty || 1;
+      const price = Number(item.harga || 0);
+      const itemSubtotal = price * qty;
+      subtotal += itemSubtotal;
+
+      return `
+        <div class="py-2 flex justify-between items-start">
+          <div>
+            <p class="font-bold text-slate-800">${item.nama} <span class="text-slate-400 font-normal">x${qty}</span></p>
+            ${item.catatan ? `<p class="text-[10px] text-emerald-700">Catatan: ${item.catatan}</p>` : ''}
+            ${item.deskripsi && item.jenis === 'Custom Jastip' ? `<p class="text-[10px] text-slate-500">${item.deskripsi}</p>` : ''}
+          </div>
+          <span class="font-bold text-slate-700 shrink-0">${price > 0 ? `Rp ${itemSubtotal.toLocaleString('id-ID')}` : 'Menyesuaikan'}</span>
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('invoice-subtotal')!.textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+    document.getElementById('invoice-total')!.textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+
+    // Tampilkan Modal dengan Animasi
+    invoiceModal?.classList.remove('hidden');
+    setTimeout(() => {
+      invoiceModal?.classList.remove('opacity-0');
+      invoiceModalContent?.classList.remove('scale-95');
+      invoiceModalContent?.classList.add('scale-100');
+    }, 10);
+  }
+
+  function closeModals() {
+    invoiceModal?.classList.add('opacity-0');
+    invoiceModalContent?.classList.remove('scale-100');
+    invoiceModalContent?.classList.add('scale-95');
+    setTimeout(() => {
+      invoiceModal?.classList.add('hidden');
+    }, 300);
+  }
+
+  btnPreviewInvoice?.addEventListener('click', openInvoiceModal);
+  closeInvoiceModal?.addEventListener('click', closeModals);
+  btnCancelModal?.addEventListener('click', closeModals);
+
+  // Integrasi Checkout WhatsApp dari Modal Invoice
+  document.getElementById('btn-confirm-whatsapp')?.addEventListener('click', () => {
+    const items = getCartItems();
+    if (items.length === 0) return;
+
+    const namaPenerima = (document.getElementById('input-nama-penerima') as HTMLInputElement)?.value.trim();
+    const dukuh = (document.getElementById('input-dukuh') as HTMLInputElement)?.value.trim();
+    const rt = (document.getElementById('input-rt') as HTMLInputElement)?.value.trim();
+    const detailTempat = (document.getElementById('input-detail-tempat') as HTMLInputElement)?.value.trim();
+    const patokan = (document.getElementById('input-patokan') as HTMLInputElement)?.value.trim();
+    const catatanPengantaran = (document.getElementById('input-catatan-pengantaran') as HTMLInputElement)?.value.trim();
+    const invoiceId = document.getElementById('invoice-id')?.textContent || 'BG-JASTIP';
+
+    let message = `*INVOICE PESANAN JASTIP*\n`;
+    message += `No. Transaksi: *${invoiceId}*\n\n`;
+    message += `*ALAMAT PENGIRIMAN:*\n`;
+    message += `• Nama Penerima: *${namaPenerima}*\n`;
+    message += `• Dukuh / RT: *${dukuh} (RT ${rt})*\n`;
+    message += `• Detail Tempat: *${detailTempat}*\n`;
+    if (patokan) message += `• Patokan: ${patokan}\n`;
+    if (catatanPengantaran) message += `• Catatan Pengantaran: ${catatanPengantaran}\n`;
+    message += `\n----------------------------------\n\n`;
+
+    let subtotal = 0;
+    items.forEach((item, index) => {
+      const qty = item.jumlah || item.qty || 1;
+      const price = Number(item.harga || 0);
+      const totalItemPrice = price * qty;
+      subtotal += totalItemPrice;
+
+      message += `${index + 1}. *${item.nama}* (x${qty})\n`;
+      if (item.catatan) message += `   Catatan: ${item.catatan}\n`;
+      if (item.deskripsi && item.jenis === 'Custom Jastip') message += `   Detail: ${item.deskripsi}\n`;
+      if (price > 0) message += `   Subtotal: Rp ${totalItemPrice.toLocaleString('id-ID')}\n`;
+      message += `\n`;
+    });
+
+    message += `----------------------------------\n`;
+    if (subtotal > 0) {
+      message += `*Estimasi Total Barang:* Rp ${subtotal.toLocaleString('id-ID')}\n`;
+    }
+    message += `*Status:* Menunggu konfirmasi ongkir & jastip dari admin.\n\n`;
+    message += `Mohon diproses ya kak, terima kasih!`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const waNumber = '6281234567890'; // Ganti dengan nomor WhatsApp tujuan Anda
+    
+    closeModals();
+    window.open(`https://wa.me/${waNumber}?text=${encodedMessage}`, '_blank');
+  });
+
+  // Inisialisasi saat halaman dimuat
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderPageCart);
+  } else {
+    renderPageCart();
+  }
+
+  window.addEventListener('jastip-cart-updated', renderPageCart);
+  window.addEventListener('storage', renderPageCart);
+</script>

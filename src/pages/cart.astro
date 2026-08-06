@@ -1,26 +1,19 @@
 ---
+// cart.astro
 import Layout from '../layouts/Layout.astro';
 import { Icon } from "astro-icon/components";
 
-// =========================================================================
-// OPSI ATUR JARAK CARA A (via Tailwind Arbitrary Value / Pixel):
-// Anda bisa ganti angka '160px' di bawah dengan angka berapa saja (misal: '100px', '200px', '250px')
-// =========================================================================
-const JARA_BAWAH = "pb-[160px]"; 
+// Jarak bawah diset untuk spasi scroll
+const JARA_BAWAH = "pb-8"; 
 ---
 
 <Layout title="Keranjang Belanja - BangsriGo">
-  <!-- 
-    OPSI ATUR JARAK CARA B (via Inline CSS Variable):
-    Ganti nilai `--jarak-bawah: 160px;` di bawah ini jika ingin atur langsung via CSS!
-  -->
   <main 
-    style="--jarak-bawah: 60px;" 
-    class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col h-[calc(100vh-64px)] overflow-hidden"
+    class="w-full max-w-md mx-auto bg-slate-50 relative flex flex-col h-[calc(100vh-64px)] overflow-hidden font-sans"
   >
     
     <!-- ================= HEADER SECTION (TETAP DIAM DI ATAS) ================= -->
-    <header class="bg-white border-b border-slate-200/80 px-4 h-14 flex items-center justify-between shadow-xs w-full flex-shrink-0 z-50">
+    <header class="bg-white border-b border-slate-200/80 px-4 h-14 flex items-center justify-between shadow-xs w-full flex-shrink-0 z-40">
       <a 
         href="/" 
         aria-label="Kembali" 
@@ -48,13 +41,8 @@ const JARA_BAWAH = "pb-[160px]";
       </button>
     </header>
 
-    <!-- ================= MAIN CONTENT SECTION (DENGAN KONTROL JARAK BAWAH) ================= -->
-    <!-- 
-      Jarak bawah dikontrol oleh 'style="padding-bottom: var(--jarak-bawah)"' 
-      atau bisa diganti dengan variabel Astro '${JARA_BAWAH}' pada class.
-    -->
+    <!-- ================= MAIN CONTENT SECTION ================= -->
     <div 
-      style="padding-bottom: var(--jarak-bawah);" 
       class={`flex-1 w-full p-4 space-y-4 overflow-y-auto ${JARA_BAWAH}`}
     >
       
@@ -63,70 +51,237 @@ const JARA_BAWAH = "pb-[160px]";
         <!-- Dinamis dirender via script dari localStorage -->
       </div>
 
-      <!-- ================= RINGKASAN PEMBAYARAN & SECTION AKHIR ================= -->
-      <section id="summary-section" class="bg-white rounded-2xl p-4 sm:p-5 border border-[#E5E7EB] shadow-xs space-y-4 hidden">
-        <div class="flex items-center gap-2 pb-2.5 border-b border-slate-100">
-          <div class="w-7 h-7 rounded-lg bg-emerald-50 text-[#0E9F3E] flex items-center justify-center">
-            <Icon name="lucide:receipt" class="w-4 h-4" />
+      <!-- SECTION FORM & RINGKASAN (Ditampilkan jika cart tidak kosong) -->
+      <div id="checkout-wrapper" class="space-y-4 hidden">
+        
+        <!-- FORM DATA PEMESAN -->
+        <section class="w-full bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-4">
+          <div class="flex items-center gap-2 pb-2.5 border-b border-slate-100">
+            <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <Icon name="lucide:map-pin" class="w-4 h-4" />
+            </div>
+            <h2 class="text-sm font-bold text-slate-900">
+              Alamat Pengiriman
+            </h2>
           </div>
-          <h3 class="text-sm font-bold text-[#111827]">
-            Ringkasan Pembayaran
-          </h3>
-        </div>
 
-        <div class="space-y-2 text-xs sm:text-sm text-[#6B7280]">
-          <div class="flex justify-between items-center">
-            <span>Subtotal</span>
-            <span id="summary-subtotal" class="font-medium text-[#111827]">Rp 0</span>
+          <div class="space-y-3.5">
+            <!-- Nama Pemesan -->
+            <div class="w-full">
+              <label for="name" class="block text-[11px] font-semibold text-slate-600 mb-1">Nama Penerima <span class="text-red-500">*</span></label>
+              <input
+                type="text"
+                id="name"
+                required
+                autocomplete="name"
+                placeholder="Contoh: Dimas"
+                class="w-full border border-slate-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 transition-all bg-slate-50/40"
+              />
+            </div>
+
+            <!-- Grid Dukuh & RT -->
+            <div class="grid grid-cols-2 gap-3 w-full">
+              <div>
+                <label for="dukuh" class="block text-[11px] font-semibold text-slate-600 mb-1">Dukuh <span class="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  id="dukuh"
+                  required
+                  placeholder="Contoh: Banjarmelati"
+                  class="w-full border border-slate-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 transition-all bg-slate-50/40"
+                />
+              </div>
+              <div>
+                <label for="rt" class="block text-[11px] font-semibold text-slate-600 mb-1">RT <span class="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  id="rt"
+                  required
+                  placeholder="Contoh: RT 01"
+                  class="w-full border border-slate-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 transition-all bg-slate-50/40"
+                />
+              </div>
+            </div>
+
+            <!-- Detail Alamat / Kos -->
+            <div class="w-full">
+              <label for="address" class="block text-[11px] font-semibold text-slate-600 mb-1">Detail Tempat / Nama Kos <span class="text-red-500">*</span></label>
+              <input
+                type="text"
+                id="address"
+                required
+                autocomplete="street-address"
+                placeholder="Contoh: Kos Bu Siti No. 4"
+                class="w-full border border-slate-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 transition-all bg-slate-50/40"
+              />
+            </div>
+
+            <!-- Patokan -->
+            <div class="w-full">
+              <label for="landmark" class="block text-[11px] font-semibold text-slate-600 mb-1">Patokan (Opsional)</label>
+              <input
+                type="text"
+                id="landmark"
+                placeholder="Contoh: Depan warung Madura"
+                class="w-full border border-slate-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder:text-slate-400 transition-all bg-slate-50/40"
+              />
+            </div>
+
+            <!-- Catatan Kurir -->
+            <div class="w-full">
+              <label for="note" class="block text-[11px] font-semibold text-slate-600 mb-1">Catatan Pengantaran (Opsional)</label>
+              <textarea
+                id="note"
+                rows="2"
+                placeholder="Contoh: Tolong taruh di teras depan"
+                class="w-full border border-slate-200 rounded-xl p-3.5 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 resize-none placeholder:text-slate-400 transition-all bg-slate-50/40"
+              ></textarea>
+            </div>
           </div>
-          <div class="flex justify-between items-center">
-            <span class="flex items-center gap-1.5">
-              Ongkir 
-              <span class="text-[9px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded font-medium border border-amber-200/50">Info WA</span>
-            </span>
-            <span class="font-medium text-[#111827]">Rp 0 - 5.000</span>
+        </section>
+
+        <!-- RINGKASAN PEMBAYARAN -->
+        <section id="summary-section" class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-4">
+          <div class="flex items-center gap-2 pb-2.5 border-b border-slate-100">
+            <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <Icon name="lucide:receipt" class="w-4 h-4" />
+            </div>
+            <h3 class="text-sm font-bold text-slate-900">
+              Ringkasan Pembayaran
+            </h3>
           </div>
-        </div>
 
-        <div class="border-t border-[#E5E7EB] pt-3.5 flex justify-between items-center">
-          <span class="text-xs sm:text-sm font-bold text-[#111827]">Total Sementara</span>
-          <span id="summary-total" class="text-base sm:text-lg font-bold text-[#0E9F3E]">Rp 0</span>
-        </div>
+          <div class="space-y-2 text-xs sm:text-sm text-slate-600">
+            <div class="flex justify-between items-center">
+              <span>Subtotal</span>
+              <span id="summary-subtotal" class="font-medium text-slate-900">Rp 0</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="flex items-center gap-1.5">
+                Ongkir 
+                <span class="text-[9px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded font-medium border border-amber-200/50">Info WA</span>
+              </span>
+              <span class="font-medium text-slate-900">Rp 0 - 5.000</span>
+            </div>
+          </div>
 
-        <!-- Tombol Lanjutkan Konfirmasi (Section Terakhir) -->
-        <div class="pt-2">
-          <a
-            href="/konfirmasi"
-            id="btn-checkout"
-            class="w-full h-[50px] bg-[#0E9F3E] hover:bg-[#0c8a36] active:scale-[0.98] text-white font-semibold rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer no-underline text-sm sm:text-base"
-          >
-            <span>Lanjutkan ke Konfirmasi</span>
-            <Icon name="lucide:arrow-right" class="w-5 h-5" />
-          </a>
-        </div>
-      </section>
+          <div class="border-t border-slate-200/80 pt-3.5 flex justify-between items-center">
+            <span class="text-xs sm:text-sm font-bold text-slate-900">Total Sementara</span>
+            <span id="summary-total" class="text-base sm:text-lg font-bold text-emerald-600">Rp 0</span>
+          </div>
+        </section>
 
-      <!-- ================= EMPTY STATE ================= -->
-      <div id="empty-state" class="bg-white rounded-2xl p-8 border border-[#E5E7EB] shadow-xs text-center py-12 my-4 space-y-4 hidden">
-        <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-[#0E9F3E]">
-          <Icon name="lucide:shopping-bag" class="w-8 h-8" />
-        </div>
-        <div>
-          <h2 class="text-lg font-bold text-[#111827]">
-            Keranjang masih kosong
-          </h2>
-          <p class="text-xs sm:text-sm text-[#6B7280] mt-1">
-            Yuk pilih makanan favoritmu terlebih dahulu.
-          </p>
-        </div>
-        <a
-          href="/"
-          class="inline-flex items-center justify-center px-6 py-3 bg-[#0E9F3E] text-white font-semibold text-xs sm:text-sm rounded-xl hover:bg-[#0c8a36] transition-colors"
-        >
-          Kembali ke Beranda
-        </a>
+        <!-- SECTION AKHIR (INFO BANNER + TOMBOL WA) -->
+        <section class="w-full bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs space-y-3">
+          <div class="w-full bg-emerald-50/80 rounded-xl p-3.5 border border-emerald-100/80 flex gap-3 items-start">
+            <div class="text-emerald-600 mt-0.5 flex-shrink-0">
+              <Icon name="lucide:info" class="w-4 h-4" />
+            </div>
+            <p class="text-[11px] sm:text-xs text-slate-700 leading-relaxed">
+              Nanti pesanan otomatis dirangkum dan dikirim via WhatsApp ke admin setelah tombol di bawah ditekan.
+            </p>
+          </div>
+
+          <div class="space-y-1.5 text-center pt-1">
+            <button
+              type="button"
+              id="btn-whatsapp"
+              class="w-full h-[50px] bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-semibold rounded-xl flex items-center justify-center gap-2.5 shadow-sm transition-all cursor-pointer text-sm sm:text-base border-none"
+            >
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+              </svg>
+              <span>Lanjut ke Konfirmasi Invoice</span>
+            </button>
+            <span class="block text-[10px] text-slate-500">Periksa ringkasan pesanan sebelum terkirim ke WhatsApp.</span>
+          </div>
+        </section>
+
       </div>
 
+    </div>
+
+    <!-- ================= MODAL PREVIEW INVOICE ================= -->
+    <div id="invoice-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+      <div id="invoice-modal-content" class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden transform scale-95 transition-transform duration-300 max-h-[90vh]">
+        
+        <!-- Header Invoice -->
+        <div class="bg-[#006E2E] text-white p-5 text-center relative">
+          <div class="absolute top-3 right-3">
+            <button id="close-invoice-modal" class="w-7 h-7 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-colors cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+          <span class="text-[10px] uppercase font-bold tracking-widest bg-white/20 px-2.5 py-1 rounded-md">Pratinjau Tagihan</span>
+          <h2 class="text-lg font-black mt-2">BangsriGo Jastip</h2>
+          <p id="invoice-date" class="text-[11px] text-emerald-100 mt-0.5">-</p>
+        </div>
+
+        <!-- Body Invoice (Scrollable) -->
+        <div class="p-5 space-y-4 overflow-y-auto no-scrollbar text-xs">
+          
+          <!-- Info Ringkas -->
+          <div class="flex justify-between items-center text-slate-500 border-b border-slate-100 pb-3">
+            <div>
+              <p class="text-[10px] text-slate-400">ID Transaksi</p>
+              <p id="invoice-id" class="font-bold text-slate-800">BG-JASTIP-XXXX</p>
+            </div>
+            <div class="text-right">
+              <p class="text-[10px] text-slate-400">Status Pembayaran</p>
+              <span class="inline-block text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">Menunggu WA</span>
+            </div>
+          </div>
+
+          <!-- Ringkasan Alamat Pengiriman -->
+          <div class="bg-emerald-50/60 border border-emerald-100 rounded-2xl p-3 space-y-1">
+            <p class="font-bold text-[#006E2E] text-[10px] uppercase tracking-wider">Alamat Pengiriman:</p>
+            <p id="inv-nama" class="font-bold text-slate-800 text-xs">-</p>
+            <p id="inv-alamat-detail" class="text-slate-600 text-[11px] leading-relaxed">-</p>
+            <p id="inv-catatan-pengantaran" class="text-slate-500 text-[10px] italic pt-1 border-t border-emerald-100/60 hidden">-</p>
+          </div>
+
+          <!-- Daftar Item Invoice -->
+          <div class="space-y-2">
+            <p class="font-bold text-slate-700 uppercase text-[10px] tracking-wider">Rincian Belanjaan:</p>
+            <div id="invoice-items-list" class="space-y-2 divide-y divide-slate-50">
+              <!-- Render via JS -->
+            </div>
+          </div>
+
+          <!-- Kalkulasi Total Invoice -->
+          <div class="bg-slate-50 rounded-2xl p-3.5 space-y-2 border border-slate-100">
+            <div class="flex justify-between text-slate-500 font-medium">
+              <span>Subtotal Barang</span>
+              <span id="invoice-subtotal" class="font-bold text-slate-800">Rp 0</span>
+            </div>
+            <div class="flex justify-between text-slate-500 font-medium">
+              <span>Biaya Jastip & Ongkir</span>
+              <span class="text-emerald-700 font-bold">Konfirmasi via WA</span>
+            </div>
+            <div class="pt-2 border-t border-slate-200/60 flex justify-between text-sm">
+              <span class="font-black text-slate-900">Total Estimasi</span>
+              <span id="invoice-total" class="font-black text-[#006E2E]">Rp 0</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer Modal / Aksi Konfirmasi -->
+        <div class="p-4 bg-slate-50 border-t border-slate-100 flex gap-2">
+          <button id="btn-cancel-modal" class="w-1/3 py-3 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold transition-colors cursor-pointer">
+            Kembali
+          </button>
+          <button id="btn-confirm-whatsapp" class="w-2/3 py-3 rounded-xl bg-[#006E2E] hover:bg-[#005a25] text-white text-xs font-black shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+            </svg>
+            Kirim ke WA
+          </button>
+        </div>
+
+      </div>
     </div>
 
   </main>
@@ -142,7 +297,6 @@ const JARA_BAWAH = "pb-[160px]";
     cartItemId: string;
     id: string | number;
     menuId?: string | number;
-    slug?: string;
     name: string;
     price: number;
     basePrice?: number;
@@ -155,6 +309,8 @@ const JARA_BAWAH = "pb-[160px]";
   }
 
   const STORAGE_KEY = 'bangsri_cart';
+  const FORM_STORAGE_KEY = 'bangsri_checkout_form';
+  const ADMIN_PHONE = '6285185032089';
 
   function formatRupiah(price: number): string {
     return new Intl.NumberFormat('id-ID', {
@@ -175,7 +331,7 @@ const JARA_BAWAH = "pb-[160px]";
 
   function saveCart(cart: CartItem[]) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-    window.dispatchEvent(new Event('cart-updated'));
+    renderCart();
   }
 
   function calculateItemTotal(item: CartItem): number {
@@ -185,186 +341,334 @@ const JARA_BAWAH = "pb-[160px]";
     return (base + addonsTotal) * qty;
   }
 
-  function renderCart() {
-    const cart = getCart();
-    const container = document.getElementById('cart-items-container');
-    const summarySection = document.getElementById('summary-section');
-    const emptyState = document.getElementById('empty-state');
-    const itemCountEl = document.getElementById('header-item-count');
-
-    if (!container || !summarySection || !emptyState) return;
-
-    const totalQty = cart.reduce((sum, item) => sum + (item.qty || item.quantity || 1), 0);
-    if (itemCountEl) {
-      itemCountEl.textContent = `${totalQty} Item`;
+  function updateQuantity(cartItemId: string, delta: number) {
+    let cart = getCart();
+    const itemIndex = cart.findIndex(item => item.cartItemId === cartItemId);
+    
+    if (itemIndex !== -1) {
+      const currentQty = cart[itemIndex].qty || cart[itemIndex].quantity || 1;
+      const newQty = currentQty + delta;
+      
+      if (newQty <= 0) {
+        cart.splice(itemIndex, 1);
+      } else {
+        cart[itemIndex].qty = newQty;
+        cart[itemIndex].quantity = newQty;
+      }
+      saveCart(cart);
     }
+  }
+
+  function renderCart() {
+    const container = document.getElementById('cart-items-container');
+    const checkoutWrapper = document.getElementById('checkout-wrapper');
+    const headerCountEl = document.getElementById('header-item-count');
+    const subtotalEl = document.getElementById('summary-subtotal');
+    const totalEl = document.getElementById('summary-total');
+
+    if (!container) return;
+
+    const cart = getCart();
+    const totalItems = cart.reduce((sum, item) => sum + (item.qty || item.quantity || 1), 0);
+
+    if (headerCountEl) headerCountEl.textContent = `${totalItems} Item`;
 
     if (cart.length === 0) {
-      container.innerHTML = '';
-      summarySection.classList.add('hidden');
-      emptyState.classList.remove('hidden');
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl p-8 text-center space-y-3 border border-slate-200/80 shadow-xs mt-4">
+          <div class="w-12 h-12 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          </div>
+          <div class="space-y-1">
+            <p class="text-sm font-bold text-slate-800">Keranjang Belanja Kosong</p>
+            <p class="text-xs text-slate-500">Anda belum menambahkan item makanan/minuman.</p>
+          </div>
+          <a href="/" class="inline-block mt-2 px-5 py-2.5 bg-emerald-600 text-white text-xs font-semibold rounded-xl hover:bg-emerald-700 transition-all">
+            Mulai Belanja
+          </a>
+        </div>
+      `;
+      if (checkoutWrapper) checkoutWrapper.classList.add('hidden');
       return;
     }
 
-    emptyState.classList.add('hidden');
-    summarySection.classList.remove('hidden');
+    if (checkoutWrapper) checkoutWrapper.classList.remove('hidden');
 
     let subtotal = 0;
 
-    container.innerHTML = cart.map((item, index) => {
+    container.innerHTML = cart.map(item => {
       const qty = item.qty || item.quantity || 1;
       const itemTotal = calculateItemTotal(item);
       subtotal += itemTotal;
 
       let detailsHtml = '';
       if (item.spicyLevel) {
-        detailsHtml += `<p class="text-[11px] text-amber-600 font-medium">🌶️ Level ${item.spicyLevel}</p>`;
+        detailsHtml += `<span class="inline-block bg-red-50 text-red-600 text-[10px] px-1.5 py-0.5 rounded font-medium border border-red-100">Level ${item.spicyLevel}</span> `;
       }
       if (item.addons && item.addons.length > 0) {
-        item.addons.forEach(addon => {
-          detailsHtml += `<p class="text-[11px] text-[#6B7280]">+ ${addon.name}</p>`;
-        });
+        const addonNames = item.addons.map(a => a.name).join(', ');
+        detailsHtml += `<span class="text-[11px] text-slate-500 block mt-0.5">+ ${addonNames}</span>`;
       }
-      if (!item.spicyLevel && (!item.addons || item.addons.length === 0)) {
-        detailsHtml += `<p class="text-[11px] text-[#6B7280]">Tanpa Add-on</p>`;
-      }
-
-      const cartItemId = item.cartItemId || `${item.id || item.menuId || index}`;
-      const productPath = item.slug || item.id || item.menuId || '';
 
       return `
-        <div class="bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-xs flex flex-col gap-3 relative" data-cart-item-id="${cartItemId}">
-          
-          <button
-            type="button"
-            class="btn-delete-item absolute top-3 right-3 text-slate-400 hover:text-red-500 p-1.5 rounded-lg transition-colors cursor-pointer"
-            data-cart-item-id="${cartItemId}"
-            aria-label="Hapus produk ini"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
-          </button>
-
-          <a href="/menu/${productPath}" class="flex gap-3 pr-6 group no-underline">
-            <img
-              src="${item.image || 'https://placehold.co/120x120'}"
-              alt="${item.name}"
-              class="w-[72px] h-[72px] object-cover rounded-xl flex-shrink-0 bg-slate-100 group-hover:opacity-90 transition-opacity"
-            />
-            <div class="flex-1 min-w-0">
-              <h2 class="text-sm font-semibold text-[#111827] truncate group-hover:text-[#0E9F3E] transition-colors">
-                ${item.name}
-              </h2>
-              <div class="text-xs text-[#6B7280] mt-0.5 space-y-0.5">
-                ${detailsHtml}
-              </div>
-            </div>
-          </a>
-
-          <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-            <div class="flex items-center gap-2.5">
-              <button
-                type="button"
-                class="btn-decrease w-7 h-7 rounded-lg border border-[#E5E7EB] flex items-center justify-center text-[#111827] hover:bg-slate-50 active:bg-slate-100 font-medium transition-colors cursor-pointer text-xs"
-                data-cart-item-id="${cartItemId}"
-                aria-label="Kurangi jumlah"
-              >
-                -
-              </button>
-              <span class="text-xs font-semibold text-[#111827] min-w-[16px] text-center">
-                ${qty}
-              </span>
-              <button
-                type="button"
-                class="btn-increase w-7 h-7 rounded-lg border border-[#E5E7EB] flex items-center justify-center text-[#111827] hover:bg-slate-50 active:bg-slate-100 font-medium transition-colors cursor-pointer text-xs"
-                data-cart-item-id="${cartItemId}"
-                aria-label="Tambah jumlah"
-              >
-                +
-              </button>
-            </div>
-
-            <span class="text-xs sm:text-sm font-bold text-[#111827]">
-              ${formatRupiah(itemTotal)}
-            </span>
+        <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-xs flex gap-3 items-center">
+          <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 bg-slate-100" />
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate">${item.name}</h4>
+            <div class="mt-0.5">${detailsHtml}</div>
+            <p class="text-xs font-bold text-emerald-600 mt-1">${formatRupiah(itemTotal)}</p>
+          </div>
+          <div class="flex items-center gap-2 bg-slate-50 border border-slate-200/80 rounded-lg p-1 shrink-0">
+            <button data-action="minus" data-id="${item.cartItemId}" class="w-6 h-6 flex items-center justify-center rounded bg-white text-slate-700 shadow-xs hover:bg-slate-100 active:scale-90 transition-all font-bold text-xs cursor-pointer">-</button>
+            <span class="text-xs font-semibold w-4 text-center text-slate-800">${qty}</span>
+            <button data-action="plus" data-id="${item.cartItemId}" class="w-6 h-6 flex items-center justify-center rounded bg-white text-slate-700 shadow-xs hover:bg-slate-100 active:scale-90 transition-all font-bold text-xs cursor-pointer">+</button>
           </div>
         </div>
       `;
     }).join('');
 
-    const subtotalEl = document.getElementById('summary-subtotal');
-    const totalEl = document.getElementById('summary-total');
-
     if (subtotalEl) subtotalEl.textContent = formatRupiah(subtotal);
     if (totalEl) totalEl.textContent = formatRupiah(subtotal);
+
+    container.querySelectorAll('button[data-action]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const action = target.getAttribute('data-action');
+        const id = target.getAttribute('data-id');
+        if (id) {
+          updateQuantity(id, action === 'plus' ? 1 : -1);
+        }
+      });
+    });
   }
 
-  function handleQuantityChange(cartItemId: string, change: number) {
-    const cart = getCart();
-    const itemIndex = cart.findIndex(i => String(i.cartItemId || i.id || i.menuId) === String(cartItemId));
-
-    if (itemIndex > -1) {
-      const currentQty = cart[itemIndex].qty || cart[itemIndex].quantity || 1;
-      const newQty = currentQty + change;
-
-      if (newQty > 0) {
-        cart[itemIndex].qty = newQty;
-        cart[itemIndex].quantity = newQty;
-      } else {
-        cart.splice(itemIndex, 1);
+  function initFormStorage() {
+    const fields = ['name', 'dukuh', 'rt', 'address', 'landmark', 'note'];
+    
+    try {
+      const savedForm = localStorage.getItem(FORM_STORAGE_KEY);
+      if (savedForm) {
+        const formData = JSON.parse(savedForm);
+        fields.forEach(fieldId => {
+          const input = document.getElementById(fieldId) as HTMLInputElement | HTMLTextAreaElement;
+          if (input && formData[fieldId]) {
+            input.value = formData[fieldId];
+          }
+        });
       }
+    } catch {}
 
-      saveCart(cart);
-      renderCart();
+    fields.forEach(fieldId => {
+      const input = document.getElementById(fieldId);
+      if (input) {
+        input.addEventListener('input', () => {
+          const formData: Record<string, string> = {};
+          fields.forEach(id => {
+            const el = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement;
+            if (el) formData[id] = el.value;
+          });
+          localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
+        });
+      }
+    });
+  }
+
+  // MODAL INVOICE LOGIC
+  function openInvoiceModal() {
+    const cart = getCart();
+    if (cart.length === 0) {
+      alert('Keranjang belanjaan Anda masih kosong!');
+      return;
+    }
+
+    const name = (document.getElementById('name') as HTMLInputElement)?.value.trim();
+    const dukuh = (document.getElementById('dukuh') as HTMLInputElement)?.value.trim();
+    const rt = (document.getElementById('rt') as HTMLInputElement)?.value.trim();
+    const address = (document.getElementById('address') as HTMLInputElement)?.value.trim();
+    const landmark = (document.getElementById('landmark') as HTMLInputElement)?.value.trim();
+    const note = (document.getElementById('note') as HTMLTextAreaElement)?.value.trim();
+
+    if (!name || !dukuh || !rt || !address) {
+      alert('Mohon lengkapi data alamat pengiriman yang wajib diisi (*)!');
+      document.getElementById('name')?.focus();
+      return;
+    }
+
+    // Populate Modal Alamat & ID Transaksi
+    const invNama = document.getElementById('inv-nama');
+    const invAlamatDetail = document.getElementById('inv-alamat-detail');
+    const invCatatan = document.getElementById('inv-catatan-pengantaran');
+    const invoiceId = document.getElementById('invoice-id');
+    const invoiceDate = document.getElementById('invoice-date');
+
+    if (invNama) invNama.textContent = name;
+    if (invAlamatDetail) {
+      invAlamatDetail.textContent = `${address}, Dukuh ${dukuh}, ${rt}` + (landmark ? ` (Patokan: ${landmark})` : '');
+    }
+
+    if (invCatatan) {
+      if (note) {
+        invCatatan.textContent = `Catatan: "${note}"`;
+        invCatatan.classList.remove('hidden');
+      } else {
+        invCatatan.classList.add('hidden');
+      }
+    }
+
+    if (invoiceId) {
+      const randomCode = Math.floor(1000 + Math.random() * 9000);
+      invoiceId.textContent = `BG-JASTIP-${randomCode}`;
+    }
+
+    if (invoiceDate) {
+      const now = new Date();
+      invoiceDate.textContent = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    // Populate Modal Items List
+    const invoiceItemsList = document.getElementById('invoice-items-list');
+    const invoiceSubtotal = document.getElementById('invoice-subtotal');
+    const invoiceTotal = document.getElementById('invoice-total');
+    let subtotal = 0;
+
+    if (invoiceItemsList) {
+      invoiceItemsList.innerHTML = cart.map(item => {
+        const qty = item.qty || item.quantity || 1;
+        const itemTotal = calculateItemTotal(item);
+        subtotal += itemTotal;
+
+        let extras = [];
+        if (item.spicyLevel) extras.push(`Level ${item.spicyLevel}`);
+        if (item.addons && item.addons.length > 0) {
+          extras.push(...item.addons.map(a => a.name));
+        }
+
+        return `
+          <div class="pt-2 first:pt-0 flex justify-between items-start text-xs">
+            <div>
+              <p class="font-bold text-slate-800">${item.name} <span class="text-slate-400 font-normal">x${qty}</span></p>
+              ${extras.length > 0 ? `<p class="text-[10px] text-slate-400 mt-0.5">${extras.join(', ')}</p>` : ''}
+            </div>
+            <span class="font-bold text-slate-800">${formatRupiah(itemTotal)}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    if (invoiceSubtotal) invoiceSubtotal.textContent = formatRupiah(subtotal);
+    if (invoiceTotal) invoiceTotal.textContent = formatRupiah(subtotal);
+
+    // Show Modal with Animation
+    const modal = document.getElementById('invoice-modal');
+    const content = document.getElementById('invoice-modal-content');
+
+    if (modal && content) {
+      modal.classList.remove('hidden');
+      // Force reflow
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        content.classList.remove('scale-95');
+        content.classList.add('scale-100');
+      }, 10);
     }
   }
 
-  function handleRemoveItem(cartItemId: string) {
-    let cart = getCart();
-    cart = cart.filter(i => String(i.cartItemId || i.id || i.menuId) !== String(cartItemId));
-    saveCart(cart);
-    renderCart();
+  function closeInvoiceModal() {
+    const modal = document.getElementById('invoice-modal');
+    const content = document.getElementById('invoice-modal-content');
+
+    if (modal && content) {
+      modal.classList.add('opacity-0');
+      content.classList.remove('scale-100');
+      content.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
   }
 
-  function clearCart() {
-    if (confirm('Apakah Anda yakin ingin mengosongkan keranjang?')) {
-      localStorage.removeItem(STORAGE_KEY);
-      renderCart();
-      window.dispatchEvent(new Event('cart-updated'));
-    }
+  function handleWhatsAppCheckout() {
+    const cart = getCart();
+    const name = (document.getElementById('name') as HTMLInputElement)?.value.trim();
+    const dukuh = (document.getElementById('dukuh') as HTMLInputElement)?.value.trim();
+    const rt = (document.getElementById('rt') as HTMLInputElement)?.value.trim();
+    const address = (document.getElementById('address') as HTMLInputElement)?.value.trim();
+    const landmark = (document.getElementById('landmark') as HTMLInputElement)?.value.trim();
+    const note = (document.getElementById('note') as HTMLTextAreaElement)?.value.trim();
+    const transactionId = document.getElementById('invoice-id')?.textContent || 'BG-JASTIP-XXXX';
+
+    let subtotal = 0;
+    let itemsText = cart.map((item, index) => {
+      const qty = item.qty || item.quantity || 1;
+      const itemTotal = calculateItemTotal(item);
+      subtotal += itemTotal;
+
+      let desc = `${index + 1}. *${item.name}* (x${qty})\n`;
+      if (item.spicyLevel) desc += `    └ Level: ${item.spicyLevel}\n`;
+      if (item.addons && item.addons.length > 0) {
+        desc += `    └ Extra: ${item.addons.map(a => a.name).join(', ')}\n`;
+      }
+      desc += `    └ Harga: ${formatRupiah(itemTotal)}`;
+      return desc;
+    }).join('\n\n');
+
+    const message = 
+      `🛒 *PESANAN BARU (${transactionId})*\n` +
+      `──────────────────────\n\n` +
+      `👤 *DATA PENERIMA*\n` +
+      `• *Nama:* ${name}\n` +
+      `• *Dukuh:* ${dukuh}\n` +
+      `• *RT/RW:* ${rt}\n` +
+      `• *Alamat/Kos:* ${address}\n` +
+      (landmark ? `• *Patokan:* ${landmark}\n` : '') +
+      (note ? `• *Catatan:* ${note}\n` : '') +
+      `\n` +
+      `📦 *RINGKASAN PESANAN*\n\n` +
+      `${itemsText}\n\n` +
+      `──────────────────────\n` +
+      `💰 *RINGKASAN BIAYA*\n` +
+      `• *Subtotal Barang:* ${formatRupiah(subtotal)}\n` +
+      `• *Jastip & Ongkir:* Konfirmasi via WA\n` +
+      `• *Total Estimasi:* *${formatRupiah(subtotal)}*\n` +
+      `──────────────────────\n\n` +
+      `Mohon segera diproses ya kak, terima kasih! 🙏`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const waUrl = `https://wa.me/${ADMIN_PHONE}?text=${encodedMessage}`;
+
+    window.open(waUrl, '_blank');
   }
 
   function init() {
     renderCart();
+    initFormStorage();
 
-    document.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-
-      const incBtn = target.closest('.btn-increase') as HTMLButtonElement;
-      if (incBtn) {
-        const id = incBtn.dataset.cartItemId;
-        if (id) handleQuantityChange(id, 1);
-      }
-
-      const decBtn = target.closest('.btn-decrease') as HTMLButtonElement;
-      if (decBtn) {
-        const id = decBtn.dataset.cartItemId;
-        if (id) handleQuantityChange(id, -1);
-      }
-
-      const delBtn = target.closest('.btn-delete-item') as HTMLButtonElement;
-      if (delBtn) {
-        const id = delBtn.dataset.cartItemId;
-        if (id) handleRemoveItem(id);
+    document.getElementById('btn-clear-cart')?.addEventListener('click', () => {
+      if (confirm('Apakah Anda yakin ingin mengosongkan keranjang?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        renderCart();
       }
     });
 
-    const clearBtn = document.getElementById('btn-clear-cart');
-    if (clearBtn) {
-      clearBtn.addEventListener('click', clearCart);
+    const waButton = document.getElementById('btn-whatsapp');
+    if (waButton) {
+      waButton.addEventListener('click', openInvoiceModal);
     }
 
-    window.addEventListener('storage', renderCart);
-    window.addEventListener('cart-updated', renderCart);
+    document.getElementById('close-invoice-modal')?.addEventListener('click', closeInvoiceModal);
+    document.getElementById('btn-cancel-modal')?.addEventListener('click', closeInvoiceModal);
+
+    // Close on background backdrop click
+    document.getElementById('invoice-modal')?.addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) {
+        closeInvoiceModal();
+      }
+    });
+
+    document.getElementById('btn-confirm-whatsapp')?.addEventListener('click', () => {
+      handleWhatsAppCheckout();
+      closeInvoiceModal();
+    });
   }
 
   if (document.readyState === 'loading') {

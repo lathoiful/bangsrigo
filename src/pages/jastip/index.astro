@@ -1,25 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import logo from '../../assets/logo.svg';
 ---
 
 <Layout title="Jastip Mie Gacoan - BangsriGo" activeTab="jastip">
   <!-- WRAPPER UTAMA -->
   <div class="w-full h-full flex flex-col justify-start gap-4 p-4 pb-24 box-border overflow-y-auto no-scrollbar">
     
-    <!-- 1. HEADER (UKURAN LEBIH BESAR & TEGAS) -->
-    <header class="flex items-center justify-between shrink-0 pt-2 pb-3 border-b border-slate-100/80">
-      <div class="flex items-center gap-3">
-        <img src={logo.src} alt="BangsriGo Logo" class="h-9.5 w-auto object-contain" />
-      </div>
-
-      <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200/90 px-3.5 py-1.5 rounded-full text-xs font-bold text-[#006E2E] shadow-2xs">
-        <span class="w-2.5 h-2.5 rounded-full bg-[#16A34A] animate-pulse"></span>
-        <span>Jastip Aktif</span>
-      </div>
-    </header>
-
-    <!-- 2. JUDUL UTAMA -->
+    <!-- 1. JUDUL UTAMA -->
     <div class="space-y-1.5 shrink-0 pt-1">
       <span class="inline-block text-[10px] font-extrabold uppercase tracking-widest text-[#006E2E] bg-emerald-100/70 px-2.5 py-1 rounded-md">
         Layanan Antar
@@ -32,7 +19,7 @@ import logo from '../../assets/logo.svg';
       </p>
     </div>
 
-    <!-- 3. HIGHLIGHT HERO CARD: MIE GACOAN -->
+    <!-- 2. HIGHLIGHT HERO CARD: MIE GACOAN -->
     <a 
       href="/jastip/gacoan" 
       class="group relative shrink-0 min-h-[190px] rounded-3xl bg-slate-900 border border-pink-500/30 p-5 flex flex-col justify-between shadow-xl overflow-hidden active:scale-[0.98] transition-all my-1"
@@ -83,7 +70,7 @@ import logo from '../../assets/logo.svg';
       </div>
     </a>
 
-    <!-- 4. SECONDARY BUTTON: TITIP WARUNG LAIN -->
+    <!-- 3. SECONDARY BUTTON: TITIP WARUNG LAIN -->
     <a 
       href="/jastip/buat" 
       class="flex items-center justify-between p-4 rounded-2xl border border-slate-200 bg-white active:bg-slate-50 transition-colors shrink-0 shadow-xs"
@@ -105,7 +92,7 @@ import logo from '../../assets/logo.svg';
       </svg>
     </a>
 
-    <!-- 5. KEUNGGULAN JASTIP -->
+    <!-- 4. KEUNGGULAN JASTIP -->
     <div class="grid grid-cols-2 gap-2.5 pt-1 shrink-0">
       <div class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200/60">
         <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,9 +108,9 @@ import logo from '../../assets/logo.svg';
       </div>
     </div>
 
-    <!-- 6. FLOATING BANNER TITIPAN (MUNCUL OTOMATIS JIKA ADA CART) -->
+    <!-- 5. FLOATING BANNER TITIPAN (MUNCUL OTOMATIS JIKA ADA CART) -->
     <a 
-      href="/jastip/titipan" 
+      href="/jastip/keranjang" 
       id="jastip-cart-banner"
       class="hidden block w-full bg-[#006E2E] text-white rounded-2xl p-3.5 shadow-lg shrink-0 active:scale-[0.98] transition-transform"
     >

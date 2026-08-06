@@ -1,120 +1,104 @@
 ---
 // src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
-import logo from '../assets/logo.svg';
 ---
 
 <Layout title="BangsriGo - Beranda" activeTab="beranda">
-  <main class="w-full max-w-md mx-auto bg-slate-50 min-h-screen flex flex-col pb-28">
-    
-    <!-- HEADER -->
-    <header class="bg-white px-4 py-3 border-b border-slate-100 flex items-center justify-between sticky top-0 z-30 shadow-xs">
-      <div class="flex items-center gap-2">
-        <img src={logo.src} alt="Logo" class="h-8 w-auto object-contain" />
-      </div>
+  <main class="w-full flex-1 p-4 space-y-4">
 
-      <div class="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full text-[11px] font-semibold">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        Bangsri & Sekitarnya
-      </div>
-    </header>
-
-    <div class="p-4 space-y-4">
-
-      <!-- HERO BANNER -->
-      <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#16A34A] to-emerald-700 p-4 text-white shadow-sm">
-        <div class="relative z-10 space-y-1.5">
-          <span class="inline-block bg-white/20 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
-            Layanan Pesan Antar
-          </span>
-          <h1 class="text-base font-extrabold leading-snug">Lapar atau Butuh Titip Belanja?</h1>
-          <p class="text-[11px] text-emerald-100 leading-tight">
-            Pesan makanan lokal atau titip belanjaan toko, siap diantar ke rumahmu.
-          </p>
-          <div class="pt-1.5">
-            <a href="/menu" class="inline-flex items-center gap-1 bg-white text-[#16A34A] font-bold text-xs px-3 py-1.5 rounded-xl shadow-xs active:scale-95 transition-transform">
-              Pesan Kuliner
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- HIGHLIGHT STATS -->
-      <div class="grid grid-cols-3 gap-2 bg-white py-2.5 px-3 rounded-2xl border border-slate-100 text-center shadow-2xs">
-        <div class="border-r border-slate-100">
-          <p class="text-xs font-black text-[#16A34A]">⚡ Cepat</p>
-          <p class="text-[9px] text-slate-400 font-medium">Pengiriman</p>
-        </div>
-        <div class="border-r border-slate-100">
-          <p class="text-xs font-black text-amber-500">⭐ 4.9</p>
-          <p class="text-[9px] text-slate-400 font-medium">Rating</p>
-        </div>
-        <div>
-          <p class="text-xs font-black text-emerald-600">💸 Murah</p>
-          <p class="text-[9px] text-slate-400 font-medium">Ongkir Lokal</p>
-        </div>
-      </div>
-
-      <!-- NAVIGATION GRID / MAIN SERVICES -->
-      <div class="space-y-2">
-        <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wide px-0.5">Layanan Utama</h2>
-        <div class="grid grid-cols-2 gap-2.5">
-          
-          <!-- MENU KULINER -->
-          <a href="/menu" class="bg-white p-3.5 rounded-2xl border border-slate-200/70 shadow-2xs hover:border-[#16A34A] active:scale-95 transition flex flex-col justify-between h-28">
-            <div class="w-9 h-9 rounded-xl bg-emerald-100 text-[#16A34A] flex items-center justify-center">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-            <div>
-              <p class="text-xs font-bold text-slate-800">Menu Kuliner</p>
-              <p class="text-[10px] text-slate-400">Aneka makanan & minuman</p>
-            </div>
+    <!-- HERO BANNER -->
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#16A34A] to-emerald-700 p-4 text-white shadow-sm">
+      <div class="relative z-10 space-y-1.5">
+        <span class="inline-block bg-white/20 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+          Layanan Pesan Antar
+        </span>
+        <h1 class="text-base font-extrabold leading-snug">Lapar atau Butuh Titip Belanja?</h1>
+        <p class="text-[11px] text-emerald-100 leading-tight">
+          Pesan makanan lokal atau titip belanjaan toko, siap diantar ke rumahmu.
+        </p>
+        <div class="pt-1.5">
+          <a href="/menu" class="inline-flex items-center gap-1 bg-white text-[#16A34A] font-bold text-xs px-3 py-1.5 rounded-xl shadow-xs active:scale-95 transition-transform">
+            Pesan Kuliner
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
           </a>
-
-          <!-- TITIPAN JASTIP -->
-          <a href="/jastip" class="bg-white p-3.5 rounded-2xl border border-slate-200/70 shadow-2xs hover:border-amber-500 active:scale-95 transition flex flex-col justify-between h-28">
-            <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
-            </div>
-            <div>
-              <p class="text-xs font-bold text-slate-800">Custom Jastip</p>
-              <p class="text-[10px] text-slate-400">Titip beli di mana saja</p>
-            </div>
-          </a>
-
         </div>
       </div>
-
-      <!-- BAGAIMANA CARA KERJANYA -->
-      <div class="bg-white p-3.5 rounded-2xl border border-slate-100 shadow-2xs space-y-2.5">
-        <p class="text-xs font-bold text-slate-700">Cara Pemesanan</p>
-        <div class="grid grid-cols-3 gap-2 text-center">
-          <div class="space-y-1">
-            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-50 text-[#16A34A] text-xs font-bold">1</span>
-            <p class="text-[10px] font-medium text-slate-600">Pilih Menu / Titipan</p>
-          </div>
-          <div class="space-y-1">
-            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-50 text-[#16A34A] text-xs font-bold">2</span>
-            <p class="text-[10px] font-medium text-slate-600">Kirim via WA</p>
-          </div>
-          <div class="space-y-1">
-            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-50 text-[#16A34A] text-xs font-bold">3</span>
-            <p class="text-[10px] font-medium text-slate-600">Antar ke Lokasi</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- JAM OPERASIONAL -->
-      <div class="bg-slate-100 rounded-xl p-3 flex items-center justify-between text-[11px] text-slate-600 font-medium">
-        <span>⏰ Jam Operasional</span>
-        <span class="font-bold text-slate-800">08.00 - 21.00 WIB</span>
-      </div>
-
     </div>
+
+    <!-- HIGHLIGHT STATS -->
+    <div class="grid grid-cols-3 gap-2 bg-white py-2.5 px-3 rounded-2xl border border-slate-100 text-center shadow-2xs">
+      <div class="border-r border-slate-100">
+        <p class="text-xs font-black text-[#16A34A]">⚡ Cepat</p>
+        <p class="text-[9px] text-slate-400 font-medium">Pengiriman</p>
+      </div>
+      <div class="border-r border-slate-100">
+        <p class="text-xs font-black text-amber-500">⭐ 4.9</p>
+        <p class="text-[9px] text-slate-400 font-medium">Rating</p>
+      </div>
+      <div>
+        <p class="text-xs font-black text-emerald-600">💸 Murah</p>
+        <p class="text-[9px] text-slate-400 font-medium">Ongkir Lokal</p>
+      </div>
+    </div>
+
+    <!-- NAVIGATION GRID / MAIN SERVICES -->
+    <div class="space-y-2">
+      <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wide px-0.5">Layanan Utama</h2>
+      <div class="grid grid-cols-2 gap-2.5">
+        
+        <!-- MENU KULINER -->
+        <a href="/menu" class="bg-white p-3.5 rounded-2xl border border-slate-200/70 shadow-2xs hover:border-[#16A34A] active:scale-95 transition flex flex-col justify-between h-28">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-[#16A34A] flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs font-bold text-slate-800">Menu Kuliner</p>
+            <p class="text-[10px] text-slate-400">Aneka makanan & minuman</p>
+          </div>
+        </a>
+
+        <!-- TITIPAN JASTIP -->
+        <a href="/jastip" class="bg-white p-3.5 rounded-2xl border border-slate-200/70 shadow-2xs hover:border-amber-500 active:scale-95 transition flex flex-col justify-between h-28">
+          <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs font-bold text-slate-800">Custom Jastip</p>
+            <p class="text-[10px] text-slate-400">Titip beli di mana saja</p>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- BAGAIMANA CARA KERJANYA -->
+    <div class="bg-white p-3.5 rounded-2xl border border-slate-100 shadow-2xs space-y-2.5">
+      <p class="text-xs font-bold text-slate-700">Cara Pemesanan</p>
+      <div class="grid grid-cols-3 gap-2 text-center">
+        <div class="space-y-1">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-50 text-[#16A34A] text-xs font-bold">1</span>
+          <p class="text-[10px] font-medium text-slate-600">Pilih Menu / Titipan</p>
+        </div>
+        <div class="space-y-1">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-50 text-[#16A34A] text-xs font-bold">2</span>
+          <p class="text-[10px] font-medium text-slate-600">Kirim via WA</p>
+        </div>
+        <div class="space-y-1">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-50 text-[#16A34A] text-xs font-bold">3</span>
+          <p class="text-[10px] font-medium text-slate-600">Antar ke Lokasi</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- JAM OPERASIONAL -->
+    <div class="bg-slate-100 rounded-xl p-3 flex items-center justify-between text-[11px] text-slate-600 font-medium">
+      <span>⏰ Jam Operasional</span>
+      <span class="font-bold text-slate-800">08.00 - 21.00 WIB</span>
+    </div>
+
   </main>
 </Layout>

@@ -1,11 +1,18 @@
 ---
 // src/layouts/Layout.astro
+import logo from '../assets/logo.svg';
+
 interface Props {
   title?: string;
   activeTab?: 'beranda' | 'menu' | 'jastip' | 'titipan' | 'keranjang';
+  hideHeader?: boolean;
 }
 
-const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } = Astro.props;
+const { 
+  title = 'BangsriGo - Pemesanan Makanan Warung', 
+  activeTab = 'beranda',
+  hideHeader = false 
+} = Astro.props;
 ---
 <!doctype html>
 <html lang="id">
@@ -21,13 +28,29 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
   <body class="bg-slate-100 sm:bg-slate-200 text-slate-800 flex items-center justify-center min-h-[100dvh] sm:p-4 antialiased">
 
     <!-- APP CONTAINER MOCKUP -->
-    <div class="w-full max-w-md h-[100dvh] sm:h-[844px] bg-[#F8F8F8] sm:rounded-3xl sm:shadow-2xl sm:border border-slate-300/60 overflow-hidden flex flex-col relative">
+    <div class="w-full max-w-md h-[100dvh] sm:h-[844px] bg-[#F8F8F8] sm:rounded-3xl sm:shadow-2xl sm:border border-slate-300/60 overflow-y-auto no-scrollbar flex flex-col relative pb-20">
       
+      <!-- HEADER -->
+      {!hideHeader && (
+        <header class="bg-white px-5 py-5 border-b border-slate-100 flex items-center justify-between sticky top-0 z-30 shadow-xs">
+          <div class="flex items-center gap-2">
+            <a href="/">
+              <img src={logo.src} alt="BangsriGo Logo" class="h-14 w-auto object-contain" />
+            </a>
+          </div>
+
+          <div class="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-semibold">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Bangsri & Sekitarnya
+          </div>
+        </header>
+      )}
+
       <!-- KONTEN HALAMAN (SLOT) -->
       <slot />
 
-      <!-- FLOATING BOTTOM NAVIGATION BAR (5 NAV MENU) -->
-      <nav class="absolute bottom-3 left-1/2 -translate-x-1/2 w-[94%] max-w-[400px] bg-white/95 backdrop-blur-md rounded-[24px] shadow-lg border border-slate-100 px-2 py-2 z-50 flex items-center justify-between">
+      <!-- FLOATING BOTTOM NAVIGATION BAR -->
+      <nav class="fixed sm:absolute bottom-2 left-1/2 -translate-x-1/2 w-[94%] max-w-[400px] bg-white/95 backdrop-blur-md rounded-[24px] shadow-lg border border-slate-100 px-2 py-1.5 z-50 flex items-center justify-between">
         
         <!-- 1. Beranda -->
         <a 
@@ -68,22 +91,21 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
           <span class="text-[10px] font-semibold tracking-wide">Jastip</span>
         </a>
 
-        <!-- 4. Titipan (Floating Button) -->
+        <!-- 4. Titipan -->
         <a 
-          href="/jastip/titipan" 
+          href="/jastip/keranjang" 
           class={`relative flex flex-col items-center flex-1 transition-colors ${
             activeTab === 'titipan' ? 'text-[#16A34A]' : 'text-slate-600 hover:text-slate-800'
           }`}
         >
-          <div class="relative -mt-6 mb-0.5">
-            <div class={`w-10 h-10 rounded-full flex items-center justify-center text-white shadow-md ring-4 ring-white active:scale-95 transition-transform ${
+          <div class="relative -mt-4 mb-0.5">
+            <div class={`w-9 h-9 rounded-full flex items-center justify-center text-white shadow-md ring-4 ring-white active:scale-95 transition-transform ${
               activeTab === 'titipan' ? 'bg-[#16A34A] shadow-emerald-900/30' : 'bg-slate-700 shadow-slate-900/20'
             }`}>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
 
-              <!-- Badge Titipan Jastip -->
               <span 
                 id="layout-titipan-badge" 
                 class="absolute -top-1 -right-1 bg-amber-500 text-white text-[9px] font-bold min-w-[17px] h-[17px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs hidden"
@@ -95,22 +117,21 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
           <span class="text-[10px] font-semibold tracking-wide">Titipan</span>
         </a>
 
-        <!-- 5. Keranjang Makanan (Floating Button Utama) -->
+        <!-- 5. Keranjang -->
         <a 
           href="/cart" 
           class={`relative flex flex-col items-center flex-1 transition-colors ${
             activeTab === 'keranjang' ? 'text-[#16A34A]' : 'text-slate-600 hover:text-slate-800'
           }`}
         >
-          <div class="relative -mt-6 mb-0.5">
-            <div class={`w-10 h-10 rounded-full flex items-center justify-center text-white shadow-md ring-4 ring-white active:scale-95 transition-transform ${
+          <div class="relative -mt-4 mb-0.5">
+            <div class={`w-9 h-9 rounded-full flex items-center justify-center text-white shadow-md ring-4 ring-white active:scale-95 transition-transform ${
               activeTab === 'keranjang' ? 'bg-[#16A34A] shadow-emerald-900/30' : 'bg-[#006E2E] shadow-emerald-900/30'
             }`}>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 000-4z" />
               </svg>
 
-              <!-- Badge Keranjang Warung Utama -->
               <span 
                 id="layout-cart-badge" 
                 class="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold min-w-[17px] h-[17px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs hidden"
@@ -129,7 +150,6 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
   </body>
 </html>
 
-<!-- SCRIPT UPDATE BADGE INDEPENDEN -->
 <script>
   const CART_KEY = 'bangsri_cart';
   const JASTIP_CART_KEY = 'bangsri_jastip_cart';
@@ -139,7 +159,6 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
     const titipanBadge = document.getElementById('layout-titipan-badge');
 
     try {
-      // 1. Badge Keranjang Warung
       const cartData = localStorage.getItem(CART_KEY);
       const cart = cartData ? JSON.parse(cartData) : [];
       const totalCartQty = cart.reduce((sum: number, item: any) => sum + (item.qty || item.quantity || 1), 0);
@@ -153,7 +172,6 @@ const { title = 'BangsriGo - Pemesanan Makanan Warung', activeTab = 'beranda' } 
         }
       }
 
-      // 2. Badge Titipan Jastip
       const jastipData = localStorage.getItem(JASTIP_CART_KEY);
       const jastipCart = jastipData ? JSON.parse(jastipData) : [];
       const totalJastipQty = jastipCart.reduce((sum: number, item: any) => sum + (item.jumlah || item.qty || 1), 0);
